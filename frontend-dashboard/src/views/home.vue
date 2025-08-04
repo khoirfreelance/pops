@@ -12,34 +12,19 @@
 
     <!-- Cover Section -->
     <section class="vh-100 d-flex align-items-center bg-light">
-      <div class="container-fluid px-4 h-100">
+      <div class="container-fluid h-100">
         <div class="row h-100">
-          <!-- Kolom kiri: Teks dan CTA -->
-          <div class="col-md-6 d-flex flex-column justify-content-center align-items-start text-center text-md-start p-5">
-            <h1 class="display-5 fw-bold">Selamat Datang</h1>
-            <p class="lead">Pantau status kesehatan masyarakat dengan mudah</p>
+          <div class="d-flex flex-column justify-content-center align-items-start text-center text-md-start p-5" style="background-image: url('src/assets/cover2.png');background-repeat: no-repeat;background-size: cover;background-position: right;">
+            <h5 class="fw-bold">Selamat Datang di</h5>
+            <h3 class="fw-bold">PUSAT OPERASI PENURUNAN</h3>
+            <h1 class="fw-bold">STUNTING (POPS)</h1>
             <div class="d-grid gap-2 d-md-block">
-              <a href="#section1" class="btn btn-primary me-2">Tentang Kami</a>
-              <a href="#section2" class="btn btn-outline-primary me-2">Data Grafik</a>
-              <a href="#section3" class="btn btn-outline-secondary">KMS</a>
-            </div>
-          </div>
-
-          <!-- Kolom kanan: Background Image -->
-          <div class="col-md-6 d-none d-md-block p-0">
-            <div class="h-100 w-100 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1607746882042-944635dfe10e');">
-              <!-- Kosong, hanya untuk latar -->
+              <a href="#section1" class="btn btn-success me-2">Tentang POPS</a>
+              <a href="#section2" class="btn btn-outline-success me-2">Data Gizi Anak</a>
+              <a href="#section3" class="btn btn-outline-success">KMS Digital</a>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-
-    <!-- Section 1: About Us -->
-    <section id="section1" class="py-5 bg-white">
-      <div class="container-fluid px-4">
-        <h2 class="text-center mb-4">Tentang Kami</h2>
         <div class="row">
           <div class="col-md-4 mb-4">
             <div class="card shadow-sm text-center">
@@ -63,6 +48,41 @@
                 <h5 class="card-title">Gizi Anak</h5>
                 <p class="display-6 fw-bold text-danger">56</p>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+      
+    <!-- Section 1: About Us -->
+    <section id="section1" class="py-5 bg-white">
+      <div class="container-fluid px-4">
+        <div class="row">
+          <div class="card p-5">
+            <h5 class="mb-4">Tentang POPS</h5>
+            <p style="text-align: justify;">
+              Tanoto Foundation bersama BKKBN dan pemerintah daerah bekerja sama dalam mengembangkan program percepatan penurunan stunting di empat kabupaten/kota di Provinsi Jawa Barat, Kabupaten Bogor. Strategi pengembangan program tidak saja fokus kepada dukungan teknis konvergensi dan koordinasi dalam penyusunan kebijakan strategi percepatan penurunan stunting, namun juga mewujudkan layanan pencegahan stunting yang lebih berkualitas di tingkat masyarakat.
+            </p>
+            <p style="text-align: justify;">
+              Agar program pendampingan percepatan penurunan stunting tersebut dilakukan secara tepat sasaran sesuai dengan ketersediaan sumber daya hingga di tingkat desa, Tanoto Foundation berupaya menginisiasi pengelolaan program stunting berbasis data penerima sasaran di tingkat desa melalui program POPS (Pusat Operasi Penurunan Stunting). Inisiatif ini akan diujicobakan (pilot) di Desa Kluwut, Kabupaten Brebes. Dalam mempersiapkan program tersebut, beberapa tahapan akan dilakukan diantaranya ; Pertemuan assesmen kebutuhan (needs assessment) untuk menggali kebutuhan dan situasi di desa secara komprehensif sehingga kerangka program POPS yang dikembangkan tepat untuk membantu TPPS desa melakukan pengambilan keputusan intervensi stunting yang efektif, Menyepakati alur proses pengumpulan data dan informasi yang dibutuhkan, dan pengembangan website – applikasi POPS sebagai media yang akan ditampilkan dalam penyajian data.
+            </p>
+            <p style="text-align: justify;">
+              Dalam pelaksanaan Program POPS ini, Tanoto Foundation bekerjasama dengan Yayasan Satu Karsa Karya (YSKK) sebagai mitra implementasi di Lapangan, dan juga mengajak Pemerintah dan Kader Desa Kluwut untuk membantu dalam penggalian/pengumpulan data dan informasi. Pelibatan Desa Kluwut sejak awal program POPS perlu dilakukan untuk memastikan adanya jaminan keberlanjutan Program POPS ini. Terkait dengan hal tersebut untuk mempermudah memahami alur porses program POPS berikut kami susun acuan program untuk bisa dibaca dan dipahami oleh para pihak yang akan terlibat dalam implementasi program ini.
+            </p>
+          </div>
+        </div>
+        <div class="row m-3">
+          <h5 class="text-center">Tujuan Pelaksanaan POPS</h5>
+          <div class="row justify-content-center">
+            <div class="card col-md-4 m-2 p-4" style="text-align: justify;">
+              <p>
+                <i class="fas fa-file"></i> Mengkoordinasikan data dan informasi sasaran program stunting yang ada didesa Kluwut agar selalu update dan mudah diakses banyak pihak, melalui pengembangan website berbasis data.
+              </p>
+            </div>
+            <div class="card col-md-4 m-2 p-4" style="text-align: justify;">
+              <p>
+                <i class="fas fa-pie-chart"></i> Mengembangkan Dashboard (website) berbasis data di Desa Kluwut
+              </p>
             </div>
           </div>
         </div>
