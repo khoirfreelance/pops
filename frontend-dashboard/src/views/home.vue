@@ -6,7 +6,7 @@
         <a class="navbar-brand d-flex align-items-center justify-content-center fw-bold" href="#">
           <img src="https://img2.beritasatu.com/cache/investor/960x620-3/1613460579.png" class="img-fluid" style="max-height: 50px;" alt="Logo">
         </a>
-        <button class="btn btn-success ms-auto p-3">Login</button>
+        <router-link to="/login" class="btn btn-success ms-auto p-3">Login</router-link>
       </div>
     </nav>
 
@@ -18,35 +18,76 @@
             <h5 class="fw-bold">Selamat Datang di</h5>
             <h3 class="fw-bold">PUSAT OPERASI PENURUNAN</h3>
             <h1 class="fw-bold">STUNTING (POPS)</h1>
-            <div class="d-grid gap-2 d-md-block">
+            <div class="d-flex gap-2 d-md-block mt-3">
               <a href="#section1" class="btn btn-success me-2">Tentang POPS</a>
-              <a href="#section2" class="btn btn-outline-success me-2">Data Gizi Anak</a>
-              <a href="#section3" class="btn btn-outline-success">KMS Digital</a>
+              <a href="#section2" class="btn btn-outline-success btn-light me-2">Data Gizi Anak</a>
+              <a href="#section3" class="btn btn-outline-success btn-light">KMS Digital</a>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Calon Pengantin</h5>
-                <p class="display-6 fw-bold text-primary">123</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Ibu Hamil</h5>
-                <p class="display-6 fw-bold text-success">78</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card shadow-sm text-center">
-              <div class="card-body">
-                <h5 class="card-title">Gizi Anak</h5>
-                <p class="display-6 fw-bold text-danger">56</p>
+            <div id="bottom-card" class="container position-absolute bottom-0 start-50 translate-middle-x mb-4">
+              <div class="row justify-content-center g-2">
+                <!-- Card 1 -->
+                <div class="col-6 col-sm-3 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">70</p>
+                    <p class="text-start m-0">RT</p>
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-6 col-sm-3 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">16</p>
+                    <p class="text-start m-0">RW</p>
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-6 col-sm-4 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">11.874</p>
+                    <p class="text-start m-0">Keluarga Terdaftar</p>
+                  </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="col-6 col-sm-3 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">18</p>
+                    <p class="text-start m-0">TPK</p>
+                  </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="col-6 col-sm-3 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">155</p>
+                    <p class="text-start m-0">Ibu Hamil</p>
+                  </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="col-6 col-sm-3 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">211</p>
+                    <p class="text-start m-0">Posyandu</p>
+                  </div>
+                </div>
+                <!-- Card 7 -->
+                <div class="col-6 col-sm-3 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">155</p>
+                    <p class="text-start m-0">Bidan</p>
+                  </div>
+                </div>
+                <!-- Card 8 -->
+                <div class="col-6 col-sm-4 col-md-2">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">155</p>
+                    <p class="text-start m-0">Calon Pengantin</p>
+                  </div>
+                </div>
+                <!-- Card 9 -->
+                <div class="col-12 col-sm-6 col-md-3">
+                  <div class="card px-2 py-1 text-center text-white bg-success">
+                    <p class="text-end m-0">1.055</p>
+                    <p class="text-start m-0">Anak &le; 5 Tahun</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -59,7 +100,13 @@
       <div class="container-fluid px-4">
         <div class="row">
           <div class="card p-5">
-            <h5 class="mb-4">Tentang POPS</h5>
+            <h5 class="d-flex justify-content-between align-items-center mb-4">
+              Tentang POPS
+              <div>
+                <img src="/src/assets/bogor.png" alt="logo" style="height: 30px;margin-right:10px;">
+                <img src="https://img2.beritasatu.com/cache/investor/960x620-3/1613460579.png" alt="logo" style="height: 30px;">
+              </div>              
+            </h5>
             <p style="text-align: justify;">
               Tanoto Foundation bersama BKKBN dan pemerintah daerah bekerja sama dalam mengembangkan program percepatan penurunan stunting di empat kabupaten/kota di Provinsi Jawa Barat, Kabupaten Bogor. Strategi pengembangan program tidak saja fokus kepada dukungan teknis konvergensi dan koordinasi dalam penyusunan kebijakan strategi percepatan penurunan stunting, namun juga mewujudkan layanan pencegahan stunting yang lebih berkualitas di tingkat masyarakat.
             </p>
@@ -74,14 +121,16 @@
         <div class="row m-3">
           <h5 class="text-center">Tujuan Pelaksanaan POPS</h5>
           <div class="row justify-content-center">
-            <div class="card col-md-4 m-2 p-4" style="text-align: justify;">
-              <p>
-                <i class="fas fa-file"></i> Mengkoordinasikan data dan informasi sasaran program stunting yang ada didesa Kluwut agar selalu update dan mudah diakses banyak pihak, melalui pengembangan website berbasis data.
+            <div class="card col-md-4 m-2 p-4 d-flex align-items-center justify-content-between" style="text-align: justify; flex-direction: row;">
+              <img src="/src/assets/about1.png" alt="report" style="max-width: 100px; height: auto;margin-right: 10px;">
+              <p class="mb-0 me-3">
+                Mengkoordinasikan data dan informasi sasaran program stunting yang ada di desa Kluwut agar selalu update dan mudah diakses banyak pihak, melalui pengembangan website berbasis data.
               </p>
             </div>
-            <div class="card col-md-4 m-2 p-4" style="text-align: justify;">
-              <p>
-                <i class="fas fa-pie-chart"></i> Mengembangkan Dashboard (website) berbasis data di Desa Kluwut
+            <div class="card col-md-4 m-2 p-4 d-flex align-items-center justify-content-between" style="text-align: justify; flex-direction: row;">
+              <img src="/src/assets/about2.png" alt="report" style="max-width: 100px; height: auto;margin-right: 10px;">
+              <p class="mb-0 me-3">
+                Mengembangkan Dashboard (website) berbasis data di Desa Kluwut
               </p>
             </div>
           </div>
