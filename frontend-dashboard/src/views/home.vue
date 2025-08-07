@@ -144,21 +144,21 @@
         <h2 class="text-center mb-4">Data Grafik</h2>
         <ul class="nav nav-tabs mb-3 justify-content-center" id="chartTabs" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="catin-tab" data-bs-toggle="tab" data-bs-target="#catin" type="button">Calon Pengantin</button>
+            <button class="nav-link active" id="catin-tab" data-bs-toggle="tab" data-bs-target="#catin" type="button">Gizi Anak</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="hamil-tab" data-bs-toggle="tab" data-bs-target="#hamil" type="button">Ibu Hamil</button>
           </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="gizi-tab" data-bs-toggle="tab" data-bs-target="#gizi" type="button">Gizi Anak</button>
-          </li>
+          
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="catin">
             <div class="text-center">
               <p>Chart Calon Pengantin</p>
               <!-- Gantikan dengan chart component -->
-              <div class="bg-white p-5 border rounded">[Chart CATIN]</div>
+              <div class="bg-white p-5 border rounded">
+                <Bar :data="chartData" :options="chartOptions" />
+              </div>
             </div>
           </div>
           <div class="tab-pane fade" id="hamil">
@@ -230,6 +230,69 @@
     </footer>
   </div>
 </template>
+
+<script setup>
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+
+// Registrasi komponen Chart.js
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+
+const chartData = {
+  labels: ['0-5', '6-11', '12-17', '18-23', '24-29', '30-35', '36-47', '48-59'],
+  datasets: [
+    {
+      label: 'Sangat Kurang',
+      data: [5, 3, 2, 1, 0, 1, 0, 2],
+      backgroundColor: 'red',
+    },
+    {
+      label: 'Kurang',
+      data: [4, 5, 3, 2, 2, 1, 1, 1],
+      backgroundColor: 'yellow',
+    },
+    {
+      label: 'Normal',
+      data: [15, 18, 20, 17, 16, 14, 13, 12],
+      backgroundColor: 'green',
+    },
+    {
+      label: 'Resiko Lebih',
+      data: [1, 2, 1, 3, 4, 3, 4, 5],
+      backgroundColor: 'darkblue',
+    },
+  ],
+}
+
+const chartOptions = {
+  indexAxis: 'y', // ⬅️ Ini penting untuk membuat bar chart VERTIKAL (horizontal bars)
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Jumlah Individu',
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Rentang Umur (bulan)',
+      },
+    },
+  },
+}
+
+</script>
 
 <script>
 export default {
