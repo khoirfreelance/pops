@@ -141,36 +141,105 @@
     <!-- Section 2: Chart Panels -->
     <section id="section2" class="py-5 bg-light">
       <div class="container-fluid px-4">
-        <h2 class="text-center mb-4">Data Grafik</h2>
+        <!-- <h2 class="text-center mb-4">Data Grafik</h2> -->
         <ul class="nav nav-tabs mb-3 justify-content-center" id="chartTabs" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="catin-tab" data-bs-toggle="tab" data-bs-target="#catin" type="button">Gizi Anak</button>
+            <button class="nav-link active" id="gizi-tab" data-bs-toggle="tab" data-bs-target="#gizi" type="button">Gizi Anak</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="hamil-tab" data-bs-toggle="tab" data-bs-target="#hamil" type="button">Ibu Hamil</button>
+            <button class="nav-link" id="hamil-tab" data-bs-toggle="tab" data-bs-target="#hamil" type="button">Kesehatan Ibu Hamil</button>
           </li>
-          
         </ul>
         <div class="tab-content">
-          <div class="tab-pane fade show active" id="catin">
-            <div class="text-center">
-              <p>Chart Calon Pengantin</p>
-              <!-- Gantikan dengan chart component -->
-              <div class="bg-white p-5 border rounded">
-                <Bar :data="chartData" :options="chartOptions" />
+          <div class="tab-pane fade show active" id="gizi">
+            <!-- Usia -->
+            <div class="mt-4">
+              <p class="m-0">Status Gizi Anak</p>
+              <h3 class="text-success">Berdasarkan Usia</h3>
+              <ul class="nav nav-pills mb-5 justify-content-start" id="bbusiaTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="bbusia-tab" data-bs-toggle="tab" data-bs-target="#bbusia" type="button">Berat Badan / Usia</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="bbtb-tab" data-bs-toggle="tab" data-bs-target="#bbtb" type="button">Berat Badan / Tinggi Badan</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="tbusia-tab" data-bs-toggle="tab" data-bs-target="#tbusia" type="button">Tinggi Badan / Usia</button>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="bbusia">
+                  <div class="mt-4">
+                    <div class="bg-white p-5 border rounded">
+                      <Bar :data="barChartData" :options="barChartOptions" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="bbtb">
+                  <div class="mt-4">
+                    <div class="bg-white p-5 border rounded">
+                      <Bar :data="barChartData" :options="barChartOptions" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="tbusia">
+                  <div class="mt-4">
+                    <div class="bg-white p-5 border rounded">
+                      <Bar :data="barChartData" :options="barChartOptions" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Periode -->
+            <div class="mt-4">
+              <p class="m-0">Status Gizi Anak</p>
+              <h3 class="text-success">Dalam Periode</h3>
+              <ul class="nav nav-pills mb-5 justify-content-start" id="_bbusiaTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="_bbusia-tab" data-bs-toggle="tab" data-bs-target="#_bbusia" type="button">Berat Badan / Usia</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="_bbtb-tab" data-bs-toggle="tab" data-bs-target="#_bbtb" type="button">Berat Badan / Tinggi Badan</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="_tbusia-tab" data-bs-toggle="tab" data-bs-target="#_tbusia" type="button">Tinggi Badan / Usia</button>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="_bbusia">
+                  <div class="mt-4">
+                    <div class="bg-white p-5 border rounded">
+                      <Line :data="areaChartData" :options="areaChartOptions" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="_bbtb">
+                  <div class="mt-4">
+                    <div class="bg-white p-5 border rounded">
+                      <Line :data="areaChartData" :options="areaChartOptions" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="_tbusia">
+                  <div class="mt-4">
+                    <div class="bg-white p-5 border rounded">
+                      <Line :data="areaChartData" :options="areaChartOptions" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div class="tab-pane fade" id="hamil">
+            <p class="m-0">Kesehatan Ibu Hamil</p>
+            <h3 class="text-success">Dalam 12 Bulan Terakhir</h3>
             <div class="text-center">
-              <p>Chart Ibu Hamil</p>
-              <div class="bg-white p-5 border rounded">[Chart IBU HAMIL]</div>
-            </div>
-          </div>
-          <div class="tab-pane fade" id="gizi">
-            <div class="text-center">
-              <p>Chart Gizi Anak</p>
-              <div class="bg-white p-5 border rounded">[Chart GIZI ANAK]</div>
+              <div class="mt-4">
+                <div class="bg-white p-5 border rounded">
+                  <Line :data="areaChartData" :options="areaChartOptions" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -181,12 +250,69 @@
     <section id="section3" class="py-5 bg-white">
       <div class="container-fluid px-4">
         <h2 class="text-center mb-4">Kartu Menuju Sehat (KMS)</h2>
+        <hr class="my-3">
+        <!-- Button -->
+        <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-success p-3" data-bs-toggle="modal" data-bs-target="#kmsModal">
+            Cek Mandiri
+          </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="kmsModal" tabindex="-1" aria-labelledby="kmsModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="kmsModalLabel">Form Cek Indeks Berat dan Tinggi Badan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              
+              <div class="modal-body">
+                <form>
+                  <div class="mb-3">
+                    <label for="gender" class="form-label">Jenis Kelamin</label>
+                    <select name="gender" id="gender" class="form-control">
+                      <option value="">-- Pilih --</option>
+                      <option value="laki-laki">Laki-laki</option>
+                      <option value="perempuan">Perempuan</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="birth" class="form-label">Tanggal Lahir</label>
+                    <input type="date" class="form-control" id="birth" name="birth" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="weight" class="form-label">Berat Badan (kg)</label>
+                    <input type="number" step="0.1" class="form-control" id="weight" name="weight" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="height" class="form-label">Tinggi Badan (cm)</label>
+                    <input type="number" step="0.1" class="form-control" id="height" name="height" required>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Cek Sekarang</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-md-6 mb-4">
             <div class="card shadow-sm">
               <div class="card-body text-center">
                 <h5 class="card-title">KMS Anak Laki-laki</h5>
-                <img src="https://via.placeholder.com/300x200" class="img-fluid" alt="KMS Laki-laki">
+                <div class="row">
+                  <div class="col-6">
+                    <img src="/src/assets/KMS_Pria.png1_18.jpg" class="img-fluid" alt="KMS Laki-laki 1-18">
+                  </div>
+                  <div class="col-6">
+                    <img src="/src/assets/KMS_Pria.png18_36.jpg" class="img-fluid" alt="KMS Laki-laki 1-18">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -194,7 +320,14 @@
             <div class="card shadow-sm">
               <div class="card-body text-center">
                 <h5 class="card-title">KMS Anak Perempuan</h5>
-                <img src="https://via.placeholder.com/300x200" class="img-fluid" alt="KMS Perempuan">
+                <div class="row">
+                  <div class="col-6">
+                    <img src="/src/assets/KMS_perempuan1_18.jpg" class="img-fluid" alt="KMS Laki-laki 1-18">
+                  </div>
+                  <div class="col-6">
+                    <img src="/src/assets/KMS_perempuan18_36.jpg" class="img-fluid" alt="KMS Laki-laki 1-18">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -228,26 +361,52 @@
         <p class="text-center mb-0">&copy; 2025 Pusat Operasi Penurunan Stunting</p>
       </div>
     </footer>
+
+    <!-- Tombol Back to Top -->
+    <button
+      v-show="showButton"
+      class="btn btn-dark p-3 position-fixed"
+      style="bottom: 20px; right: 20px; z-index: 9999;"
+      @click="scrollToTop"
+    >
+      Back to Top
+    </button>
   </div>
 </template>
 
 <script setup>
-import { Bar } from 'vue-chartjs'
+import { Bar, Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
+  PointElement,
+  LineElement,
+  Filler,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-// Registrasi komponen Chart.js
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const chartData = {
-  labels: ['0-5', '6-11', '12-17', '18-23', '24-29', '30-35', '36-47', '48-59'],
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Filler,
+  Title,
+  Tooltip,
+  Legend
+)
+
+const labels = ['0-5', '6-11', '12-17', '18-23', '24-29', '30-35', '36-47', '48-59']
+
+const barChartData = {
+  labels,
   datasets: [
     {
       label: 'Sangat Kurang',
@@ -272,8 +431,8 @@ const chartData = {
   ],
 }
 
-const chartOptions = {
-  indexAxis: 'y', // ⬅️ Ini penting untuk membuat bar chart VERTIKAL (horizontal bars)
+const barChartOptions = {
+  indexAxis: 'y',
   responsive: true,
   maintainAspectRatio: false,
   scales: {
@@ -292,6 +451,92 @@ const chartOptions = {
   },
 }
 
+const areaChartData = {
+  labels,
+  datasets: [
+    {
+      label: 'Sangat Kurang',
+      data: [5, 3, 2, 1, 0, 1, 0, 2],
+      backgroundColor: 'rgba(255, 0, 0, 0.2)',
+      borderColor: 'red',
+      fill: true,
+      tension: 0.4,
+    },
+    {
+      label: 'Kurang',
+      data: [4, 5, 3, 2, 2, 1, 1, 1],
+      backgroundColor: 'rgba(255, 255, 0, 0.2)',
+      borderColor: 'orange',
+      fill: true,
+      tension: 0.4,
+    },
+    {
+      label: 'Normal',
+      data: [15, 18, 20, 17, 16, 14, 13, 12],
+      backgroundColor: 'rgba(0, 128, 0, 0.2)',
+      borderColor: 'green',
+      fill: true,
+      tension: 0.4,
+    },
+    {
+      label: 'Resiko Lebih',
+      data: [1, 2, 1, 3, 4, 3, 4, 5],
+      backgroundColor: 'rgba(0, 0, 139, 0.2)',
+      borderColor: 'darkblue',
+      fill: true,
+      tension: 0.4,
+    },
+  ],
+}
+
+const areaChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Area Chart Status Gizi Berdasarkan Umur',
+    },
+  },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Rentang Umur (bulan)',
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: 'Jumlah Individu',
+      },
+      beginAtZero: true,
+    },
+  },
+}
+
+// script back to top
+
+const showButton = ref(false)
+
+const toggleButtonVisibility = () => {
+  showButton.value = window.scrollY > 200
+}
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', toggleButtonVisibility)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', toggleButtonVisibility)
+})
 </script>
 
 <script>
