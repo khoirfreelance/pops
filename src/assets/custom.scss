@@ -32,3 +32,10 @@ $font-family-base: 'Inter', sans-serif;
 .text-additional2 {
   color: $additional2 !important;
 }
+
+ul.nav .nav-link.active {
+  background-color: $primary !important;
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 0.375rem;
+}

@@ -89,20 +89,49 @@
     <section class="py-5 bg-additional text-white" id="section1">
       <div class="container">
         <h2 class="fw-bold text-center mb-4">Tentang POPS</h2>
-        <p class="text-center mb-5">
-          POPS adalah platform yang dirancang untuk memantau data kesehatan masyarakat secara
-          real-time dan akurat.
+        <p style="text-align: justify">
+          Tanoto Foundation bersama BKKBN dan pemerintah daerah bekerja sama dalam mengembangkan
+          program percepatan penurunan stunting di empat kabupaten/kota di Provinsi Jawa Barat,
+          Kabupaten Bogor. Strategi pengembangan program tidak saja fokus kepada dukungan teknis
+          konvergensi dan koordinasi dalam penyusunan kebijakan strategi percepatan penurunan
+          stunting, namun juga mewujudkan layanan pencegahan stunting yang lebih berkualitas di
+          tingkat masyarakat.
+        </p>
+        <p style="text-align: justify">
+          Agar program pendampingan percepatan penurunan stunting tersebut dilakukan secara tepat
+          sasaran sesuai dengan ketersediaan sumber daya hingga di tingkat desa, Tanoto Foundation
+          berupaya menginisiasi pengelolaan program stunting berbasis data penerima sasaran di
+          tingkat desa melalui program POPS (Pusat Operasi Penurunan Stunting). Inisiatif ini akan
+          diujicobakan (pilot) di Desa Kluwut, Kabupaten Brebes. Dalam mempersiapkan program
+          tersebut, beberapa tahapan akan dilakukan diantaranya ; Pertemuan assesmen kebutuhan
+          (needs assessment) untuk menggali kebutuhan dan situasi di desa secara komprehensif
+          sehingga kerangka program POPS yang dikembangkan tepat untuk membantu TPPS desa melakukan
+          pengambilan keputusan intervensi stunting yang efektif, Menyepakati alur proses
+          pengumpulan data dan informasi yang dibutuhkan, dan pengembangan website – applikasi POPS
+          sebagai media yang akan ditampilkan dalam penyajian data.
+        </p>
+        <p style="text-align: justify">
+          Dalam pelaksanaan Program POPS ini, Tanoto Foundation bekerjasama dengan Yayasan Satu
+          Karsa Karya (YSKK) sebagai mitra implementasi di Lapangan, dan juga mengajak Pemerintah
+          dan Kader Desa Kluwut untuk membantu dalam penggalian/pengumpulan data dan informasi.
+          Pelibatan Desa Kluwut sejak awal program POPS perlu dilakukan untuk memastikan adanya
+          jaminan keberlanjutan Program POPS ini. Terkait dengan hal tersebut untuk mempermudah
+          memahami alur porses program POPS berikut kami susun acuan program untuk bisa dibaca dan
+          dipahami oleh para pihak yang akan terlibat dalam implementasi program ini.
         </p>
 
         <!-- 2 cards -->
         <div class="row">
+          <div class="col-md-12 mb-4 mt-3 text-center border-top pt-5">
+            <h2 class="card-title fw-bold">Tujuan Pelaksanaan POPS</h2>
+          </div>
           <div class="col-md-6 mb-4">
             <div class="card h-100 shadow-sm">
               <div class="card-body">
-                <h5 class="card-title fw-bold">Fitur Utama</h5>
                 <p class="card-text">
-                  Mengelola data kesehatan warga mulai dari anak-anak hingga lansia secara
-                  terintegrasi.
+                  Mengkoordinasikan data dan informasi sasaran program stunting yang ada di desa
+                  Kluwut agar selalu update dan mudah diakses banyak pihak, melalui pengembangan
+                  website berbasis data.
                 </p>
               </div>
             </div>
@@ -110,9 +139,8 @@
           <div class="col-md-6 mb-4">
             <div class="card h-100 shadow-sm">
               <div class="card-body">
-                <h5 class="card-title fw-bold">Manfaat</h5>
                 <p class="card-text">
-                  Memberikan informasi cepat untuk pengambilan keputusan dalam bidang kesehatan.
+                  Mengembangkan Dashboard (website) berbasis data di Desa Kluwut
                 </p>
               </div>
             </div>
@@ -161,55 +189,7 @@
               </div>
 
               <div class="modal-body p-4">
-                <form>
-                  <div class="mb-3">
-                    <label for="gender" class="form-label">Jenis Kelamin</label>
-                    <select name="gender" id="gender" class="form-select rounded-pill">
-                      <option value="">-- Pilih --</option>
-                      <option value="laki-laki">Laki-laki</option>
-                      <option value="perempuan">Perempuan</option>
-                    </select>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="birth" class="form-label">Tanggal Lahir</label>
-                    <input
-                      type="date"
-                      class="form-control rounded-pill"
-                      id="birth"
-                      name="birth"
-                      required
-                    />
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="weight" class="form-label">Berat Badan (kg)</label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      class="form-control rounded-pill"
-                      id="weight"
-                      name="weight"
-                      required
-                    />
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="height" class="form-label">Tinggi Badan (cm)</label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      class="form-control rounded-pill"
-                      id="height"
-                      name="height"
-                      required
-                    />
-                  </div>
-
-                  <button type="submit" class="btn btn-gradient w-100 py-2 rounded-pill">
-                    <i class="bi bi-activity me-2"></i> Cek Sekarang
-                  </button>
-                </form>
+                <KMSChecker />
               </div>
             </div>
           </div>
@@ -272,11 +252,13 @@
 <script>
 import NavbarUser from '../components/NavbarUser.vue'
 import FooterUser from '../components/FooterUser.vue'
+import KMSChecker from '@/components/KMSChecker.vue'
 
 export default {
   components: {
     NavbarUser,
     FooterUser,
+    KMSChecker,
   },
   data() {
     return {

@@ -46,7 +46,9 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import FooterUser from '@/components/FooterUser.vue'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'LoginView',
@@ -59,10 +61,30 @@ export default {
       password: '',
     }
   },
+  setup() {
+    const router = useRouter()
+    return { router }
+  },
   methods: {
     handleLogin() {
       console.log('Login attempt:', this.email, this.password)
-      alert('Login dummy berhasil!')
+
+      Swal.fire({
+        title: 'Login Berhasil!',
+        text: 'Selamat datang!',
+        icon: 'success',
+        confirmButtonText: 'Go to Dashboard',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown',
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.push('/admin')
+        }
+      })
     },
   },
 }
