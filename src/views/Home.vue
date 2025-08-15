@@ -5,45 +5,46 @@
     <NavbarUser />
 
     <!-- Section Cover -->
-    <section class="vh-100 d-flex align-items-center bg-primary text-white py-5">
-      <div class="container-fluid h-100">
-        <div class="row h-100">
-          <div class="col-md-7 d-flex flex-column justify-content-center p-5">
-            <h5 class="fw-bold">Selamat Datang di</h5>
-            <h3 class="fw-bold">PUSAT OPERASI PENURUNAN</h3>
-            <h1 class="fw-bold">STUNTING (POPS)</h1>
-            <div class="d-flex gap-2 d-md-block mt-3">
-              <a href="#section1" class="btn btn-primary border me-2">Tentang POPS</a>
-              <a href="#section2" class="btn btn-outline-primary btn-light me-2">Data Gizi Anak</a>
-              <a href="#section3" class="btn btn-outline-primary btn-light">KMS Digital</a>
-            </div>
+    <section class="py-5 bg-primary text-white">
+      <div class="container">
+        <div class="row align-items-center">
+
+        <!-- Text -->
+        <div class="col-lg-7 order-2 order-lg-1 text-center text-lg-start">
+          <h5 class="fw-bold">Selamat Datang di</h5>
+          <h3 class="fw-bold">PUSAT OPERASI PENURUNAN</h3>
+          <h1 class="fw-bold">STUNTING (POPS)</h1>
+          <div class="mt-3 d-flex flex-wrap justify-content-center justify-content-lg-start gap-2">
+            <a href="#section1" class="btn btn-light text-primary fw-semibold">Tentang POPS</a>
+            <a href="#section2" class="btn btn-outline-light">Data Gizi Anak</a>
+            <a href="#section3" class="btn btn-outline-light">KMS Digital</a>
           </div>
-          <div class="col-md-5 d-flex justify-content-center align-items-center position-relative">
-            <div class="big-circle"></div>
-          </div>
-          <div class="col-md-12 d-flex justify-content-center align-items-end" style="bottom: 0%">
-            <div class="row justify-content-center">
-              <div
-                v-for="item in stats"
-                :key="item.title"
-                class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4"
-              >
-                <div class="card text-center shadow-sm h-100 border-0">
-                  <div class="card-body">
-                    <h4 class="fw-bold text-primary">{{ item.value }}</h4>
-                    <p class="mb-0">{{ item.title }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        </div>
+
+        <!-- Image -->
+        <div class="col-lg-5 order-1 order-lg-2 text-center mb-4 mb-lg-0">
+          <div class="big-circle mx-auto"></div>
+        </div>
+    </div>
+
+    <!-- Statistic Cards -->
+    <div class="row justify-content-center mt-5">
+      <div v-for="item in stats" :key="item.title" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+        <div class="card text-center shadow-sm h-100 border-0">
+          <div class="card-body p-3">
+            <h4 class="fw-bold text-primary">{{ item.value }}</h4>
+            <p class="mb-0 small">{{ item.title }}</p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     <!-- Section Gizi -->
     <section class="py-5" id="section2">
-      <div class="container">
+      <div class="container-fluid">
         <ul class="nav nav-pills justify-content-center mb-4" id="chartTabs" role="tablist">
           <li class="nav-item">
             <button
@@ -72,8 +73,119 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="gizi" role="tabpanel">
+            
+            <!-- Alert -->
+            <div class="alert alert-info">
+              <i></i>
+               Total Data <strong>Gizi Anak</strong> Per Bulan {{ currentMonthYear }}: <strong>0</strong>
+            </div>
+
+            <!-- Filter Form -->
+            <div class="my-3">
+              <div class="card border-0 shadow-sm p-3">
+                <h5 class="mb-3">Filter Data</h5>
+                <form class="row g-3 align-items-center">
+                  <div class="col-auto">
+                    <select name="month" id="month" class="form-select">
+                      <option value="1">Januari</option>
+                      <option value="2">Februari</option>
+                      <option value="3">Maret</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <select name="year" id="year" class="form-select">
+                      <option value="2020">2020</option>
+                      <option value="2021">2021</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="bi bi-search me-1"></i> Cari
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            
+            <div class="mt-5">
+              <h5 class="mb-0 fw-bold">Status Gizi Anak</h5>
+              <h1 class="text-primary fw-bold">Berdasarkan Kategori Usia</h1>
+            </div>
+
+            <!-- content -->
             <div class="bg-light p-4 rounded shadow-sm text-center">
-              <p>📊 Chart Status Gizi Anak (placeholder)</p>
+              <!-- Nav Pills -->
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="pills-bb-usia-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-bb-usia"
+                    type="button"
+                    role="tab"
+                  >
+                    Berat Badan / Usia
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="pills-tb-usia-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-tb-usia"
+                    type="button"
+                    role="tab"
+                  >
+                    Tinggi Badan / Usia
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="pills-bb-tb-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-bb-tb"
+                    type="button"
+                    role="tab"
+                  >
+                    Berat Badan / Tinggi Badan
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Tab Content -->
+              <div class="tab-content" id="pills-tabContent">
+                <div
+                  class="tab-pane fade show active"
+                  id="pills-bb-usia"
+                  role="tabpanel"
+                  tabindex="0"
+                >
+                  <h5>Berat Badan / Usia</h5>
+                  <p>Konten perhitungan dan grafik BB/U di sini...</p>
+                </div>
+
+                <div
+                  class="tab-pane fade"
+                  id="pills-tb-usia"
+                  role="tabpanel"
+                  tabindex="0"
+                >
+                  <h5>Tinggi Badan / Usia</h5>
+                  <p>Konten perhitungan dan grafik TB/U di sini...</p>
+                </div>
+
+                <div
+                  class="tab-pane fade"
+                  id="pills-bb-tb"
+                  role="tabpanel"
+                  tabindex="0"
+                >
+                  <h5>Berat Badan / Tinggi Badan</h5>
+                  <p>Konten perhitungan dan grafik BB/TB di sini...</p>
+                </div>
+              </div>
             </div>
           </div>
           <div class="tab-pane fade" id="hamil" role="tabpanel">
@@ -253,8 +365,29 @@
 import NavbarUser from '../components/NavbarUser.vue'
 import FooterUser from '../components/FooterUser.vue'
 import KMSChecker from '@/components/KMSChecker.vue'
+import { computed } from 'vue'
 
 export default {
+  computed:{
+    currentMonthYear() {
+      const date = new Date()
+      const months = [
+        'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+      ]
+      return `${months[date.getMonth()]} ${date.getFullYear()}`
+    }
+  },
   components: {
     NavbarUser,
     FooterUser,
@@ -278,7 +411,7 @@ export default {
 </script>
 <style scoped>
 .big-circle {
-  width: 400px;
+  width: 400px; /* Biar nggak kebesaran di HP */
   height: 400px;
   background-image: url('/src/assets/cover2.png');
   background-size: cover;
