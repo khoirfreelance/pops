@@ -5,6 +5,7 @@ import Home from '@/views/Home.vue'
 import Dashboard from '@/views/admin/Dashboard.vue'
 import Login from '@/views/admin/Login.vue'
 import Forgot from '@/views/admin/Forgot.vue'
+import Config from '@/views/admin/Config.vue'
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
     path: '/admin/forgot',
     name: 'forgot',
     component: Forgot,
+  },
+  {
+    path: '/admin/config',
+    name: 'config',
+    component: Config,
   },
 ]
 

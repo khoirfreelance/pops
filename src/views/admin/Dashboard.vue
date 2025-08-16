@@ -29,7 +29,6 @@
           <!-- Filter Form -->
           <div class="mt-5">
             <div class="card border-0 shadow-sm p-3">
-              <h5 class="mb-3">Filter Data</h5>
               <form class="row g-3 align-items-center">
                 <div class="col-auto">
                   <select name="month" id="month" class="form-select">
@@ -103,23 +102,141 @@
             <div class="tab-content" id="myTabContent">
               <!-- Tab 1 -->
               <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" tabindex="0">
-                <div class="card border-0 shadow-sm p-3">
-                  <h5 class="mb-3">Recent Activity</h5>
-                  <table class="table table-striped table-hover align-middle">
-                    <thead class="table-light">
-                      <tr>
-                        <th>#</th>
-                        <th>User</th>
-                        <th>Activity</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
+                <!-- Title -->
+                <div class="d-flex justify-content-between align-items-center my-3 mt-5">
+                  <h2 class="fw-bold">Status Gizi Anak</h2>
+                  <a href="/admin/grafik" class="text-decoration-none">Selengkapnya...</a>
+                </div>
+                <!-- Berat Badan / Usia -->
+                <div class="card border-0 shadow-sm p-3 my-3">
+                  <h4 class="fw-bold">
+                    Berat Badan / Usia
+                  </h4>
+                  <table class="table table-borderless align-middle">
                     <tbody>
-                      <tr v-for="(activity, i) in activities" :key="i">
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ activity.user }}</td>
-                        <td>{{ activity.action }}</td>
-                        <td>{{ activity.date }}</td>
+                      <tr>
+                        <td class="text-additional fw-bold">Status</td>
+                        <td class="text-muted fw-bold">Jumlah</td>
+                        <td class="text-muted fw-bold">Persen</td>
+                        <td class="text-muted fw-bold">Tren</td>
+                      </tr>
+                      <tr>
+                        <td>Sangat Kurang</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Kurang</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Normal</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 100 %</td>
+                      </tr>
+                      <tr>
+                        <td>Tinggi</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Tinggi Badan / Usia -->
+                <div class="card border-0 shadow-sm p-3 my-3">
+                  <h4 class="fw-bold">
+                    Tinggi Badan / Usia
+                  </h4>
+                  <table class="table table-borderless align-middle">
+                    <tbody>
+                      <tr>
+                        <td class="text-additional fw-bold">Status</td>
+                        <td class="text-muted fw-bold">Jumlah</td>
+                        <td class="text-muted fw-bold">Persen</td>
+                        <td class="text-muted fw-bold">Tren</td>
+                      </tr>
+                      <tr>
+                        <td>Sangat Pendek</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Pendek</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Normal</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 100 %</td>
+                      </tr>
+                      <tr>
+                        <td>Tinggi</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Berat Badan / Tinggi Badan -->
+                <div class="card border-0 shadow-sm p-3 my-3">
+                  <h4 class="fw-bold">
+                    Berat Badan / Tinggi Badan
+                  </h4>
+                  <table class="table table-borderless align-middle">
+                    <tbody>
+                      <tr>
+                        <td class="text-additional fw-bold">Status</td>
+                        <td class="text-muted fw-bold">Jumlah</td>
+                        <td class="text-muted fw-bold">Persen</td>
+                        <td class="text-muted fw-bold">Tren</td>
+                      </tr>
+                      <tr>
+                        <td>Gizi Buruk</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Gizi Kurang</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Gizi Baik</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 91.63 %</td>
+                      </tr>
+                      <tr>
+                        <td>Resiko Gizi Lebih</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 8.37 %</td>
+                      </tr>
+                      <tr>
+                        <td>Gizi Lebih</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Obesitas</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>-</td>
                       </tr>
                     </tbody>
                   </table>
@@ -128,15 +245,63 @@
 
               <!-- Tab 2 -->
               <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" tabindex="0">
+
+                <!-- Title -->
+                <div class="d-flex justify-content-between align-items-center my-3 mt-5">
+                  <h2 class="fw-bold">Status Kesehatan Ibu Hamil</h2>
+                </div>
+
+                <div class="card border-0 shadow-sm p-3 mb-3">
+                  No Data Available
+                </div>
+
                 <div class="card border-0 shadow-sm p-3">
-                  <p>Data kesehatan ibu hamil akan ditampilkan di sini.</p>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Indikator</th>
+                          <th v-for="(bulan, i) in months" :key="i">{{ bulan }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(indikator, idx) in data" :key="idx">
+                          <td>{{ indikator.nama }}</td>
+                          <td v-for="(value, i) in indikator.values" :key="i">{{ value }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
               <!-- Tab 3 -->
               <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" tabindex="0">
+
+                <!-- Title -->
+                <div class="d-flex justify-content-between align-items-center my-3 mt-5">
+                  <h2 class="fw-bold">Status Kesehatan Calon Pengantin</h2>
+                </div>
+
                 <div class="card border-0 shadow-sm p-3">
-                  <p>Data calon pengantin berisiko akan ditampilkan di sini.</p>
+                  <p class="text-warning mb-3">*Data perhitungan berdasarkan tanggal terdaftar > filter bulan > tanggal menikah.</p>
+                  <table class="table table-borderless align-middle">
+                    <tbody>
+                      <tr>
+                        <td class="text-muted fw-bold">Status</td>
+                        <td class="text-muted fw-bold">Jumlah</td>
+                        <td class="text-muted fw-bold">Persen</td>
+                        <td class="text-muted fw-bold">Tren</td>
+                      </tr>
+                      <tr>
+                        <td>Calon Pengantin Beresiko</td>
+                        <td>0</td>
+                        <td>0 %</td>
+                        <td>0 %</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                 </div>
               </div>
             </div>
@@ -150,9 +315,10 @@
 
 <script>
 import CopyRight from '@/components/CopyRight.vue';
-import NavbarAdmin from '@/components/NavbarAdmin.vue'
+import NavbarAdmin from '@/components/NavbarAdmin.vue';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Dashboard',
   components: { NavbarAdmin, CopyRight },
   data() {
@@ -174,6 +340,26 @@ export default {
         { user: 'Bob', action: 'Updated profile', date: '2025-08-12' },
         { user: 'Charlie', action: 'Added new user', date: '2025-08-11' },
       ],
+      months:[
+        "Juli 2025",
+        "Juni 2025",
+        "Mei 2025",
+        "April 2025",
+        "Maret 2025",
+        "Februari 2025",
+        "Januari 2025",
+        "Desember 2024",
+        "November 2024",
+        "Oktober 2024",
+        "September 2024",
+        "Agustus 2024",
+      ],
+      data:[
+        { nama: "KEK", values: Array(12).fill(0) },
+        { nama: "Anemia", values: Array(12).fill(0) },
+        { nama: "Resiko", values: Array(12).fill(0) },
+        { nama: "Tinggi", values: Array(12).fill(0) },
+      ],
     }
   },
 }
@@ -190,5 +376,9 @@ export default {
 .stat-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+.table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
 }
 </style>

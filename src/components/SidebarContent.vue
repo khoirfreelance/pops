@@ -8,67 +8,67 @@
     <!-- Menu List -->
     <ul class="nav flex-column mt-3">
       <li class="nav-item">
-        <a href="#" class="nav-link active">
+        <router-link to="/admin/" class="nav-link" :class="{ active: isActive('/admin/') }">
           <i class="bi bi-speedometer2 me-2"></i>
           <span v-if="!isCollapsed">Dashboard</span>
-        </a>
+        </router-link>
       </li>
 
       <li class="menu-section mt-4" v-if="!isCollapsed">Menu</li>
       <li>
-        <a href="#" class="nav-link">
+        <router-link to="/admin/gizi" class="nav-link" :class="{ active: isActive('/admin/gizi') }">
           <i class="bi bi-people me-2"></i>
           <span v-if="!isCollapsed">Gizi Anak</span>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a href="#" class="nav-link">
+        <router-link to="/admin/hamil" class="nav-link" :class="{ active: isActive('/admin/hamil') }">
           <i class="bi bi-folder me-2"></i>
           <span v-if="!isCollapsed">Ibu Hamil</span>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a href="#" class="nav-link">
+        <router-link to="/admin/catin" class="nav-link" :class="{ active: isActive('/admin/catin') }">
           <i class="bi bi-postcard-heart me-2"></i>
           <span v-if="!isCollapsed">Calon Pengantin</span>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a href="#" class="nav-link">
+        <router-link to="/admin/jadwal" class="nav-link" :class="{ active: isActive('/admin/jadwal') }">
           <i class="bi bi-calendar me-2"></i>
-          <span v-if="!isCollapsed">Jadwal Intervensi </span>
-        </a>
-      </li>
-      <!-- Master Data -->
-      <li class="menu-section mt-4" v-if="!isCollapsed">Master Data</li>
-      <li>
-        <a href="#" class="nav-link">
-          <i class="bi bi-house-check me-2"></i>
-          <span v-if="!isCollapsed">Keluarga </span>
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link">
-          <i class="bi bi-file-person me-2"></i>
-          <span v-if="!isCollapsed">Admin / Kader </span>
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link">
-          <i class="bi bi-person-vcard me-2"></i>
-          <span v-if="!isCollapsed">Keanggotaan TPK</span>
-        </a>
+          <span v-if="!isCollapsed">Jadwal Intervensi</span>
+        </router-link>
       </li>
 
-      <!-- Setting -->
+      <li class="menu-section mt-4" v-if="!isCollapsed">Master Data</li>
+      <li>
+        <router-link to="/admin/keluarga" class="nav-link" :class="{ active: isActive('/admin/keluarga') }">
+          <i class="bi bi-house-check me-2"></i>
+          <span v-if="!isCollapsed">Keluarga</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/admin/kader" class="nav-link" :class="{ active: isActive('/admin/kader') }">
+          <i class="bi bi-file-person me-2"></i>
+          <span v-if="!isCollapsed">Admin / Kader</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/admin/tpk" class="nav-link" :class="{ active: isActive('/admin/tpk') }">
+          <i class="bi bi-person-vcard me-2"></i>
+          <span v-if="!isCollapsed">Keanggotaan TPK</span>
+        </router-link>
+      </li>
+
       <li class="menu-section mt-4" v-if="!isCollapsed">Setting</li>
       <li>
-        <a href="#" class="nav-link">
+        <router-link to="/admin/config" class="nav-link" :class="{ active: isActive('/admin/config') }">
           <i class="bi bi-gear me-2"></i>
-          <span v-if="!isCollapsed">Konfigurasi </span>
-        </a>
+          <span v-if="!isCollapsed">Konfigurasi</span>
+        </router-link>
       </li>
     </ul>
+
     <!-- Footer -->
     <div class="p-3 border-top border-2">
       <a href="#" class="d-flex align-items-center nav-link logout-link text-danger">
@@ -88,6 +88,11 @@ export default {
       default: false,
     },
   },
+  methods:{
+      isActive(path) {
+      return this.$route.path === path;
+    },
+  }
 }
 </script>
 
