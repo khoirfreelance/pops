@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column min-vh-100 bg-brand-gradient">
     <!-- Form di tengah -->
-    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+    <div class="flex-grow-1 d-flex justify-content-center align-items-center m-5">
       <div
         class="card p-4 shadow-lg rounded-4"
         style="min-width: 320px; max-width: 400px; width: 100%"

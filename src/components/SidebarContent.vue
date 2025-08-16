@@ -29,7 +29,7 @@
       </li>
       <li>
         <a href="#" class="nav-link">
-          <i class="bi bi-postcard-heart-fill me-2"></i>
+          <i class="bi bi-postcard-heart me-2"></i>
           <span v-if="!isCollapsed">Calon Pengantin</span>
         </a>
       </li>
@@ -49,13 +49,13 @@
       </li>
       <li>
         <a href="#" class="nav-link">
-          <i class="bi bi-file-person-fill me-2"></i>
+          <i class="bi bi-file-person me-2"></i>
           <span v-if="!isCollapsed">Admin / Kader </span>
         </a>
       </li>
       <li>
         <a href="#" class="nav-link">
-          <i class="bi bi-person-badge-fill me-2"></i>
+          <i class="bi bi-person-vcard me-2"></i>
           <span v-if="!isCollapsed">Keanggotaan TPK</span>
         </a>
       </li>

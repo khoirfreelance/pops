@@ -73,7 +73,7 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="gizi" role="tabpanel">
-            
+
             <!-- Alert -->
             <div class="alert alert-info">
               <i></i>
@@ -106,7 +106,7 @@
                 </form>
               </div>
             </div>
-            
+
             <div class="mt-5">
               <h5 class="mb-0 fw-bold">Status Gizi Anak</h5>
               <h1 class="text-primary fw-bold">Berdasarkan Kategori Usia</h1>
@@ -154,38 +154,140 @@
                 </li>
               </ul>
 
-              <!-- Tab Content -->
+              <!-- Tabs Content -->
               <div class="tab-content" id="pills-tabContent">
+                <!-- BB/U -->
                 <div
                   class="tab-pane fade show active"
                   id="pills-bb-usia"
                   role="tabpanel"
-                  tabindex="0"
                 >
                   <h5>Berat Badan / Usia</h5>
-                  <p>Konten perhitungan dan grafik BB/U di sini...</p>
+                  <div class="chart-container">
+                    <canvas id="chart-bb-usia"></canvas>
+                  </div>
                 </div>
 
+                <!-- TB/U -->
                 <div
                   class="tab-pane fade"
                   id="pills-tb-usia"
                   role="tabpanel"
-                  tabindex="0"
                 >
                   <h5>Tinggi Badan / Usia</h5>
-                  <p>Konten perhitungan dan grafik TB/U di sini...</p>
+                  <div class="chart-container">
+                    <canvas id="chart-tb-usia"></canvas>
+                  </div>
                 </div>
 
+                <!-- BB/TB -->
                 <div
                   class="tab-pane fade"
                   id="pills-bb-tb"
                   role="tabpanel"
-                  tabindex="0"
                 >
                   <h5>Berat Badan / Tinggi Badan</h5>
-                  <p>Konten perhitungan dan grafik BB/TB di sini...</p>
+                  <div class="chart-container">
+                    <canvas id="chart-bb-tb"></canvas>
+                  </div>
                 </div>
               </div>
+            </div>
+
+            <div class="mt-5">
+              <h5 class="mb-0 fw-bold">Status Gizi Anak</h5>
+              <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
+            </div>
+
+            <!-- content 2 -->
+            <div class="bg-light p-4 rounded shadow-sm text-center">
+              <!-- Nav Pills -->
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="pills-bb-usia-tab-12"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-bb-usia-12"
+                    type="button"
+                    role="tab"
+                  >
+                    Berat Badan / Usia
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="pills-tb-usia-tab-12"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-tb-usia-12"
+                    type="button"
+                    role="tab"
+                  >
+                    Tinggi Badan / Usia
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="pills-bb-tb-tab-12"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-bb-tb-12"
+                    type="button"
+                    role="tab"
+                  >
+                    Berat Badan / Tinggi Badan
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Tabs Content -->
+              <div class="tab-content" id="pills-tabContent">
+                <!-- BB/U -->
+                <div
+                  class="tab-pane fade show active"
+                  id="pills-bb-usia-12"
+                  role="tabpanel"
+                >
+                  <h5>Berat Badan / Usia</h5>
+                  <div class="chart-container">
+                    <canvas id="chart-bb-usia-12"></canvas>
+                  </div>
+                </div>
+
+                <!-- TB/U -->
+                <div
+                  class="tab-pane fade"
+                  id="pills-tb-usia-12"
+                  role="tabpanel"
+                >
+                  <h5>Tinggi Badan / Usia</h5>
+                  <div class="chart-container">
+                    <canvas id="chart-tb-usia-12"></canvas>
+                  </div>
+                </div>
+
+                <!-- BB/TB -->
+                <div
+                  class="tab-pane fade"
+                  id="pills-bb-tb-12"
+                  role="tabpanel"
+                >
+                  <h5>Berat Badan / Tinggi Badan</h5>
+                  <div class="chart-container">
+                    <canvas id="chart-bb-tb-12"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <h5 class="mb-0 fw-bold">Indikator Utama (Persentase)</h5>
+              <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
+            </div>
+
+            <div class="chart-container">
+              <canvas id="chart-bb-tb-indikator"></canvas>
             </div>
           </div>
           <div class="tab-pane fade" id="hamil" role="tabpanel">
@@ -365,25 +467,137 @@
 import NavbarUser from '../components/NavbarUser.vue'
 import FooterUser from '../components/FooterUser.vue'
 import KMSChecker from '@/components/KMSChecker.vue'
-import { computed } from 'vue'
+import {
+  Chart,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 export default {
-  computed:{
+  name: "StatusGiziTabs",
+  mounted() {
+    const umurGroups = [
+      '0-5', '6-11', '12-17', '18-23',
+      '24-29', '30-35', '36-41', '42-47', '48-60'
+    ]
+
+    const indi = [
+      '-10', '0', '20','30','40','50'
+    ]
+    //chart-bb-tb-indikator
+    this.createChart('chart-bb-tb-indikator', indi, {
+      'Balita Stunting': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
+      'Balita UNderweight': { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
+      'Balita BBTN': { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
+      'Bumil KEK': { data: [1, 0, 1, 0, 1, 1, 0, 1, 2], color: 'blue' },
+      'Bumil Anemia': { data: [1, 0, 1, 0, 1, 1, 0, 1, 8], color: 'purple' },
+      'Catin Beresiko': { data: [1, 0, 1, 0, 1, 1, 0, 1, 10], color: 'cyan' },
+    })
+
+    // BB/U
+    this.createChart('chart-bb-usia', umurGroups, {
+      'Sangat Kurang': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
+      'Kurang': { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
+      'Normal': { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
+      'Risiko Lebih': { data: [1, 0, 1, 0, 1, 1, 0, 1, 2], color: 'blue' },
+    })
+
+    // TB/U
+    this.createChart('chart-tb-usia', umurGroups, {
+      'Sangat Pendek': { data: [1, 2, 1, 3, 1, 1, 1, 0, 1], color: 'red' },
+      'Pendek': { data: [2, 3, 2, 2, 3, 2, 2, 1, 1], color: 'yellow' },
+      'Normal': { data: [6, 7, 8, 7, 7, 8, 8, 9, 8], color: 'green' },
+      'Tinggi': { data: [0, 0, 1, 0, 0, 1, 0, 1, 1], color: 'blue' },
+    })
+
+    // BB/TB
+    this.createChart('chart-bb-tb', umurGroups, {
+      'Gizi Buruk': { data: [2, 1, 1, 2, 1, 0, 1, 0, 0], color: 'red' },
+      'Gizi Kurang': { data: [2, 3, 2, 2, 2, 2, 1, 2, 1], color: 'yellow' },
+      'Normal': { data: [7, 6, 8, 7, 8, 8, 9, 8, 8], color: 'green' },
+      'Risiko Lebih': { data: [0, 1, 0, 0, 0, 1, 0, 1, 1], color: 'blue' },
+    })
+
+    // BB/U-12
+    this.createChart('chart-bb-usia-12', umurGroups, {
+      'Sangat Kurang': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
+      'Kurang': { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
+      'Normal': { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
+      'Risiko Lebih': { data: [1, 0, 1, 0, 1, 1, 0, 1, 2], color: 'blue' },
+    })
+
+    // TB/U-12
+    this.createChart('chart-tb-usia-12', umurGroups, {
+      'Sangat Pendek': { data: [1, 2, 1, 3, 1, 1, 1, 0, 1], color: 'red' },
+      'Pendek': { data: [2, 3, 2, 2, 3, 2, 2, 1, 1], color: 'yellow' },
+      'Normal': { data: [6, 7, 8, 7, 7, 8, 8, 9, 8], color: 'green' },
+      'Tinggi': { data: [0, 0, 1, 0, 0, 1, 0, 1, 1], color: 'blue' },
+    })
+
+    // BB/TB-12
+    this.createChart('chart-bb-tb-12', umurGroups, {
+      'Gizi Buruk': { data: [2, 1, 1, 2, 1, 0, 1, 0, 0], color: 'red' },
+      'Gizi Kurang': { data: [2, 3, 2, 2, 2, 2, 1, 2, 1], color: 'yellow' },
+      'Normal': { data: [7, 6, 8, 7, 8, 8, 9, 8, 8], color: 'green' },
+      'Risiko Lebih': { data: [0, 1, 0, 0, 0, 1, 0, 1, 1], color: 'blue' },
+    })
+  },
+  methods: {
+    createChart(canvasId, labels, datasetsObj) {
+      const datasets = Object.entries(datasetsObj).map(([label, cfg]) => ({
+        label,
+        data: cfg.data,
+        borderColor: cfg.color,
+        backgroundColor: cfg.color,
+        fill: false,
+        tension: 0.3,
+      }))
+
+      const ctx = document.getElementById(canvasId)
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: false },
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Kelompok Umur (bulan)' },
+            },
+            y: {
+              title: { display: true, text: 'Jumlah Individu' },
+              beginAtZero: true,
+            },
+          },
+        },
+      })
+    }
+  },
+  computed: {
     currentMonthYear() {
       const date = new Date()
       const months = [
-        'Januari',
-        'Februari',
-        'Maret',
-        'April',
-        'Mei',
-        'Juni',
-        'Juli',
-        'Agustus',
-        'September',
-        'Oktober',
-        'November',
-        'Desember'
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
       ]
       return `${months[date.getMonth()]} ${date.getFullYear()}`
     }
@@ -409,7 +623,13 @@ export default {
   },
 }
 </script>
+
+
 <style scoped>
+.chart-wrapper {
+  max-width: 100%;
+  height: 400px;
+}
 .big-circle {
   width: 400px; /* Biar nggak kebesaran di HP */
   height: 400px;
@@ -437,5 +657,13 @@ export default {
 .hover-scale:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+.chart-container {
+  width: 100%;
+  height: 300px;
+  overflow-x: auto;
+}
+.chart-container canvas {
+  min-width: 600px;
 }
 </style>
