@@ -23,8 +23,8 @@
 
         <!-- Right side -->
         <div id="navbarNav" class="collapse navbar-collapse justify-content-end">
-          <router-link to="/admin/login" class="btn btn-primary border fw-semibold"
-            >Login</router-link
+          <router-link to="/admin/login" class="btn btn-primary border"
+            ><i class="bi bi-box-arrow-in-right"></i>&nbsp; Login</router-link
           >
         </div>
       </div>
