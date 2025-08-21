@@ -74,7 +74,7 @@
                 <div class="col-6 col-md-6">
                   <ul class="list-unstyled">
                     <li><a href="#section2" class="footer-link my-2">Infographics</a></li>
-                    <li><a href="#section3" class="footer-link my-2">Digital KMS</a></li>
+                    <li><a href="#section3" class="footer-link my-2">Kalkulator KMS</a></li>
                   </ul>
                 </div>
               </div>

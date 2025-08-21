@@ -36,7 +36,7 @@
                 Data Gizi Anak
               </a>
               <a href="#section3" class="btn btn-outline-light btn-lg px-4 fw-semibold">
-                KMS Digital
+                Kalkulator KMS
               </a>
             </div>
           </div>

@@ -8,7 +8,23 @@
       <div class="flex-grow-1 d-flex flex-column">
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 bg-light">
-          <h1 class="mb-4 fw-bold">Admin Dashboard</h1>
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
+
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <h2 class="fw-bold mb-2">Selamat Datang, {{ username }}</h2>
+                <p class="text-light mb-1">Semoga harimu menyenangkan 🎉</p>
+                <p class="text-light">Ada <span class="fw-bold text-light">2 pesan penting</span> untukmu.</p>
+              </div>
+
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/cover2.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
+            </div>
+          </div>
 
           <!-- Last Update Alert -->
           <div class="alert alert-success shadow-sm border-0 rounded-3 mb-4">
@@ -328,12 +344,12 @@ export default {
       stats: [
         { title: 'Total RW', value: '1,000', bg: 'bg-primary' },
         { title: 'Total RT', value: '100,000', bg: 'bg-success' },
-        { title: 'Penduduk', value: '278 M', bg: 'bg-warning' },
-        { title: 'Keluarga', value: '100 M', bg: 'bg-danger' },
+        { title: 'Penduduk', value: '278 M', bg: 'bg-additional' },
+        { title: 'Keluarga', value: '100 M', bg: 'bg-additional2' },
         { title: 'Balita', value: '1,234', bg: 'bg-primary' },
         { title: 'Ibu Hamil', value: '56 K', bg: 'bg-success' },
-        { title: 'Calon Pengantin', value: '12 K', bg: 'bg-warning' },
-        { title: 'Posyandu', value: '8 K', bg: 'bg-danger' },
+        { title: 'Calon Pengantin', value: '12 K', bg: 'bg-additional' },
+        { title: 'Posyandu', value: '8 K', bg: 'bg-additional2' },
         { title: 'Bidan', value: '1,234', bg: 'bg-primary' },
         { title: 'Anggota TPK', value: '56', bg: 'bg-success' },
       ],
@@ -372,24 +388,92 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 .dashboard-wrapper {
   padding-top: 56px; /* tinggi navbar bootstrap default */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f9f9fb;
+  color: #333;
 }
+
+/* Card Statistik */
 .stat-card {
   border: none;
-  border-radius: 0.75rem;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary));
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
-.table-responsive {
-  max-width: 100%;
-  overflow-x: auto;
+
+/* Alert */
+.alert {
+  border-radius: 1rem;
+  background: #f0f9f5;
+  color: #1a7f37;
+  font-weight: 500;
+}
+
+/* Form & Select */
+.form-select,
+.btn {
+  border-radius: 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+.form-select:focus,
+.btn:focus {
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
+}
+
+/* Tabs */
+.nav-pills .nav-link {
+  border-radius: 0.75rem;
+  font-weight: 500;
+  color: #6c757d;
+  transition: all 0.2s ease;
+}
+.nav-pills .nav-link.active {
+  background: var(--bs-primary);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.25);
+}
+
+/* Card konten */
+.card {
+  border-radius: 1rem !important;
+  border: none;
+  background: #fff;
+  transition: box-shadow 0.2s ease;
+}
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Table */
+.table {
+  font-size: 0.95rem;
+}
+.table th {
+  color: #6c757d;
+  font-weight: 600;
+}
+.table td {
+  color: #333;
+}
+.welcome-card {
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #006341,#b3a369 );
+}
+
+.welcome-card h2 {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.welcome-img {
+  max-height: 120px;
+  object-fit: contain;
 }
 </style>
