@@ -37,9 +37,9 @@
       :class="['d-none d-md-flex flex-column flex-shrink-0 p-3 bg-light vh-100 border-end']"
       :style="{ width: isCollapsed ? '80px' : '250px', transition: 'width 0.3s' }"
     >
-      <button class="btn btn-sm btn-outline-secondary mb-3 align-self-end" @click="toggleSidebar">
+      <!-- <button class="btn btn-sm btn-outline-secondary mb-3 align-self-end" @click="toggleSidebar">
         <i :class="isCollapsed ? 'bi bi-arrow-right-square' : 'bi bi-arrow-left-square'"></i>
-      </button>
+      </button> -->
       <SidebarContent :is-collapsed="isCollapsed" />
     </div>
   </div>
@@ -51,14 +51,10 @@ import SidebarContent from './SidebarContent.vue'
 export default {
   name: 'NavbarAdmin',
   components: { SidebarContent },
-  data() {
-    return {
-      isCollapsed: false,
-    }
-  },
-  methods: {
-    toggleSidebar() {
-      this.isCollapsed = !this.isCollapsed
+  props: {
+    isCollapsed: {
+      type: Boolean,
+      default: false,
     },
   },
 }

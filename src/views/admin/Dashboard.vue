@@ -1,8 +1,11 @@
 <template>
-  <div class="d-flex flex-column flex-md-row">
-    <!-- Sidebar -->
-    <NavbarAdmin />
-    <div class="flex-grow-1 d-flex flex-column">
+  <div class="dashboard-wrapper">
+    <!-- Header -->
+    <HeaderAdmin :is-collapsed="isCollapsed" @toggle-sidebar="toggleSidebar" />
+    <div class="d-flex flex-column flex-md-row">
+      <!-- Sidebar -->
+      <NavbarAdmin :is-collapsed="isCollapsed" />
+      <div class="flex-grow-1 d-flex flex-column">
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 bg-light">
           <h1 class="mb-4 fw-bold">Admin Dashboard</h1>
@@ -101,7 +104,12 @@
 
             <div class="tab-content" id="myTabContent">
               <!-- Tab 1 -->
-              <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" tabindex="0">
+              <div
+                class="tab-pane fade show active"
+                id="home-tab-pane"
+                role="tabpanel"
+                tabindex="0"
+              >
                 <!-- Title -->
                 <div class="d-flex justify-content-between align-items-center my-3 mt-5">
                   <h2 class="fw-bold">Status Gizi Anak</h2>
@@ -109,9 +117,7 @@
                 </div>
                 <!-- Berat Badan / Usia -->
                 <div class="card border-0 shadow-sm p-3 my-3">
-                  <h4 class="fw-bold">
-                    Berat Badan / Usia
-                  </h4>
+                  <h4 class="fw-bold">Berat Badan / Usia</h4>
                   <table class="table table-borderless align-middle">
                     <tbody>
                       <tr>
@@ -150,9 +156,7 @@
 
                 <!-- Tinggi Badan / Usia -->
                 <div class="card border-0 shadow-sm p-3 my-3">
-                  <h4 class="fw-bold">
-                    Tinggi Badan / Usia
-                  </h4>
+                  <h4 class="fw-bold">Tinggi Badan / Usia</h4>
                   <table class="table table-borderless align-middle">
                     <tbody>
                       <tr>
@@ -191,9 +195,7 @@
 
                 <!-- Berat Badan / Tinggi Badan -->
                 <div class="card border-0 shadow-sm p-3 my-3">
-                  <h4 class="fw-bold">
-                    Berat Badan / Tinggi Badan
-                  </h4>
+                  <h4 class="fw-bold">Berat Badan / Tinggi Badan</h4>
                   <table class="table table-borderless align-middle">
                     <tbody>
                       <tr>
@@ -245,15 +247,12 @@
 
               <!-- Tab 2 -->
               <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" tabindex="0">
-
                 <!-- Title -->
                 <div class="d-flex justify-content-between align-items-center my-3 mt-5">
                   <h2 class="fw-bold">Status Kesehatan Ibu Hamil</h2>
                 </div>
 
-                <div class="card border-0 shadow-sm p-3 mb-3">
-                  No Data Available
-                </div>
+                <div class="card border-0 shadow-sm p-3 mb-3">No Data Available</div>
 
                 <div class="card border-0 shadow-sm p-3">
                   <div class="table-responsive">
@@ -277,14 +276,16 @@
 
               <!-- Tab 3 -->
               <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" tabindex="0">
-
                 <!-- Title -->
                 <div class="d-flex justify-content-between align-items-center my-3 mt-5">
                   <h2 class="fw-bold">Status Kesehatan Calon Pengantin</h2>
                 </div>
 
                 <div class="card border-0 shadow-sm p-3">
-                  <p class="text-warning mb-3">*Data perhitungan berdasarkan tanggal terdaftar > filter bulan > tanggal menikah.</p>
+                  <p class="text-warning mb-3">
+                    *Data perhitungan berdasarkan tanggal terdaftar > filter bulan > tanggal
+                    menikah.
+                  </p>
                   <table class="table table-borderless align-middle">
                     <tbody>
                       <tr>
@@ -301,26 +302,27 @@
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <CopyRight/>
+        <CopyRight />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import CopyRight from '@/components/CopyRight.vue';
-import NavbarAdmin from '@/components/NavbarAdmin.vue';
+import CopyRight from '@/components/CopyRight.vue'
+import NavbarAdmin from '@/components/NavbarAdmin.vue'
+import HeaderAdmin from '@/components/HeaderAdmin.vue'
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Dashboard',
-  components: { NavbarAdmin, CopyRight },
+  components: { NavbarAdmin, CopyRight, HeaderAdmin },
   data() {
     return {
       stats: [
@@ -340,32 +342,41 @@ export default {
         { user: 'Bob', action: 'Updated profile', date: '2025-08-12' },
         { user: 'Charlie', action: 'Added new user', date: '2025-08-11' },
       ],
-      months:[
-        "Juli 2025",
-        "Juni 2025",
-        "Mei 2025",
-        "April 2025",
-        "Maret 2025",
-        "Februari 2025",
-        "Januari 2025",
-        "Desember 2024",
-        "November 2024",
-        "Oktober 2024",
-        "September 2024",
-        "Agustus 2024",
+      months: [
+        'Juli 2025',
+        'Juni 2025',
+        'Mei 2025',
+        'April 2025',
+        'Maret 2025',
+        'Februari 2025',
+        'Januari 2025',
+        'Desember 2024',
+        'November 2024',
+        'Oktober 2024',
+        'September 2024',
+        'Agustus 2024',
       ],
-      data:[
-        { nama: "KEK", values: Array(12).fill(0) },
-        { nama: "Anemia", values: Array(12).fill(0) },
-        { nama: "Resiko", values: Array(12).fill(0) },
-        { nama: "Tinggi", values: Array(12).fill(0) },
+      data: [
+        { nama: 'KEK', values: Array(12).fill(0) },
+        { nama: 'Anemia', values: Array(12).fill(0) },
+        { nama: 'Resiko', values: Array(12).fill(0) },
+        { nama: 'Tinggi', values: Array(12).fill(0) },
       ],
+      isCollapsed: false,
     }
+  },
+  methods: {
+    toggleSidebar() {
+      this.isCollapsed = !this.isCollapsed
+    },
   },
 }
 </script>
 
 <style scoped>
+.dashboard-wrapper {
+  padding-top: 56px; /* tinggi navbar bootstrap default */
+}
 .stat-card {
   border: none;
   border-radius: 0.75rem;

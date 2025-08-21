@@ -10,23 +10,6 @@
         <a class="navbar-brand d-flex align-items-center" href="#">
           <img src="@/assets/tf_box_outlined.png" alt="POPS Logo" height="40" class="me-2" />
         </a>
-
-        <!-- Toggle -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Right side -->
-        <div id="navbarNav" class="collapse navbar-collapse justify-content-end">
-          <router-link to="/admin/login" class="btn btn-primary border"
-            ><i class="bi bi-box-arrow-in-right"></i>&nbsp; Login</router-link
-          >
-        </div>
       </div>
     </nav>
 

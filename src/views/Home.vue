@@ -5,46 +5,85 @@
     <NavbarUser />
 
     <!-- Section Cover -->
-    <section class="py-5 bg-primary text-white">
-      <div class="container">
+    <section
+      id="section0"
+      class="position-relative overflow-hidden text-white"
+      style="background: linear-gradient(135deg, #006341 0%, #6fa287 50%, #b3a369 100%)"
+    >
+      <div class="container py-5 min-vh-100 d-flex flex-column justify-content-center">
         <div class="row align-items-center">
+          <!-- Text -->
+          <div class="col-lg-7 order-2 order-lg-1 text-center text-lg-start">
+            <h5 class="fw-semibold text-light">Selamat Datang di</h5>
+            <h2 class="fw-bold display-6" style="font-family: 'Neuton', serif">
+              PUSAT OPERASI PENURUNAN
+            </h2>
+            <h1 class="fw-bold display-3 mb-3" style="font-family: 'Neuton', serif">
+              STUNTING (POPS)
+            </h1>
 
-        <!-- Text -->
-        <div class="col-lg-7 order-2 order-lg-1 text-center text-lg-start">
-          <h5 class="fw-bold">Selamat Datang di</h5>
-          <h3 class="fw-bold">PUSAT OPERASI PENURUNAN</h3>
-          <h1 class="fw-bold">STUNTING (POPS)</h1>
-          <div class="mt-3 d-flex flex-wrap justify-content-center justify-content-lg-start gap-2">
-            <a href="#section1" class="btn btn-light text-primary fw-semibold">Tentang POPS</a>
-            <a href="#section2" class="btn btn-outline-light">Data Gizi Anak</a>
-            <a href="#section3" class="btn btn-outline-light">KMS Digital</a>
+            <!-- CTA Buttons -->
+            <div
+              class="mt-4 d-flex flex-wrap justify-content-center justify-content-lg-start gap-3"
+            >
+              <a
+                href="#section1"
+                class="btn btn-light btn-lg px-4 fw-semibold text-primary shadow-sm"
+              >
+                Tentang POPS
+              </a>
+              <a href="#section2" class="btn btn-outline-light btn-lg px-4 fw-semibold">
+                Data Gizi Anak
+              </a>
+              <a href="#section3" class="btn btn-outline-light btn-lg px-4 fw-semibold">
+                KMS Digital
+              </a>
+            </div>
+          </div>
+
+          <!-- Image / Illustration -->
+          <div class="col-lg-5 order-1 order-lg-2 text-center mb-5 mb-lg-0">
+            <div class="position-relative">
+              <!-- Blob Shape -->
+              <div
+                class="rounded-circle bg-white shadow-lg mx-auto animate-float border border-5"
+                style="
+                  width: 280px;
+                  height: 280px;
+                  background: url('/src/assets/cover2.png') center/cover no-repeat;
+                "
+              ></div>
+            </div>
           </div>
         </div>
 
-        <!-- Image -->
-        <div class="col-lg-5 order-1 order-lg-2 text-center mb-4 mb-lg-0">
-          <div class="big-circle mx-auto"></div>
-        </div>
-    </div>
-
-    <!-- Statistic Cards -->
-    <div class="row justify-content-center mt-5">
-      <div v-for="item in stats" :key="item.title" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
-        <div class="card text-center shadow-sm h-100 border-0">
-          <div class="card-body p-3">
-            <h4 class="fw-bold text-primary">{{ item.value }}</h4>
-            <p class="mb-0 small">{{ item.title }}</p>
+        <!-- Statistic Cards -->
+        <div class="row justify-content-center mt-5">
+          <div
+            v-for="item in stats"
+            :key="item.title"
+            class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3"
+          >
+            <div class="card text-center stat-card h-100">
+              <div
+                class="card-body p-3 d-flex flex-column align-items-center justify-content-center"
+              >
+                <!-- Icon grafik -->
+                <div class="icon-wrapper mb-2">
+                  <i class="bi bi-graph-up-arrow fs-3 text-primary"></i>
+                </div>
+                <h4 class="fw-bold text-primary mb-1">{{ item.value }}</h4>
+                <p class="mb-0 small text-muted">{{ item.title }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
+    </section>
 
     <!-- Section Gizi -->
     <section class="py-5" id="section2">
-      <div class="container-fluid">
+      <div class="container">
         <ul class="nav nav-pills justify-content-center mb-4" id="chartTabs" role="tablist">
           <li class="nav-item">
             <button
@@ -73,29 +112,30 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="gizi" role="tabpanel">
-
             <!-- Alert -->
             <div class="alert alert-info">
               <i></i>
-               Total Data <strong>Gizi Anak</strong> Per Bulan {{ currentMonthYear }}: <strong>0</strong>
+              Total Data <strong>Gizi Anak</strong> Per Bulan {{ currentMonthYear }}:
+              <strong>{{ totalData }}</strong>
             </div>
 
             <!-- Filter Form -->
             <div class="my-3">
               <div class="card border-0 shadow-sm p-3">
                 <h5 class="mb-3">Filter Data</h5>
-                <form class="row g-3 align-items-center">
+                <form class="row g-3 align-items-center" @submit.prevent="applyFilter">
                   <div class="col-auto">
-                    <select name="month" id="month" class="form-select">
-                      <option value="1">Januari</option>
-                      <option value="2">Februari</option>
-                      <option value="3">Maret</option>
+                    <select v-model="selectedMonth" class="form-select">
+                      <option v-for="(m, idx) in months" :key="idx" :value="idx + 1">
+                        {{ m }}
+                      </option>
                     </select>
                   </div>
                   <div class="col-auto">
-                    <select name="year" id="year" class="form-select">
-                      <option value="2020">2020</option>
-                      <option value="2021">2021</option>
+                    <select v-model="selectedYear" class="form-select">
+                      <option v-for="y in yearOptions" :key="y" :value="y">
+                        {{ y }}
+                      </option>
                     </select>
                   </div>
                   <div class="col-auto">
@@ -157,11 +197,7 @@
               <!-- Tabs Content -->
               <div class="tab-content" id="pills-tabContent">
                 <!-- BB/U -->
-                <div
-                  class="tab-pane fade show active"
-                  id="pills-bb-usia"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade show active" id="pills-bb-usia" role="tabpanel">
                   <h5>Berat Badan / Usia</h5>
                   <div class="chart-container">
                     <canvas id="chart-bb-usia"></canvas>
@@ -169,11 +205,7 @@
                 </div>
 
                 <!-- TB/U -->
-                <div
-                  class="tab-pane fade"
-                  id="pills-tb-usia"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade" id="pills-tb-usia" role="tabpanel">
                   <h5>Tinggi Badan / Usia</h5>
                   <div class="chart-container">
                     <canvas id="chart-tb-usia"></canvas>
@@ -181,11 +213,7 @@
                 </div>
 
                 <!-- BB/TB -->
-                <div
-                  class="tab-pane fade"
-                  id="pills-bb-tb"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade" id="pills-bb-tb" role="tabpanel">
                   <h5>Berat Badan / Tinggi Badan</h5>
                   <div class="chart-container">
                     <canvas id="chart-bb-tb"></canvas>
@@ -244,11 +272,7 @@
               <!-- Tabs Content -->
               <div class="tab-content" id="pills-tabContent">
                 <!-- BB/U -->
-                <div
-                  class="tab-pane fade show active"
-                  id="pills-bb-usia-12"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade show active" id="pills-bb-usia-12" role="tabpanel">
                   <h5>Berat Badan / Usia</h5>
                   <div class="chart-container">
                     <canvas id="chart-bb-usia-12"></canvas>
@@ -256,11 +280,7 @@
                 </div>
 
                 <!-- TB/U -->
-                <div
-                  class="tab-pane fade"
-                  id="pills-tb-usia-12"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade" id="pills-tb-usia-12" role="tabpanel">
                   <h5>Tinggi Badan / Usia</h5>
                   <div class="chart-container">
                     <canvas id="chart-tb-usia-12"></canvas>
@@ -268,11 +288,7 @@
                 </div>
 
                 <!-- BB/TB -->
-                <div
-                  class="tab-pane fade"
-                  id="pills-bb-tb-12"
-                  role="tabpanel"
-                >
+                <div class="tab-pane fade" id="pills-bb-tb-12" role="tabpanel">
                   <h5>Berat Badan / Tinggi Badan</h5>
                   <div class="chart-container">
                     <canvas id="chart-bb-tb-12"></canvas>
@@ -281,18 +297,102 @@
               </div>
             </div>
 
+            <!-- content 3 -->
             <div class="mt-5">
               <h5 class="mb-0 fw-bold">Indikator Utama (Persentase)</h5>
               <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
             </div>
 
-            <div class="chart-container">
-              <canvas id="chart-bb-tb-indikator"></canvas>
+            <div class="bg-light p-4 rounded shadow-sm text-center">
+              <div class="chart-container">
+                <canvas id="chart-bb-tb-indikator"></canvas>
+              </div>
             </div>
           </div>
           <div class="tab-pane fade" id="hamil" role="tabpanel">
-            <div class="bg-light p-4 rounded shadow-sm text-center">
-              <p>📊 Chart Status Ibu Hamil (placeholder)</p>
+            <div class="p-4">
+              <!-- Alert -->
+              <div class="alert alert-info">
+                <i></i>
+                Total Data <strong>Kesehatan Ibu Hamil</strong> Per Bulan {{ currentMonthYear }}:
+                <strong>0</strong>
+              </div>
+
+              <!-- Filter Form Content 1 -->
+              <div class="my-3">
+                <div class="card border-0 shadow-sm p-3">
+                  <h5 class="mb-3">Filter Data</h5>
+                  <form class="row g-3 align-items-center">
+                    <div class="col-auto">
+                      <select name="month" id="month" class="form-select">
+                        <option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                      </select>
+                    </div>
+                    <div class="col-auto">
+                      <select name="year" id="year" class="form-select">
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                      </select>
+                    </div>
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search me-1"></i> Cari
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Content 1 -->
+              <div class="mt-5">
+                <h5 class="mb-0 fw-bold">Kesehatan Ibu Hamil</h5>
+                <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
+              </div>
+
+              <div class="bg-light p-4 rounded shadow-sm text-center">
+                <div class="chart-container">
+                  <canvas id="chart-bumil"></canvas>
+                </div>
+              </div>
+              <!-- Filter Form Content 2 -->
+              <div class="my-3">
+                <div class="card border-0 shadow-sm p-3">
+                  <h5 class="mb-3">Filter Data</h5>
+                  <form class="row g-3 align-items-center">
+                    <div class="col-auto">
+                      <select name="month" id="month" class="form-select">
+                        <option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                      </select>
+                    </div>
+                    <div class="col-auto">
+                      <select name="year" id="year" class="form-select">
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                      </select>
+                    </div>
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search me-1"></i> Cari
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Content 2 -->
+              <div class="mt-5">
+                <h5 class="mb-0 fw-bold">Indikator Utama (persentase)</h5>
+                <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
+              </div>
+              <div class="bg-light p-4 rounded shadow-sm text-center">
+                <div class="chart-container">
+                  <canvas id="chart-bumil-indikator"></canvas>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -300,62 +400,96 @@
     </section>
 
     <!-- Section About POPS -->
-    <section class="py-5 bg-additional text-white" id="section1">
-      <div class="container">
-        <h2 class="fw-bold text-center mb-4">Tentang POPS</h2>
-        <p style="text-align: justify">
-          Tanoto Foundation bersama BKKBN dan pemerintah daerah bekerja sama dalam mengembangkan
-          program percepatan penurunan stunting di empat kabupaten/kota di Provinsi Jawa Barat,
-          Kabupaten Bogor. Strategi pengembangan program tidak saja fokus kepada dukungan teknis
-          konvergensi dan koordinasi dalam penyusunan kebijakan strategi percepatan penurunan
-          stunting, namun juga mewujudkan layanan pencegahan stunting yang lebih berkualitas di
-          tingkat masyarakat.
-        </p>
-        <p style="text-align: justify">
-          Agar program pendampingan percepatan penurunan stunting tersebut dilakukan secara tepat
-          sasaran sesuai dengan ketersediaan sumber daya hingga di tingkat desa, Tanoto Foundation
-          berupaya menginisiasi pengelolaan program stunting berbasis data penerima sasaran di
-          tingkat desa melalui program POPS (Pusat Operasi Penurunan Stunting). Inisiatif ini akan
-          diujicobakan (pilot) di Desa Kluwut, Kabupaten Brebes. Dalam mempersiapkan program
-          tersebut, beberapa tahapan akan dilakukan diantaranya ; Pertemuan assesmen kebutuhan
-          (needs assessment) untuk menggali kebutuhan dan situasi di desa secara komprehensif
-          sehingga kerangka program POPS yang dikembangkan tepat untuk membantu TPPS desa melakukan
-          pengambilan keputusan intervensi stunting yang efektif, Menyepakati alur proses
-          pengumpulan data dan informasi yang dibutuhkan, dan pengembangan website – applikasi POPS
-          sebagai media yang akan ditampilkan dalam penyajian data.
-        </p>
-        <p style="text-align: justify">
-          Dalam pelaksanaan Program POPS ini, Tanoto Foundation bekerjasama dengan Yayasan Satu
-          Karsa Karya (YSKK) sebagai mitra implementasi di Lapangan, dan juga mengajak Pemerintah
-          dan Kader Desa Kluwut untuk membantu dalam penggalian/pengumpulan data dan informasi.
-          Pelibatan Desa Kluwut sejak awal program POPS perlu dilakukan untuk memastikan adanya
-          jaminan keberlanjutan Program POPS ini. Terkait dengan hal tersebut untuk mempermudah
-          memahami alur porses program POPS berikut kami susun acuan program untuk bisa dibaca dan
-          dipahami oleh para pihak yang akan terlibat dalam implementasi program ini.
-        </p>
+    <section
+      class="py-5 position-relative overflow-hidden"
+      id="section1"
+      style="background: linear-gradient(135deg, #6fa287 0%, #a2aaad 100%)"
+    >
+      <div class="container py-5">
+        <!-- Heading -->
+        <div class="text-center mb-5 text-white">
+          <h2 class="fw-bold display-5 mb-3 animate-fade-in">Tentang POPS</h2>
+          <div
+            class="mx-auto mb-3"
+            style="width: 90px; height: 4px; background: #fff; border-radius: 3px"
+          ></div>
+          <p class="lead fw-light text-light">
+            Inisiatif berbasis data untuk percepatan penurunan stunting di Indonesia
+          </p>
+        </div>
 
-        <!-- 2 cards -->
-        <div class="row">
-          <div class="col-md-12 mb-4 mt-3 text-center border-top pt-5">
-            <h2 class="card-title fw-bold">Tujuan Pelaksanaan POPS</h2>
+        <!-- Split Layout -->
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-6 text-white">
+            <p class="lh-lg" style="text-align: justify">
+              <strong>Tanoto Foundation</strong> bersama <strong>BKKBN</strong> dan pemerintah
+              daerah bekerja sama dalam mengembangkan program percepatan penurunan stunting di Jawa
+              Barat, termasuk Kabupaten Bogor.
+            </p>
+            <p class="lh-lg" style="text-align: justify">
+              Melalui <strong>POPS (Pusat Operasi Penurunan Stunting)</strong>, pengelolaan program
+              dilakukan berbasis data. Pilot program diinisiasi di
+              <strong>Desa Kluwut, Kabupaten Brebes</strong> dengan tahapan assesmen, kesepakatan
+              alur data, hingga pengembangan dashboard.
+            </p>
+            <p class="lh-lg" style="text-align: justify">
+              Program POPS melibatkan <strong>Tanoto Foundation</strong>, <strong>YSKK</strong>,
+              Pemerintah, dan Kader Desa agar berkelanjutan dan efektif.
+            </p>
           </div>
+          <!-- Ilustrasi / Gambar -->
+          <div class="col-lg-6 text-center mt-4 mt-lg-0">
+            <img
+              src="/src/assets/tf_reserved_primary.png"
+              alt="POPS Illustration"
+              class="img-fluid animate-fade-in-up border p-5 border-5 rounded-5"
+              style="max-width: 70%"
+            />
+          </div>
+        </div>
+
+        <!-- Goals Section -->
+        <div class="text-center pt-5 border-top border-light">
+          <h2 class="fw-bold text-white mb-3">Tujuan Pelaksanaan POPS</h2>
+          <p class="text-light">Dua fokus utama yang ingin dicapai:</p>
+        </div>
+
+        <!-- Cards -->
+        <div class="row mt-4">
           <div class="col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-              <div class="card-body">
-                <p class="card-text">
-                  Mengkoordinasikan data dan informasi sasaran program stunting yang ada di desa
-                  Kluwut agar selalu update dan mudah diakses banyak pihak, melalui pengembangan
-                  website berbasis data.
-                </p>
+            <div class="card h-100 border-0 shadow-lg text-dark hover-card">
+              <div class="card-body p-4">
+                <div class="d-flex">
+                  <div
+                    class="rounded-circle bg-gradient-primary d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                    style="width: 60px; height: 60px"
+                  >
+                    <i class="bi bi-database-fill text-white fs-3"></i>
+                  </div>
+                  <p class="lh-lg mb-0" style="text-align: justify">
+                    Mengkoordinasikan data dan informasi program stunting di Desa Kluwut agar selalu
+                    update dan mudah diakses, melalui website berbasis data.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
+
           <div class="col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-              <div class="card-body">
-                <p class="card-text">
-                  Mengembangkan Dashboard (website) berbasis data di Desa Kluwut
-                </p>
+            <div class="card h-100 border-0 shadow-lg text-dark hover-card">
+              <div class="card-body p-4">
+                <div class="d-flex">
+                  <div
+                    class="rounded-circle bg-gradient-success d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                    style="width: 60px; height: 60px"
+                  >
+                    <i class="bi bi-bar-chart-line-fill text-white fs-3"></i>
+                  </div>
+                  <p class="lh-lg mb-0" style="text-align: justify">
+                    Mengembangkan <strong>Dashboard (website)</strong> berbasis data di Desa Kluwut
+                    untuk mendukung pengambilan keputusan intervensi stunting.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -478,27 +612,40 @@ import {
   Legend,
 } from 'chart.js'
 
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-)
+Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 export default {
-  name: "StatusGiziTabs",
+  name: 'StatusGiziTabs',
   mounted() {
     const umurGroups = [
-      '0-5', '6-11', '12-17', '18-23',
-      '24-29', '30-35', '36-41', '42-47', '48-60'
+      '0-5',
+      '6-11',
+      '12-17',
+      '18-23',
+      '24-29',
+      '30-35',
+      '36-41',
+      '42-47',
+      '48-60',
     ]
 
-    const indi = [
-      '-10', '0', '20','30','40','50'
-    ]
+    const indi = ['-10', '0', '20', '30', '40', '50']
+    const bulan = this.getLastMonths(12)
+
+    //chart-bumil
+    this.createChart('chart-bumil', bulan, {
+      KEK: { data: [4, 4, 7, 4, 1, 0, 0, 5, 0, 3, 6, 2], color: '#8B4513' }, // contoh 12 data
+      Anemia: { data: [3, 7, 9, 7, 1, 0, 0, 13, 0, 2, 1, 4], color: '#FFD700' },
+      'Risiko Tinggi': { data: [10, 18, 14, 10, 1, 0, 0, 11, 0, 5, 8, 6], color: '#006341' },
+    })
+
+    //chart-bumil
+    this.createChart('chart-bumil-indikator', bulan, {
+      KEK: { data: [4, 4, 7, 4, 1, 0, 0, 5, 0, 3, 6, 2], color: '#8B4513' }, // contoh 12 data
+      Anemia: { data: [3, 7, 9, 7, 1, 0, 0, 13, 0, 2, 1, 4], color: '#FFD700' },
+      'Risiko Tinggi': { data: [10, 18, 14, 10, 1, 0, 0, 11, 0, 5, 8, 6], color: '#006341' },
+    })
+
     //chart-bb-tb-indikator
     this.createChart('chart-bb-tb-indikator', indi, {
       'Balita Stunting': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
@@ -510,54 +657,105 @@ export default {
     })
 
     // BB/U
-    this.createChart('chart-bb-usia', umurGroups, {
+    this.loadChart()
+    /* this.createChart('chart-bb-usia', umurGroups, {
       'Sangat Kurang': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
-      'Kurang': { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
-      'Normal': { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
+      Kurang: { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
+      Normal: { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
       'Risiko Lebih': { data: [1, 0, 1, 0, 1, 1, 0, 1, 2], color: 'blue' },
-    })
+    }) */
 
     // TB/U
     this.createChart('chart-tb-usia', umurGroups, {
       'Sangat Pendek': { data: [1, 2, 1, 3, 1, 1, 1, 0, 1], color: 'red' },
-      'Pendek': { data: [2, 3, 2, 2, 3, 2, 2, 1, 1], color: 'yellow' },
-      'Normal': { data: [6, 7, 8, 7, 7, 8, 8, 9, 8], color: 'green' },
-      'Tinggi': { data: [0, 0, 1, 0, 0, 1, 0, 1, 1], color: 'blue' },
+      Pendek: { data: [2, 3, 2, 2, 3, 2, 2, 1, 1], color: 'yellow' },
+      Normal: { data: [6, 7, 8, 7, 7, 8, 8, 9, 8], color: 'green' },
+      Tinggi: { data: [0, 0, 1, 0, 0, 1, 0, 1, 1], color: 'blue' },
     })
 
     // BB/TB
     this.createChart('chart-bb-tb', umurGroups, {
       'Gizi Buruk': { data: [2, 1, 1, 2, 1, 0, 1, 0, 0], color: 'red' },
       'Gizi Kurang': { data: [2, 3, 2, 2, 2, 2, 1, 2, 1], color: 'yellow' },
-      'Normal': { data: [7, 6, 8, 7, 8, 8, 9, 8, 8], color: 'green' },
+      Normal: { data: [7, 6, 8, 7, 8, 8, 9, 8, 8], color: 'green' },
       'Risiko Lebih': { data: [0, 1, 0, 0, 0, 1, 0, 1, 1], color: 'blue' },
     })
 
     // BB/U-12
     this.createChart('chart-bb-usia-12', umurGroups, {
       'Sangat Kurang': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
-      'Kurang': { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
-      'Normal': { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
+      Kurang: { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'yellow' },
+      Normal: { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
       'Risiko Lebih': { data: [1, 0, 1, 0, 1, 1, 0, 1, 2], color: 'blue' },
     })
 
     // TB/U-12
     this.createChart('chart-tb-usia-12', umurGroups, {
       'Sangat Pendek': { data: [1, 2, 1, 3, 1, 1, 1, 0, 1], color: 'red' },
-      'Pendek': { data: [2, 3, 2, 2, 3, 2, 2, 1, 1], color: 'yellow' },
-      'Normal': { data: [6, 7, 8, 7, 7, 8, 8, 9, 8], color: 'green' },
-      'Tinggi': { data: [0, 0, 1, 0, 0, 1, 0, 1, 1], color: 'blue' },
+      Pendek: { data: [2, 3, 2, 2, 3, 2, 2, 1, 1], color: 'yellow' },
+      Normal: { data: [6, 7, 8, 7, 7, 8, 8, 9, 8], color: 'green' },
+      Tinggi: { data: [0, 0, 1, 0, 0, 1, 0, 1, 1], color: 'blue' },
     })
 
     // BB/TB-12
     this.createChart('chart-bb-tb-12', umurGroups, {
       'Gizi Buruk': { data: [2, 1, 1, 2, 1, 0, 1, 0, 0], color: 'red' },
       'Gizi Kurang': { data: [2, 3, 2, 2, 2, 2, 1, 2, 1], color: 'yellow' },
-      'Normal': { data: [7, 6, 8, 7, 8, 8, 9, 8, 8], color: 'green' },
+      Normal: { data: [7, 6, 8, 7, 8, 8, 9, 8, 8], color: 'green' },
       'Risiko Lebih': { data: [0, 1, 0, 0, 0, 1, 0, 1, 1], color: 'blue' },
     })
   },
   methods: {
+    applyFilter() {
+      this.loadChart() // reload chart sesuai filter
+    },
+    loadChart() {
+      // Hapus chart lama biar gak numpuk
+      if (this.chartInstance) {
+        this.chartInstance.destroy()
+      }
+      const umurGroup = [
+        '0-5',
+        '6-11',
+        '12-17',
+        '18-23',
+        '24-29',
+        '30-35',
+        '36-41',
+        '42-47',
+        '48-60',
+      ]
+
+      // Dummy data bisa diganti API sesuai bulan & tahun filter
+      const datasetsObj = {
+        'Sangat Kurang': { data: [2, 3, 1, 4, 2, 1, 2, 1, 0], color: 'red' },
+        Kurang: { data: [3, 4, 2, 3, 3, 2, 3, 2, 1], color: 'orange' },
+        Normal: { data: [5, 6, 8, 7, 6, 7, 6, 8, 7], color: 'green' },
+        'Risiko Lebih': { data: [1, 0, 1, 0, 1, 1, 0, 1, 2], color: 'blue' },
+      }
+
+      this.totalData = Object.values(datasetsObj)
+        .flatMap((d) => d.data)
+        .reduce((a, b) => a + b, 0)
+
+      this.createChart('chart-bb-usia', umurGroup, datasetsObj)
+    },
+    getLastMonths(count = 12) {
+      const labels = []
+      const now = new Date()
+
+      for (let i = count - 1; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+
+        const bulan = d.toLocaleString('id-ID', { month: 'long' }) // nama bulan Indonesia
+        const tahun = d.getFullYear()
+
+        labels.push(`${bulan} ${tahun}`)
+      }
+
+      return labels
+    },
+
     createChart(canvasId, labels, datasetsObj) {
       const datasets = Object.entries(datasetsObj).map(([label, cfg]) => ({
         label,
@@ -566,6 +764,10 @@ export default {
         backgroundColor: cfg.color,
         fill: false,
         tension: 0.3,
+        pointBackgroundColor: cfg.color,
+        pointBorderColor: '#fff',
+        pointRadius: 5,
+        pointHoverRadius: 7,
       }))
 
       const ctx = document.getElementById(canvasId)
@@ -590,17 +792,27 @@ export default {
           },
         },
       })
-    }
+    },
+
+    hexToRgba(hex, alpha) {
+      let c
+      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split('')
+        if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+        c = '0x' + c.join('')
+        return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${alpha})`
+      }
+      return hex
+    },
   },
   computed: {
     currentMonthYear() {
-      const date = new Date()
-      const months = [
-        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-      ]
-      return `${months[date.getMonth()]} ${date.getFullYear()}`
-    }
+      return `${this.months[this.selectedMonth - 1]} ${this.selectedYear}`
+    },
+    yearOptions() {
+      const now = new Date().getFullYear()
+      return [now - 1, now, now + 1] // contoh range tahun
+    },
   },
   components: {
     NavbarUser,
@@ -609,6 +821,24 @@ export default {
   },
   data() {
     return {
+      months: [
+        'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember',
+      ],
+      selectedMonth: new Date().getMonth() + 1, // default bulan ini
+      selectedYear: new Date().getFullYear(), // default tahun ini
+      chartInstance: null,
+      totalData: 0,
       stats: [
         { title: 'RT', value: 12 },
         { title: 'RW', value: 5 },
@@ -624,8 +854,84 @@ export default {
 }
 </script>
 
-
 <style scoped>
+.icon-wrapper {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 99, 65, 0.1); /* hijau #006341 transparan */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stat-card {
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.hover-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border-radius: 1rem;
+}
+.hover-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #0d6efd, #6fa287);
+}
+.bg-gradient-success {
+  background: linear-gradient(135deg, #198754, #6fa287);
+}
+.animate-fade-in {
+  animation: fadeIn 1.2s ease-in-out;
+}
+.animate-fade-in-up {
+  animation: fadeInUp 1.2s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .chart-wrapper {
   max-width: 100%;
   height: 400px;
@@ -648,7 +954,6 @@ export default {
   background: linear-gradient(135deg, #004d33, #9d8a55);
   opacity: 0.9;
 }
-
 .hover-scale {
   transition:
     transform 0.3s ease,
