@@ -1,5 +1,5 @@
 <template>
-  <div :class="['sidebar-container shadow-sm', isCollapsed ? 'sidebar-collapsed' : '']">
+  <div :class="['sidebar-container', isCollapsed ? 'sidebar-collapsed' : '']">
     <!-- Menu List -->
     <ul class="nav flex-column mt-3 px-2">
       <li>
@@ -12,24 +12,36 @@
       <li class="menu-section mt-4" v-if="!isCollapsed">Menu</li>
       <li>
         <router-link to="/admin/gizi" class="nav-link" :class="{ active: isActive('/admin/gizi') }">
-          <i class="bi bi-people me-2"></i>
+          <i class="fa-solid fa-baby me-2"></i>
           <span v-if="!isCollapsed">Gizi Anak</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/admin/hamil" class="nav-link" :class="{ active: isActive('/admin/hamil') }">
-          <i class="bi bi-folder me-2"></i>
+        <router-link
+          to="/admin/hamil"
+          class="nav-link"
+          :class="{ active: isActive('/admin/hamil') }"
+        >
+          <i class="fa-solid fa-person-pregnant me-2"></i>
           <span v-if="!isCollapsed">Ibu Hamil</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/admin/catin" class="nav-link" :class="{ active: isActive('/admin/catin') }">
-          <i class="bi bi-postcard-heart me-2"></i>
+        <router-link
+          to="/admin/catin"
+          class="nav-link"
+          :class="{ active: isActive('/admin/catin') }"
+        >
+          <i class="fa-solid fa-people-arrows me-2"></i>
           <span v-if="!isCollapsed">Calon Pengantin</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/admin/jadwal" class="nav-link" :class="{ active: isActive('/admin/jadwal') }">
+        <router-link
+          to="/admin/jadwal"
+          class="nav-link"
+          :class="{ active: isActive('/admin/jadwal') }"
+        >
           <i class="bi bi-calendar me-2"></i>
           <span v-if="!isCollapsed">Jadwal Intervensi</span>
         </router-link>
@@ -37,13 +49,21 @@
 
       <li class="menu-section mt-4" v-if="!isCollapsed">Master Data</li>
       <li>
-        <router-link to="/admin/keluarga" class="nav-link" :class="{ active: isActive('/admin/keluarga') }">
-          <i class="bi bi-house-check me-2"></i>
+        <router-link
+          to="/admin/keluarga"
+          class="nav-link"
+          :class="{ active: isActive('/admin/keluarga') }"
+        >
+          <i class="fa-solid fa-people-roof me-2"></i>
           <span v-if="!isCollapsed">Keluarga</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/admin/kader" class="nav-link" :class="{ active: isActive('/admin/kader') }">
+        <router-link
+          to="/admin/kader"
+          class="nav-link"
+          :class="{ active: isActive('/admin/kader') }"
+        >
           <i class="bi bi-file-person me-2"></i>
           <span v-if="!isCollapsed">Admin / Kader</span>
         </router-link>
@@ -57,26 +77,22 @@
 
       <li class="menu-section mt-4" v-if="!isCollapsed">Setting</li>
       <li>
-        <router-link to="/admin/config" class="nav-link" :class="{ active: isActive('/admin/config') }">
+        <router-link
+          to="/admin/config"
+          class="nav-link"
+          :class="{ active: isActive('/admin/config') }"
+        >
           <i class="bi bi-gear me-2"></i>
           <span v-if="!isCollapsed">Konfigurasi</span>
         </router-link>
       </li>
     </ul>
-
-    <!-- Footer -->
-    <!-- <div class="sidebar-footer p-3 mt-auto">
-      <a href="#" class="d-flex align-items-center nav-link logout-link text-danger rounded-3 px-2 py-2">
-        <i class="bi bi-box-arrow-right me-2"></i>
-        <span v-if="!isCollapsed">Logout</span>
-      </a>
-    </div> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "SidebarContent",
+  name: 'SidebarContent',
   props: {
     isCollapsed: {
       type: Boolean,
@@ -85,10 +101,10 @@ export default {
   },
   methods: {
     isActive(path) {
-      return this.$route.path === path;
+      return this.$route.path === path
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -99,7 +115,7 @@ export default {
   flex-direction: column;
   transition: all 0.3s ease;
   width: 250px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .sidebar-container.sidebar-collapsed {
@@ -117,7 +133,7 @@ export default {
 }
 
 .nav-link:hover {
-  background-color: #f5f5f7;
+  /* background-color: #f5f5f7; */
   color: #006341;
   transform: translateX(4px);
 }
@@ -126,6 +142,7 @@ export default {
   background-color: #eaf3ff;
   color: #006341;
   font-weight: 600;
+  width: 85% !important;
 }
 
 .nav-link i {

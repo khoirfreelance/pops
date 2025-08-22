@@ -8,7 +8,7 @@
       data-bs-target="#adminSidebar"
       aria-controls="adminSidebar"
     >
-      <i class="bi bi-list"></i> Menu
+      <i class="bi bi-list"></i>
     </button>
 
     <!-- Offcanvas untuk mobile -->

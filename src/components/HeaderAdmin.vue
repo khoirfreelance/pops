@@ -1,7 +1,6 @@
 <template>
   <nav class="navbar fixed-top apple-navbar px-3 py-2">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-
       <!-- Kiri: Logo + Toggle Sidebar -->
       <div class="d-flex align-items-center gap-3">
         <a class="navbar-brand mb-0" href="#">
@@ -29,13 +28,18 @@
             <i class="bi bi-bell fs-5"></i>
             <span class="badge-dot bg-danger"></span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 animate-dropdown" aria-labelledby="dropdownNotif">
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 animate-dropdown"
+            aria-labelledby="dropdownNotif"
+          >
             <li><h6 class="dropdown-header fw-semibold">Notifikasi</h6></li>
             <li><a class="dropdown-item small" href="#">Update Sistem</a></li>
             <li><a class="dropdown-item small" href="#">Pesan Baru</a></li>
             <li><a class="dropdown-item small" href="#">Tugas Selesai</a></li>
             <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item text-center text-primary fw-semibold" href="#">Lihat Semua</a></li>
+            <li>
+              <a class="dropdown-item text-center text-primary fw-semibold" href="#">Lihat Semua</a>
+            </li>
           </ul>
         </div>
 
@@ -51,14 +55,34 @@
             <img
               src="https://ui-avatars.com/api/?name=Admin&background=dddddd&color=000&size=32"
               alt="User"
-              class="rounded-circle"
+              class="rounded-circle border border-1 border-primary"
               width="32"
               height="32"
             />
           </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 animate-dropdown" aria-labelledby="dropdownUser">
-            <li><a class="dropdown-item small" href="#">Profile</a></li>
-            <li><a class="dropdown-item small" href="#">Settings</a></li>
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 animate-dropdown"
+            aria-labelledby="dropdownUser"
+          >
+            <li>
+              <router-link
+                to="/admin/profile"
+                class="dropdown-item small"
+                :class="{ active: isActive('/admin/profile') }"
+              >
+                Profile
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                to="/admin/config"
+                class="dropdown-item small"
+                :class="{ active: isActive('/admin/config') }"
+              >
+                Settings
+              </router-link>
+              <!-- <a class="dropdown-item small" href="#">Settings</a> -->
+            </li>
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item text-danger small" href="#">Logout</a></li>
           </ul>
@@ -69,19 +93,24 @@
 </template>
 
 <script>
-import { Dropdown } from "bootstrap";
+import { Dropdown } from 'bootstrap'
 
 export default {
-  name: "HeaderAdmin",
+  name: 'HeaderAdmin',
   props: {
     isCollapsed: { type: Boolean, default: false },
   },
+  methods: {
+    isActive(path) {
+      return this.$route.path === path
+    },
+  },
   mounted() {
     document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((el) => {
-      new Dropdown(el);
-    });
+      new Dropdown(el)
+    })
   },
-};
+}
 </script>
 
 <style scoped>
@@ -98,12 +127,14 @@ export default {
   background: transparent;
   padding: 6px;
   border-radius: 50%;
-  transition: background 0.3s ease, color 0.3s ease;
-  color: #444;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  color: #006341;
 }
 .btn-icon:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: #000;
+  /* background: rgba(0, 0, 0, 0.05); */
+  color: #6fa287;
 }
 
 /* Badge titik kecil elegan */
@@ -122,7 +153,13 @@ export default {
   animation: fadeDown 0.2s ease;
 }
 @keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

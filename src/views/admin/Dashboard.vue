@@ -10,13 +10,16 @@
         <div class="flex-grow-1 p-4 bg-light">
           <!-- Welcome Card -->
           <div class="card welcome-card shadow-sm mb-4 border-0">
-            <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
-
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between"
+            >
               <!-- Kiri: Teks Welcome -->
               <div class="text-start">
                 <h2 class="fw-bold mb-2">Selamat Datang, {{ username }}</h2>
                 <p class="text-light mb-1">Semoga harimu menyenangkan 🎉</p>
-                <p class="text-light">Ada <span class="fw-bold text-light">2 pesan penting</span> untukmu.</p>
+                <p class="text-light">
+                  Ada <span class="fw-bold text-light">2 pesan penting</span> untukmu.
+                </p>
               </div>
 
               <!-- Kanan: Gambar -->
@@ -34,12 +37,30 @@
           </div>
 
           <!-- Statistic Cards -->
-          <div class="row g-4">
-            <div v-for="(stat, index) in stats" :key="index" class="col-lg-3 col-md-4 col-sm-6">
-              <div :class="`card text-white h-100 shadow-sm stat-card ${stat.bg}`">
-                <div class="card-body d-flex flex-column justify-content-center text-center">
-                  <h6 class="card-title text-uppercase fw-semibold">{{ stat.title }}</h6>
-                  <p class="display-6 fw-bold mb-0">{{ stat.value }}</p>
+          <div class="row justify-content-center mt-4">
+            <div
+              v-for="(stat, index) in stats"
+              :key="index"
+              class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3"
+            >
+              <div class="card stat-card h-100 border-0 shadow-sm">
+                <div
+                  class="card-body p-3 d-flex flex-column align-items-center justify-content-center"
+                >
+                  <!-- Icon wrapper -->
+                  <div class="icon-wrapper mb-2">
+                    <i :class="stat.icon + ' fs-4'"></i>
+                  </div>
+
+                  <!-- Title -->
+                  <h6 class="card-title text-muted text-uppercase small mb-1">
+                    {{ stat.title }}
+                  </h6>
+
+                  <!-- Value -->
+                  <p class="fw-bold fs-5 mb-0 text-dark">
+                    {{ stat.value }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -342,16 +363,16 @@ export default {
   data() {
     return {
       stats: [
-        { title: 'Total RW', value: '1,000', bg: 'bg-primary' },
-        { title: 'Total RT', value: '100,000', bg: 'bg-success' },
-        { title: 'Penduduk', value: '278 M', bg: 'bg-additional' },
-        { title: 'Keluarga', value: '100 M', bg: 'bg-additional2' },
-        { title: 'Balita', value: '1,234', bg: 'bg-primary' },
-        { title: 'Ibu Hamil', value: '56 K', bg: 'bg-success' },
-        { title: 'Calon Pengantin', value: '12 K', bg: 'bg-additional' },
-        { title: 'Posyandu', value: '8 K', bg: 'bg-additional2' },
-        { title: 'Bidan', value: '1,234', bg: 'bg-primary' },
-        { title: 'Anggota TPK', value: '56', bg: 'bg-success' },
+        { title: 'Total RW', value: '1,000', icon: 'fa-solid fa-house-chimney-window' },
+        { title: 'Total RT', value: '100,000', icon: 'bi bi-house-fill' },
+        { title: 'Penduduk', value: '278 M', icon: 'bi bi-people-fill' },
+        { title: 'Keluarga', value: '100 M', icon: 'fa-solid fa-people-roof' },
+        { title: 'Balita', value: '1,234', icon: 'fa-solid fa-baby' },
+        { title: 'Ibu Hamil', value: '56 K', icon: 'fa-solid fa-person-pregnant' },
+        { title: 'Calon Pengantin', value: '12 K', icon: 'fa-solid fa-people-arrows' },
+        { title: 'Posyandu', value: '8 K', icon: 'fa-solid fa-stethoscope' },
+        { title: 'Bidan', value: '1,234', icon: 'fa-solid fa-user-nurse' },
+        { title: 'Anggota TPK', value: '56', icon: 'bi bi-person-vcard-fill' },
       ],
       activities: [
         { user: 'Alice', action: 'Created new project', date: '2025-08-13' },
@@ -398,14 +419,25 @@ export default {
 
 /* Card Statistik */
 .stat-card {
-  border: none;
   border-radius: 1rem;
-  background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary));
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: all 0.3s ease;
+  /* background: #fff; */
 }
+
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.08); /* soft primary */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a7f37;
 }
 
 /* Alert */
@@ -464,7 +496,7 @@ export default {
 }
 .welcome-card {
   border-radius: 1rem;
-  background: linear-gradient(135deg, #006341,#b3a369 );
+  background: linear-gradient(135deg, #006341, #b3a369);
 }
 
 .welcome-card h2 {

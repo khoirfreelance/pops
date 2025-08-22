@@ -13,6 +13,7 @@ import Schedule from '@/views/admin/Schedule.vue'
 import Family from '@/views/admin/Family.vue'
 import Cadre from '@/views/admin/Cadre.vue'
 import Membership from '@/views/admin/Membership.vue'
+import Profile from '@/views/admin/Profile.vue'
 
 const routes = [
   {
@@ -76,6 +77,11 @@ const routes = [
     path: '/admin/config',
     name: 'config',
     component: Config,
+  },
+  {
+    path: '/admin/profile',
+    name: 'profile',
+    component: Profile,
   },
 ]
 
