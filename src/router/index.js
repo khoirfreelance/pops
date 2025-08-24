@@ -6,7 +6,7 @@ import Dashboard from '@/views/admin/Dashboard.vue'
 import Login from '@/views/admin/Login.vue'
 import Forgot from '@/views/admin/Forgot.vue'
 import Config from '@/views/admin/Config.vue'
-import Nutrition from '@/views/admin/Nutrition.vue'
+import Children from '@/views/admin/Children.vue'
 import Pregnancy from '@/views/admin/Pregnancy.vue'
 import Bride from '@/views/admin/Bride.vue'
 import Schedule from '@/views/admin/Schedule.vue'
@@ -27,9 +27,9 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: '/admin/gizi',
-    name: 'nutrition',
-    component: Nutrition,
+    path: '/admin/anak',
+    name: 'children',
+    component: Children,
   },
   {
     path: '/admin/hamil',

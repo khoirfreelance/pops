@@ -3,16 +3,16 @@
     <!-- Menu List -->
     <ul class="nav flex-column mt-3 px-2">
       <li>
-        <router-link to="/admin/" class="nav-link" :class="{ active: isActive('/admin/') }">
-          <i class="bi bi-speedometer2 me-2"></i>
+        <router-link to="/admin" class="nav-link" :class="{ active: isActive('/admin/') }">
+          <i class="bi bi-speedometer2"></i>
           <span v-if="!isCollapsed">Dashboard</span>
         </router-link>
       </li>
 
       <li class="menu-section mt-4" v-if="!isCollapsed">Menu</li>
       <li>
-        <router-link to="/admin/gizi" class="nav-link" :class="{ active: isActive('/admin/gizi') }">
-          <i class="fa-solid fa-baby me-2"></i>
+        <router-link to="/admin/anak" class="nav-link" :class="{ active: isActive('/admin/anak') }">
+          <i class="fa-solid fa-baby"></i>
           <span v-if="!isCollapsed">Gizi Anak</span>
         </router-link>
       </li>
@@ -22,7 +22,7 @@
           class="nav-link"
           :class="{ active: isActive('/admin/hamil') }"
         >
-          <i class="fa-solid fa-person-pregnant me-2"></i>
+          <i class="fa-solid fa-person-pregnant"></i>
           <span v-if="!isCollapsed">Ibu Hamil</span>
         </router-link>
       </li>
@@ -32,7 +32,7 @@
           class="nav-link"
           :class="{ active: isActive('/admin/catin') }"
         >
-          <i class="fa-solid fa-people-arrows me-2"></i>
+          <i class="fa-solid fa-people-arrows"></i>
           <span v-if="!isCollapsed">Calon Pengantin</span>
         </router-link>
       </li>
@@ -42,7 +42,7 @@
           class="nav-link"
           :class="{ active: isActive('/admin/jadwal') }"
         >
-          <i class="bi bi-calendar me-2"></i>
+          <i class="bi bi-calendar"></i>
           <span v-if="!isCollapsed">Jadwal Intervensi</span>
         </router-link>
       </li>
@@ -54,7 +54,7 @@
           class="nav-link"
           :class="{ active: isActive('/admin/keluarga') }"
         >
-          <i class="fa-solid fa-people-roof me-2"></i>
+          <i class="fa-solid fa-people-roof"></i>
           <span v-if="!isCollapsed">Keluarga</span>
         </router-link>
       </li>
@@ -64,13 +64,13 @@
           class="nav-link"
           :class="{ active: isActive('/admin/kader') }"
         >
-          <i class="bi bi-file-person me-2"></i>
+          <i class="bi bi-file-person"></i>
           <span v-if="!isCollapsed">Admin / Kader</span>
         </router-link>
       </li>
       <li>
         <router-link to="/admin/tpk" class="nav-link" :class="{ active: isActive('/admin/tpk') }">
-          <i class="bi bi-person-vcard me-2"></i>
+          <i class="bi bi-person-vcard"></i>
           <span v-if="!isCollapsed">Keanggotaan TPK</span>
         </router-link>
       </li>
@@ -82,7 +82,7 @@
           class="nav-link"
           :class="{ active: isActive('/admin/config') }"
         >
-          <i class="bi bi-gear me-2"></i>
+          <i class="bi bi-gear"></i>
           <span v-if="!isCollapsed">Konfigurasi</span>
         </router-link>
       </li>
@@ -128,25 +128,46 @@ export default {
   padding: 10px 14px;
   display: flex;
   align-items: center;
+  justify-content: flex-start; /* default normal */
+  gap: 10px;
   transition: all 0.25s ease-in-out;
   font-weight: 500;
 }
 
+.nav-link i {
+  color: var(--bs-primary);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 36px;         /* ukuran lingkaran */
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--bs-additional2); /* warna lingkaran */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover i {
+  background-color: #e0f0e8; /* warna lingkaran saat hover */
+  color: var(--bs-primary);
+}
+
+.nav-link.active i {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
 .nav-link:hover {
-  /* background-color: #f5f5f7; */
-  color: #006341;
+  color: var(--bs-primary);
   transform: translateX(4px);
 }
 
 .nav-link.active {
   background-color: #eaf3ff;
-  color: #006341;
+  color: var(--bs-primary);
   font-weight: 600;
   width: 85% !important;
-}
-
-.nav-link i {
-  font-size: 1.2rem;
 }
 
 .menu-section {
@@ -161,6 +182,7 @@ export default {
 .sidebar-footer {
   border-top: 1px solid #eee;
 }
+
 
 /* .logout-link:hover {
   background: #ffecec;
