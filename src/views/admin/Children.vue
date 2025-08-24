@@ -28,7 +28,7 @@
                 <li class="breadcrumb-item">
                   <router-link to="/admin" class="text-decoration-none text-white">Dashboard</router-link>
                 </li>
-                <li class="breadcrumb-item active text-primary" aria-current="page">
+                <li class="breadcrumb-item active text-muted" aria-current="page">
                   Data Anak
                 </li>
               </ol>
@@ -41,16 +41,21 @@
           class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container"
           :class="{ 'expanded-overlay': isFilterOpen }"
         >
-          <form class="row g-2 align-items-center">
+          <form class="row g-2 align-items-center" @submit.prevent>
             <!-- NIK -->
             <div class="col-md-2">
               <label for="nik" class="form-label mb-0">NIK Orang Tua:</label>
             </div>
             <div class="col-md-8">
-              <input type="text" v-model="filter.nik" class="form-control" />
+              <input
+                type="text"
+                v-model="filter.nik"
+                id="nik"
+                class="form-control"
+              />
             </div>
             <div class="col-md-2">
-              <button type="submit" class="btn btn-primary w-100">
+              <button type="button" class="btn btn-primary w-100">
                 <i class="bi bi-search"></i> Cari
               </button>
             </div>
@@ -70,7 +75,7 @@
 
           <!-- Collapse filter -->
           <div v-show="isFilterOpen" class="mt-3">
-            <form class="row g-3">
+            <form class="row g-3" @submit.prevent>
               <!-- Usia -->
               <div class="col-md-3">
                 <label for="usia" class="form-label">Usia</label>
@@ -78,7 +83,7 @@
                   type="number"
                   class="form-control"
                   id="usia"
-                  name="usia"
+                  v-model="filter.usia"
                   placeholder="Tahun"
                 />
               </div>
@@ -86,32 +91,42 @@
               <!-- Status BB -->
               <div class="col-md-3">
                 <label for="status_bb2" class="form-label">Status BB</label>
-                <select class="form-select" id="status_bb2" name="status_bb2">
+                <select class="form-select" id="status_bb2" v-model="filter.status_bb">
                   <option value="">-- semua --</option>
-                  <option value="kurang">Kurang</option>
-                  <option value="normal">Normal</option>
-                  <option value="resiko">Resiko</option>
+                  <option value="Sangat Kurang">Sangat Kurang</option>
+                  <option value="Kurang">Kurang</option>
+                  <option value="Normal">Normal</option>
+                  <option value="Resiko Lebih">Resiko Lebih</option>
                 </select>
               </div>
 
               <!-- Status TB -->
               <div class="col-md-3">
                 <label for="status_tb" class="form-label">Status TB</label>
-                <select class="form-select" id="status_tb" name="status_tb">
+                <select class="form-select" id="status_tb" v-model="filter.status_tb">
                   <option value="">-- semua --</option>
-                  <option value="pendek">Pendek</option>
-                  <option value="normal">Normal</option>
+                  <option value="Sangat Pendek">Sangat Pendek</option>
+                  <option value="Pendek">Pendek</option>
+                  <option value="Normal">Normal</option>
+                  <option value="Tinggi">Tinggi</option>
                 </select>
               </div>
 
               <!-- Status Gizi -->
               <div class="col-md-3">
                 <label for="status_gizi" class="form-label">Status Gizi</label>
-                <select class="form-select" id="status_gizi" name="status_gizi">
+                <select
+                  class="form-select"
+                  id="status_gizi"
+                  v-model="filter.status_bb_tb"
+                >
                   <option value="">-- semua --</option>
-                  <option value="kurang">Kurang</option>
-                  <option value="normal">Normal</option>
-                  <option value="lebih">Lebih</option>
+                  <option value="Gizi Buruk">Gizi Buruk</option>
+                  <option value="Gizi Kurang">Gizi Kurang</option>
+                  <option value="Gizi Baik">Gizi Baik</option>
+                  <option value="Berisiko Gizi Lebih">Berisiko Gizi Lebih</option>
+                  <option value="Gizi Lebih">Gizi Lebih</option>
+                  <option value="Obesitas">Obesitas</option>
                 </select>
               </div>
 
@@ -122,7 +137,7 @@
                   type="date"
                   class="form-control"
                   id="tgl_kunjungan"
-                  name="tgl_kunjungan"
+                  v-model="filter.kunjungan"
                 />
               </div>
 
@@ -140,7 +155,7 @@
         <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
 
           <!-- Tambah Data -->
-          <button class="btn btn-primary">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
             <i class="bi bi-plus-square"></i> Tambah Data
           </button>
 
@@ -151,17 +166,17 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="#" @click.prevent="openImport('Import Kunjungan')">
                   <i class="bi bi-filetype-csv"></i> Kunjungan
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="#" @click.prevent="openImport('Import Intervensi')">
                   <i class="bi bi-filetype-csv"></i> Intervensi
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="#" @click.prevent="openImport('Import Pendampingan')">
                   <i class="bi bi-filetype-csv"></i> Pendampingan
                 </a>
               </li>
@@ -169,16 +184,16 @@
           </div>
 
           <!-- Grafik Gizi -->
-          <button class="btn btn-secondary">
+          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalGrafik">
             <i class="bi bi-graph-up"></i> Grafik Gizi
           </button>
 
         </div>
 
         <!-- Alert -->
-        <div class="container-fluid mt-4">
+        <div class="container-fluid mt-4" v-if="showAlert">
           <div class="alert alert-success shadow-sm">
-            ✅ Data anak berhasil diperbarui!
+            ✅ Data anak berhasil disimpan!
           </div>
         </div>
 
@@ -192,7 +207,9 @@
                   :headers="headers"
                   :items="filteredAnak"
                   :search-value="filter.nik"
-                  table-class="table-bordered"
+                  buttons-pagination
+                  :rows-per-page="5"
+                  table-class="table table-bordered"
                   theme-color="#0d6efd"
                 />
               </div>
@@ -208,83 +225,125 @@
   </div>
 
   <!-- Modal Tambah -->
-
   <div class="modal fade" id="modalTambah" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Tambah Data Anak</h5>
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modern-modal">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-semibold">Tambah Data Anak</h5>
+          <hr class="text-primary">
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form class="row g-3">
             <div class="col-md-6">
               <label class="form-label">NIK Ortu</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control form-control-modern" v-model="form.nik">
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Nama Anak</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control form-control-modern" v-model="form.nama">
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Jenis Kelamin</label>
-              <select class="form-select">
+              <select class="form-select form-control-modern" v-model="form.gender">
                 <option value="L">Laki-laki</option>
                 <option value="P">Perempuan</option>
               </select>
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Alamat</label>
-              <input type="text" class="form-control">
+              <textarea class="form-control form-control-modern" v-model="form.alamat"></textarea>
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Tanggal Lahir</label>
-              <input type="date" id="tanggalLahir" class="form-control">
+              <input
+                type="date"
+                class="form-control form-control-modern"
+                v-model="form.tgl_lahir"
+                @change="hitungUsia"
+              >
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Usia (bulan)</label>
-              <input type="text" id="usiaBulan" class="form-control" readonly>
+              <input
+                type="text"
+                class="form-control form-control-modern"
+                v-model="form.usia"
+                readonly
+              >
             </div>
+
             <div class="col-md-4">
               <label class="form-label">Status BB</label>
-              <input type="text" class="form-control">
+              <select class="form-select form-control-modern" v-model="form.status_bb">
+                <option value="">pilih status BB</option>
+                <option value="Sangat Kurang">Sangat Kurang</option>
+                <option value="Kurang">Kurang</option>
+                <option value="Normal">Normal</option>
+                <option value="Resiko Lebih">Resiko Lebih</option>
+              </select>
             </div>
+
             <div class="col-md-4">
               <label class="form-label">Status TB</label>
-              <input type="text" class="form-control">
+              <select class="form-select form-control-modern" v-model="form.status_tb">
+                <option value="">pilih status TB</option>
+                <option value="Sangat Pendek">Sangat Pendek</option>
+                <option value="Pendek">Pendek</option>
+                <option value="Normal">Normal</option>
+                <option value="Tinggi">Tinggi</option>
+              </select>
             </div>
+
             <div class="col-md-4">
               <label class="form-label">Status BB/TB</label>
-              <input type="text" class="form-control">
+              <select class="form-select form-control-modern" v-model="form.status_bb_tb">
+                <option value="">pilih status Gizi</option>
+                <option value="Gizi Buruk">Gizi Buruk</option>
+                <option value="Gizi Kurang">Gizi Kurang</option>
+                <option value="Gizi Baik">Gizi Baik</option>
+                <option value="Berisiko Gizi Lebih">Berisiko Gizi Lebih</option>
+                <option value="Gizi Lebih">Gizi Lebih</option>
+                <option value="Obesitas">Obesitas</option>
+              </select>
             </div>
+
             <div class="col-md-3">
               <label class="form-label">RT</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control form-control-modern" v-model="form.rt">
             </div>
+
             <div class="col-md-3">
               <label class="form-label">RW</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control form-control-modern" v-model="form.rw">
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Kunjungan Terakhir</label>
-              <input type="date" class="form-control">
+              <input type="date" class="form-control form-control-modern" v-model="form.kunjungan">
             </div>
           </form>
+
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button class="btn btn-primary">Simpan</button>
+        <div class="modal-footer border-0 pt-0">
+          <button class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-primary rounded-pill px-4" @click="saveData">Simpan</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Modal Import -->
-  <div class="modal fade" id="modalImport" tabindex="-1">
+  <div class="modal fade" id="modalImport" ref="modalImport" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalImportTitle">Import File</h5>
+          <h5 class="modal-title">{{ importTitle }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
@@ -301,30 +360,56 @@
   </div>
 
   <!-- Modal Grafik -->
-  <div class="modal fade" id="modalGrafik" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Grafik Status Gizi</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Pilih Status</label>
-          <select id="selectStatus" class="form-select">
-            <option value="bb">Status BB</option>
-            <option value="tb">Status TB</option>
-            <option value="bbtb">Status BB/TB</option>
-          </select>
+  <div
+    class="modal fade"
+    id="modalGrafik"
+    tabindex="-1"
+    aria-labelledby="modalGrafikLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="modalGrafikLabel">
+            Grafik Status Gizi Anak
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <canvas id="chartGizi" height="200"></canvas>
+
+        <div class="modal-body row g-4 text-center">
+          <!-- Grafik BB -->
+          <div class="col-md-4">
+            <h6 class="fw-bold mb-3">Status BB</h6>
+            <canvas id="chartBB"></canvas>
+          </div>
+
+          <!-- Grafik TB -->
+          <div class="col-md-4">
+            <h6 class="fw-bold mb-3">Status TB</h6>
+            <canvas id="chartTB"></canvas>
+          </div>
+
+          <!-- Grafik BB/TB -->
+          <div class="col-md-4">
+            <h6 class="fw-bold mb-3">Status BB/TB</h6>
+            <canvas id="chartBBTB"></canvas>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <style scoped>
+#chartBB,
+#chartTB,
+#chartBBTB {
+  width: 100% !important;
+  max-width: 300px;
+  /* height: 250px !important; */
+  margin: auto;
+}
+
 .nutrition-wrapper {
   padding-top: 60px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -366,6 +451,40 @@
 .breadcrumb-item + .breadcrumb-item::before {
   color: rgba(255, 255, 255, 0.7);
 }
+/* Smooth Apple-like Modal */
+.modern-modal {
+  border-radius: 1.5rem;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Form lebih clean */
+.form-control-modern,
+.form-select.form-control-modern {
+  border-radius: 0.75rem;
+  border: 1px solid #ddd;
+  padding: 0.6rem 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control-modern:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.2);
+}
+
+/* Animasi modal lebih halus */
+.modal.fade .modal-dialog {
+  transform: translateY(20px);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal.fade.show .modal-dialog {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 </style>
 <script>
 import CopyRight from '@/components/CopyRight.vue'
@@ -374,18 +493,7 @@ import HeaderAdmin from '@/components/HeaderAdmin.vue'
 import EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
 import { Chart } from 'chart.js/auto'   // ini ganti <script src=...>
-
-// Ubah title modal import sesuai pilihan
-document.addEventListener('DOMContentLoaded', () => {
-  const modalImport = document.getElementById('modalImport')
-  if (modalImport) {
-    modalImport.addEventListener('show.bs.modal', function(event) {
-      const button = event.relatedTarget
-      const title = button.getAttribute('data-title')
-      modalImport.querySelector('#modalImportTitle').textContent = title
-    })
-  }
-})
+import { Modal } from 'bootstrap'   // <-- butuh ini untuk kontrol modal
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -396,33 +504,54 @@ export default {
       isCollapsed: false,
       isFilterOpen: false,
       chartGizi: null,
+      importTitle: 'Import File',   // <-- judul modal dinamis
+      chartBB: null,
+      chartTB: null,
+      chartBBTB: null,
+      showAlert: false,
+      form:{
+        nik: '',
+        nama: '',
+        gender: '',
+        alamat: '',
+        tgl_lahir:'',
+        usia:0,
+        status_bb: '',
+        status_tb: '',
+        status_bb_tb: '',
+        rt: '',
+        rw: '',
+        kunjungan: ''
+      },
 
       // data dummy anak
       anak: [
         {
           nik: '3276012309870001',
           nama: 'Ahmad Fauzi',
-          bb: 'Normal',
-          tb: 'Pendek',
-          bb_tb: 'Normal',
+          status_bb: 'Normal',
+          status_tb: 'Pendek',
+          status_bb_tb: 'Gizi Baik',
+          alamat: 'Jl. Damai 3 No. 36,',
           rt: '05',
           rw: '02',
           gender: 'L',
-          tgl_lahir: '2019-03-14',
-          usia: '6 th',
+          tgl_lahir: '2022-03-14',
+          usia: '41',
           kunjungan: '2025-08-10'
         },
         {
           nik: '3276012309870002',
           nama: 'Siti Aminah',
-          bb: 'Kurang',
-          tb: 'Normal',
-          bb_tb: 'Resiko',
+          status_bb: 'Kurang',
+          status_tb: 'Normal',
+          status_bb_tb: 'Resiko',
+          alamat: 'Jl. Damai 3 No. 6,',
           rt: '03',
           rw: '01',
           gender: 'P',
-          tgl_lahir: '2020-07-22',
-          usia: '5 th',
+          tgl_lahir: '2021-07-22',
+          usia: '49',
           kunjungan: '2025-08-14'
         }
       ],
@@ -431,14 +560,15 @@ export default {
       headers: [
         { text: 'NIK', value: 'nik' },
         { text: 'Nama', value: 'nama' },
-        { text: 'BB', value: 'bb' },
-        { text: 'TB', value: 'tb' },
-        { text: 'BB/TB', value: 'bb_tb' },
-        { text: 'RT', value: 'rt' },
-        { text: 'RW', value: 'rw' },
         { text: 'L/P', value: 'gender' },
         { text: 'Tanggal Lahir', value: 'tgl_lahir' },
-        { text: 'Usia', value: 'usia' },
+        { text: 'Usia (Bulan)', value: 'usia' },
+        { text: 'Status BB', value: 'status_bb' },
+        { text: 'Status TB', value: 'status_tb' },
+        { text: 'Status Gizi', value: 'status_bb_tb' },
+        { text: "Alamat", value: "alamat" },
+        { text: 'RT', value: 'rt' },
+        { text: 'RW', value: 'rw' },
         { text: 'Kunjungan Terakhir', value: 'kunjungan' }
       ],
 
@@ -446,10 +576,10 @@ export default {
       filter: {
         nik: '',
         usia: '',
-        bb: '',
-        tb: '',
-        bb_tb: '',
-        tgl_kunjungan: ''
+        status_bb: '',
+        status_tb: '',
+        status_bb_tb: '',
+        kunjungan: ''
       }
     }
   },
@@ -459,15 +589,66 @@ export default {
         return (
           (this.filter.nik === '' || item.nik.includes(this.filter.nik)) &&
           (this.filter.usia === '' || item.usia.includes(this.filter.usia)) &&
-          (this.filter.bb === '' || item.bb === this.filter.bb) &&
-          (this.filter.tb === '' || item.tb === this.filter.tb) &&
-          (this.filter.bb_tb === '' || item.bb_tb === this.filter.bb_tb) &&
-          (this.filter.tgl_kunjungan === '' || item.kunjungan === this.filter.tgl_kunjungan)
+          (this.filter.status_bb === '' || item.status_bb === this.filter.status_bb) &&
+          (this.filter.status_tb === '' || item.tb === this.filter.status_tb) &&
+          (this.filter.status_bb_tb === '' || item.bb_tb === this.filter.status_bb_tb) &&
+          (this.filter.kunjungan === '' || item.kunjungan === this.filter.kunjungan)
         )
       })
     }
   },
   methods: {
+    // helper close modal
+    closeModal(id) {
+      const el = document.getElementById(id)
+      if (el) {
+        const instance = Modal.getOrCreateInstance(el)
+        instance.hide()
+      }
+
+      // jaga-jaga kalau backdrop masih nyangkut
+      setTimeout(() => {
+        document.querySelectorAll(".modal-backdrop").forEach(el => el.remove())
+        document.body.classList.remove("modal-open")
+        document.body.style.removeProperty("overflow")
+        document.body.style.removeProperty("padding-right")
+      }, 300) // delay biar nunggu animasi fade
+    },
+
+    saveData() {
+      // clone object biar gak kepengaruh reactive ref
+      const newAnak = { ...this.form }
+      this.anak.push(newAnak)
+
+      // reset form biar kosong lagi
+      this.form = {
+        nik: '',
+        nama: '',
+        gender: 'L',
+        alamat: '',
+        tgl_lahir: '',
+        usia: '',
+        status_bb: '',
+        status_tb: '',
+        status_bb_tb: '',
+        rt: '',
+        rw: '',
+        kunjungan: ''
+      }
+
+       // setelah sukses simpan → tutup modal
+      this.closeModal("modalTambah")
+
+      // alert success
+      this.showAlert = true
+      setTimeout(() => (this.showAlert = false), 3000)
+    },
+    openImport(title) {
+      this.importTitle = title
+      const el = this.$refs.modalImport
+      const instance = Modal.getOrCreateInstance(el)
+      instance.show()
+    },
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
     },
@@ -477,37 +658,72 @@ export default {
     applyFilter(e) {
       e.preventDefault()
     },
-    hitungUsia(e) {
-      const lahir = new Date(e.target.value)
+    hitungUsia() {
+     if (!this.form.tgl_lahir) {
+        this.form.usia = 0
+        return
+      }
+       const lahir = new Date(this.form.tgl_lahir)
       const today = new Date()
+
       let usia = (today.getFullYear() - lahir.getFullYear()) * 12
       usia += today.getMonth() - lahir.getMonth()
-      const input = document.getElementById('usiaBulan')
-      if (input) input.value = usia >= 0 ? usia : 0
+
+      // kalau tanggal hari ini < tanggal lahir, kurangi 1 bulan
+      if (today.getDate() < lahir.getDate()) {
+        usia -= 1
+      }
+      this.form.usia = usia >= 0 ? usia : 0
     },
-    renderChart() {
-      const ctx = document.getElementById('chartGizi')
-      if (ctx) {
-        if (this.chartGizi) this.chartGizi.destroy() // biar nggak dobel render
-        this.chartGizi = new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: ['Kurang', 'Normal', 'Resiko'],
-            datasets: [
-              {
-                data: [10, 25, 5]
-              }
+    getChartData(statusKey) {
+      const counts = {}
+      this.anak.forEach(item => {
+        const val = item[statusKey]
+        counts[val] = (counts[val] || 0) + 1
+      })
+
+      return {
+        labels: Object.keys(counts),
+        datasets: [
+          {
+            data: Object.values(counts),
+            backgroundColor: [
+              getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim(),
+              getComputedStyle(document.documentElement).getPropertyValue('--bs-secondary').trim(),
+              getComputedStyle(document.documentElement).getPropertyValue('--bs-warning').trim(),
+              getComputedStyle(document.documentElement).getPropertyValue('--bs-danger').trim(),
+              getComputedStyle(document.documentElement).getPropertyValue('--bs-info').trim()
             ]
           }
-        })
+        ]
       }
+    },
+    initCharts() {
+      const ctxBB = document.getElementById('chartBB')
+      const ctxTB = document.getElementById('chartTB')
+      const ctxBBTB = document.getElementById('chartBBTB')
+
+      this.chartBB = new Chart(ctxBB, {
+        type: 'pie',
+        data: this.getChartData('status_bb'),
+        options: { responsive: true, maintainAspectRatio: true }
+      })
+
+      this.chartTB = new Chart(ctxTB, {
+        type: 'pie',
+        data: this.getChartData('status_tb'),
+        options: { responsive: true, maintainAspectRatio: true }
+      })
+
+      this.chartBBTB = new Chart(ctxBBTB, {
+        type: 'pie',
+        data: this.getChartData('status_bb_tb'),
+        options: { responsive: true, maintainAspectRatio: true }
+      })
     }
   },
   mounted() {
-    this.renderChart()
+    this.initCharts()
   }
 }
 </script>
-
-
-

@@ -3,7 +3,7 @@
     <!-- Menu List -->
     <ul class="nav flex-column mt-3 px-2">
       <li>
-        <router-link to="/admin" class="nav-link" :class="{ active: isActive('/admin/') }">
+        <router-link to="/admin" class="nav-link" :class="{ active: isActive('/admin') }">
           <i class="bi bi-speedometer2"></i>
           <span v-if="!isCollapsed">Dashboard</span>
         </router-link>
@@ -182,10 +182,4 @@ export default {
 .sidebar-footer {
   border-top: 1px solid #eee;
 }
-
-
-/* .logout-link:hover {
-  background: #ffecec;
-  color: #ff3b30 !important;
-} */
 </style>
