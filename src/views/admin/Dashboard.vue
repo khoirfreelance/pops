@@ -7,7 +7,15 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
       <div class="flex-grow-1 d-flex flex-column">
         <!-- Main Content -->
-        <div class="flex-grow-1 p-4 bg-light">
+        <div
+          class="flex-grow-1 p-4 bg-light"
+          :style="{
+            backgroundImage: background ? `url(${background})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }"
+        >
           <!-- Welcome Card -->
           <div class="card welcome-card shadow-sm mb-4 border-0">
             <div
@@ -405,6 +413,12 @@ export default {
   methods: {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
+    },
+  },
+  computed: {
+    background() {
+      const config = JSON.parse(localStorage.getItem('siteConfig'))
+      return config && config.background ? config.background : null
     },
   },
 }

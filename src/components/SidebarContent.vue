@@ -108,6 +108,7 @@ export default {
 </script>
 
 <style scoped>
+/* Wrapper sidebar */
 .sidebar-container {
   border-right: 1px solid #eaeaea;
   height: 100vh;
@@ -122,54 +123,57 @@ export default {
   width: 80px;
 }
 
+/* Menu item */
 .nav-link {
   color: #333;
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* default normal */
+  justify-content: flex-start;
   gap: 10px;
   transition: all 0.25s ease-in-out;
   font-weight: 500;
 }
 
+/* Icon lingkaran */
 .nav-link i {
   color: var(--bs-primary);
   font-size: 1.1rem;
   flex-shrink: 0;
-  width: 36px;         /* ukuran lingkaran */
+  width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: var(--bs-additional2); /* warna lingkaran */
+  background-color: #f2f4f7; /* selalu ada lingkaran */
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
 }
 
+/* Hover */
 .nav-link:hover i {
-  background-color: #e0f0e8; /* warna lingkaran saat hover */
+  background-color: #e0f0e8;
   color: var(--bs-primary);
 }
 
+/* Active: tetap lingkaran */
 .nav-link.active i {
   background-color: var(--bs-primary);
   color: #fff;
 }
 
+/* Hover/active link text */
 .nav-link:hover {
   color: var(--bs-primary);
   transform: translateX(4px);
 }
 
 .nav-link.active {
-  background-color: #eaf3ff;
+  background-color: transparent; /* jangan timpa lingkaran */
   color: var(--bs-primary);
   font-weight: 600;
-  width: 85% !important;
 }
-
 .menu-section {
   font-size: 0.75rem;
   text-transform: uppercase;

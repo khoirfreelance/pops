@@ -8,7 +8,15 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
 
       <!-- Main Content -->
-      <div class="flex-grow-1 d-flex flex-column p-3 p-md-4">
+      <div
+        class="flex-grow-1 d-flex flex-column p-3 p-md-4"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
         <!-- Profile Card -->
         <div class="card profile-card border-0 shadow-sm mb-4 overflow-hidden">
           <!-- Gradient Header + Cover Action -->
@@ -255,6 +263,12 @@ export default {
   methods: {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
+    },
+  },
+  computed: {
+    background() {
+      const config = JSON.parse(localStorage.getItem('siteConfig'))
+      return config && config.background ? config.background : null
     },
   },
 }
