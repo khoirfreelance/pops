@@ -20,26 +20,23 @@
         <!-- Gradient Banner -->
         <div class="position-relative">
           <div
-            class="nutrition-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+            class="configuration-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
           >
             <!-- Left Content -->
             <div>
-              <h2 class="fw-bold">Data Anak</h2>
-              <p class="mb-0">
-                List daftar anak yang terdaftar di dalam posyandu dengan usia maksimal 5 tahun (60
-                bulan)
-              </p>
+              <h2 class="fw-bold mb-2">Data Anak</h2>
+              <p class="mb-0">List daftar anak yang terdaftar di dalam posyandu dengan usia maksimal 5 tahun (60 bulan)</p>
             </div>
 
             <!-- Right Content: Breadcrumb -->
             <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                  <router-link to="/admin" class="text-decoration-none text-white"
+                  <router-link to="/admin" class="text-decoration-none text-white-50"
                     >Dashboard</router-link
                   >
                 </li>
-                <li class="breadcrumb-item active text-muted" aria-current="page">Data Anak</li>
+                <li class="breadcrumb-item active text-white" aria-current="page">Ibu Hamil</li>
               </ol>
             </nav>
           </div>
