@@ -190,7 +190,7 @@
         </div>
 
         <!-- Alert -->
-        <div class="container-fluid mt-4" v-if="showAlert">
+        <div class="container-fluid mt-4">
           <div class="alert alert-success shadow-sm">✅ Data anak berhasil disimpan!</div>
         </div>
 
@@ -223,7 +223,12 @@
   <!-- Modal Tambah -->
   <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-content shadow-lg border-0 rounded-4"  :style="{
+      backgroundImage: background ? `url(${background})` : 'none',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+    }">
         <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold text-primary">Tambah Data Anak</h5>
@@ -357,7 +362,12 @@
   <!-- Modal Import -->
   <div class="modal fade" id="modalImport" ref="modalImport" tabindex="-1">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" :style="{
+      backgroundImage: background ? `url(${background})` : 'none',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+    }">
         <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title">{{ importTitle }}</h5>
@@ -366,6 +376,13 @@
 
         <!-- Body -->
         <div class="modal-body">
+          <div class="alert alert-warning p-2">
+            <ul>
+              <li>Fungsi import hanya untuk data kunjungan posyandu</li>
+              <li>Pastikan data yang diimport, berformat CSV</li>
+              <li>Pastikan data sudah lengkap sebelum di import</li>
+            </ul>
+          </div>
           <form @submit.prevent="handleImport">
             <input type="file" class="form-control" ref="csvFile" accept=".csv" />
           </form>
@@ -393,7 +410,12 @@
     aria-hidden="true"
   >
     <div class="modal-dialog modal-xl">
-      <div class="modal-content">
+      <div class="modal-content" :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }">
         <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold" id="modalGrafikLabel">Grafik Status Gizi Anak</h5>
@@ -427,7 +449,12 @@
   <!-- Modal Success -->
   <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-content border-0 shadow-lg rounded-4" :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }">
         <div class="modal-header bg-success text-white rounded-top-4">
           <h5 class="modal-title">✅ Berhasil</h5>
           <button
@@ -756,6 +783,21 @@ export default {
         document.body.style.removeProperty('padding-right')
       }, 300) // delay biar nunggu animasi fade
     },
+    updateProgressBar(percent, row, total) {
+      this.importProgress = percent
+      this.currentRow = row
+      this.totalRows = total
+
+      const start = this.animatedProgress
+      const end = percent
+      const step = (end - start) / 10
+      let i = 0
+      const interval = setInterval(() => {
+        this.animatedProgress = Math.min(end, Math.round(start + step * i))
+        i++
+        if (this.animatedProgress >= end) clearInterval(interval)
+      }, 30)
+    },
     refreshCharts() {
       if (this.chartBB) {
         const newData = this.getChartData('status_bb')
@@ -782,10 +824,67 @@ export default {
       this.isLoadingImport = true
       this.importProgress = 0
       this.animatedProgress = 0
+      this.currentRow = 0
+      this.totalRows = 1 // hanya 1 record, bisa disesuaikan kalau batch
+
+      // simulasi progress bertahap
+      let step = 0
+      const interval = setInterval(() => {
+        step += 10
+        this.importProgress = Math.min(step, 100)
+        this.animatedProgress = this.importProgress
+        this.currentRow = Math.round((this.totalRows * this.importProgress) / 100)
+
+        if (this.importProgress >= 100) {
+          clearInterval(interval)
+
+          // lanjut simpan data
+
+          this.anak.push({ ...this.form })
+          this.showAlert = true
+          setTimeout(() => (this.showAlert = false), 3000)
+
+          // reset form
+          this.form = {
+            nik: '',
+            nama: '',
+            gender: 'L',
+            alamat: '',
+            tgl_lahir: '',
+            usia: 0,
+            status_bb: '',
+            status_tb: '',
+            status_bb_tb: '',
+            rt: '',
+            rw: '',
+            kunjungan: '',
+          }
+
+          this.$nextTick(() => {
+            const el = document.getElementById('successModal')
+            if (el) {
+              const instance = Modal.getOrCreateInstance(el)
+              instance.show()
+            }
+          })
+
+          this.isLoadingImport = false
+        }
+      }, 150) // jeda antar progress
+      // refresh chart kalau ada
+      if (typeof this.refreshCharts === "function") {
+        this.refreshCharts()
+      }
+    },
+    /* saveData() {
+      this.closeModal('modalTambah')
+
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
 
       let start = null
       const duration = 2000
-      let frameId = null
 
       const animate = (timestamp) => {
         if (!start) start = timestamp
@@ -795,26 +894,26 @@ export default {
         this.importProgress = progress
         this.animatedProgress = Math.floor(progress)
 
-        if (progress < 100) {
-          frameId = requestAnimationFrame(animate)
+        if (elapsed < duration) {
+          requestAnimationFrame(animate)
         } else {
-          cancelAnimationFrame(frameId)
-
           // ✅ push salinan data
           const newData = { ...this.form }
           this.anak.push(newData)
 
           // refresh chart kalau ada
-          if (this.refreshCharts) this.refreshCharts()
+          if (typeof this.refreshCharts === "function") {
+            this.refreshCharts()
+          }
 
           // reset form
           this.form = {
             nik: '',
             nama: '',
-            gender: 'L', // default isi biar gak kosong
+            gender: 'L',
             alamat: '',
             tgl_lahir: '',
-            usia: '',
+            usia: 0,
             status_bb: '',
             status_tb: '',
             status_bb_tb: '',
@@ -836,38 +935,7 @@ export default {
         }
       }
 
-      frameId = requestAnimationFrame(animate)
-    },
-    /* saveData() {
-      // clone object biar gak kepengaruh reactive ref
-      const newAnak = { ...this.form }
-      this.anak.push(newAnak)
-
-      // reset form biar kosong lagi
-      this.form = {
-        nik: '',
-        nama: '',
-        gender: 'L',
-        alamat: '',
-        tgl_lahir: '',
-        usia: '',
-        status_bb: '',
-        status_tb: '',
-        status_bb_tb: '',
-        rt: '',
-        rw: '',
-        kunjungan: '',
-      }
-
-      // setelah sukses simpan → tutup modal
-      this.closeModal('modalTambah')
-
-      // alert success
-      this.showAlert = true
-      setTimeout(() => (this.showAlert = false), 3000)
-
-      // refresh chart
-      this.refreshCharts()
+      requestAnimationFrame(animate)
     }, */
     openImport(title) {
       this.importTitle = title
@@ -881,9 +949,6 @@ export default {
     toggleExpand() {
       this.isFilterOpen = !this.isFilterOpen
     },
-    /* applyFilter(e) {
-      e.preventDefault()
-    }, */
     hitungUsia() {
       if (!this.form.tgl_lahir) {
         this.form.usia = 0
@@ -1020,21 +1085,7 @@ export default {
       }
       this.appliedAdvancedFilter = { ...this.advancedFilter }
     },
-    updateProgressBar(percent, row, total) {
-      this.importProgress = percent
-      this.currentRow = row
-      this.totalRows = total
 
-      const start = this.animatedProgress
-      const end = percent
-      const step = (end - start) / 10
-      let i = 0
-      const interval = setInterval(() => {
-        this.animatedProgress = Math.min(end, Math.round(start + step * i))
-        i++
-        if (this.animatedProgress >= end) clearInterval(interval)
-      }, 30)
-    },
   },
   watch: {
     anak: {

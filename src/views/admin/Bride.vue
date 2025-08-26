@@ -1,5 +1,5 @@
 <template>
-  <div class="pregnancy-wrapper">
+  <div class="bride-wrapper">
     <!-- Header -->
     <HeaderAdmin :is-collapsed="isCollapsed" @toggle-sidebar="toggleSidebar" />
 
@@ -19,7 +19,7 @@
       >
         <!-- Banner -->
         <div
-          class="pregnancy-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="bride-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
         >
           <div>
             <h2 class="fw-bold mb-2">Data Calon Pengantin</h2>
@@ -42,13 +42,13 @@
           <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
             <!-- NIK (selalu tampil, realtime filter) -->
             <div class="col-md-12">
-              <label for="nik" class="form-label">NIK</label>
+              <label for="nik" class="form-label">NIK Perempuan</label>
               <input
                 type="text"
                 v-model="filter.nik"
-                id="nik"
+                id="nikP"
                 class="form-control"
-                placeholder="Cari berdasarkan NIK"
+                placeholder="Cari berdasarkan NIK Pengantin Wanita"
               />
             </div>
 
@@ -56,18 +56,8 @@
             <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
               <!-- Nama -->
               <div class="col-md-2">
-                <label for="nama" class="form-label">Nama</label>
+                <label for="nama" class="form-label">Nama Pengantin Wanita</label>
                 <input type="text" v-model="advancedFilter.nama" id="nama" class="form-control" />
-              </div>
-
-              <!-- L/P -->
-              <div class="col-md-2">
-                <label for="gender" class="form-label">L/P</label>
-                <select v-model="advancedFilter.gender" id="gender" class="form-select">
-                  <option value="">--</option>
-                  <option value="L">L</option>
-                  <option value="P">P</option>
-                </select>
               </div>
 
               <!-- RT -->
@@ -82,8 +72,19 @@
                 <input type="number" v-model="advancedFilter.rw" id="rw" class="form-control" />
               </div>
 
+              <!-- Menikah -->
+              <div class="col-md-3">
+                <label for="menikah" class="form-label">Tanggal Menikah</label>
+                <input
+                  type="date"
+                  v-model="advancedFilter.menikah"
+                  id="menikah"
+                  class="form-control"
+                />
+              </div>
+
               <!-- Kunjungan -->
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label for="kunjungan" class="form-label">Kunjungan</label>
                 <input
                   type="date"
@@ -125,7 +126,7 @@
         </div>
 
         <!-- Alert -->
-        <div class="container-fluid mt-4" v-if="showAlert">
+        <div class="container-fluid mt-4">
           <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
         </div>
 
@@ -134,14 +135,16 @@
           <div class="card modern-card mt-4">
             <div class="card-body">
               <div class="table-responsive">
-                <EasyDataTable
-                  :headers="headers"
-                  :items="filteredCatin"
-                  buttons-pagination
-                  :rows-per-page="5"
-                  table-class="table-modern"
-                  theme-color="#0d6efd"
-                />
+                <div class="table-wrapper">
+                  <EasyDataTable
+                    :headers="headers"
+                    :items="filteredCatin"
+                    buttons-pagination
+                    :rows-per-page="5"
+                    table-class="table-modern"
+                    theme-color="#0d6efd"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -154,116 +157,120 @@
 
   <!-- Modal Tambah -->
   <div class="modal fade" id="modalTambah" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content shadow-lg border-0 rounded-4">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content shadow-lg border-0 rounded-4" :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }">
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
-          <h5 class="modal-title fw-bold text-primary">Tambah Data Ibu Hamil</h5>
+          <h5 class="modal-title fw-bold text-primary">Tambah Data Calon Pengantin</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
         <div class="modal-body">
           <form class="row g-4" @submit.prevent="saveData">
-            <!-- NIK -->
+            <!-- Catatan Berisiko -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">NIK</label>
-              <input
-                type="text"
-                class="form-control shadow-sm"
-                v-model="form.nik"
-                maxlength="16"
-                @input="form.nik = form.nik.replace(/\D/g, '')"
-                required
-              />
+              <label class="form-label small fw-semibold text-secondary">Catatan Berisiko</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.catatan" />
             </div>
 
-            <!-- Nama -->
+            <!-- Tanggal Kunjungan -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Nama</label>
-              <input type="text" class="form-control shadow-sm" v-model="form.nama" required />
-            </div>
-
-            <!-- Gender -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
-              <select class="form-select shadow-sm" v-model="form.gender" required>
-                <option disabled value="">-- Pilih --</option>
-                <option value="L">Laki-laki</option>
-                <option value="P">Perempuan</option>
-              </select>
-            </div>
-
-            <!-- Tanggal Lahir -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Tanggal Lahir</label>
-              <input
-                type="date"
-                class="form-control shadow-sm"
-                v-model="form.tgl_lahir"
-                @change="hitungUsia"
-                required
-              />
-            </div>
-
-            <!-- Usia -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Usia (bulan)</label>
-              <input
-                type="text"
-                class="form-control bg-light shadow-sm"
-                v-model="form.usia"
-                readonly
-              />
-            </div>
-
-            <!-- Anemia -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Anemia</label>
-              <select class="form-select shadow-sm" v-model="form.anemia">
-                <option value="-">Tidak</option>
-                <option value="Ya">Ya</option>
-              </select>
-            </div>
-
-            <!-- Kehamilan -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Kehamilan Beresiko</label>
-              <select class="form-select shadow-sm" v-model="form.kehamilan">
-                <option value="-">Tidak</option>
-                <option value="Ya">Ya</option>
-              </select>
-            </div>
-
-            <!-- KEK -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">KEK</label>
-              <select class="form-select shadow-sm" v-model="form.kek">
-                <option value="-">Tidak</option>
-                <option value="Ya">Ya</option>
-              </select>
-            </div>
-
-            <!-- Alamat -->
-            <div class="col-md-12">
-              <label class="form-label small fw-semibold text-secondary">Alamat</label>
-              <textarea class="form-control shadow-sm" v-model="form.alamat" rows="2"></textarea>
-            </div>
-
-            <!-- RT -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">RT</label>
-              <input type="number" class="form-control shadow-sm" v-model="form.rt" />
-            </div>
-
-            <!-- RW -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">RW</label>
-              <input type="number" class="form-control shadow-sm" v-model="form.rw" />
-            </div>
-
-            <!-- Kunjungan -->
-            <div class="col-md-12">
               <label class="form-label small fw-semibold text-secondary">Tanggal Kunjungan</label>
               <input type="date" class="form-control shadow-sm" v-model="form.kunjungan" />
+            </div>
+
+            <!-- Tanggal Menikah -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Tanggal Menikah</label>
+              <input type="date" class="form-control shadow-sm" v-model="form.menikah" />
+            </div>
+
+            <!-- Catin Perempuan -->
+            <div class="col-12"><h6 class="fw-bold text-primary mt-3">Catin Perempuan</h6></div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Nama</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.namaP" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">NIK</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.nikP" maxlength="16"
+                @input="form.nikP = form.nikP.replace(/\D/g,'')" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Usia</label>
+              <input type="number" class="form-control shadow-sm" v-model="form.usiaP" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Pekerjaan</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.pekerjaanP" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Berat Badan (kg)</label>
+              <input type="number" class="form-control shadow-sm" v-model="form.bbP" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Tinggi Badan (cm)</label>
+              <input type="number" class="form-control shadow-sm" v-model="form.tbP" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">LiLa (cm)</label>
+              <input type="number" class="form-control shadow-sm" v-model="form.lilaP" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Hb</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.hbP" />
+            </div>
+
+            <!-- Catin Laki-laki -->
+            <div class="col-12"><h6 class="fw-bold text-primary mt-3">Catin Laki-laki</h6></div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Nama</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.namaL" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">NIK</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.nikL" maxlength="16"
+                @input="form.nikL = form.nikL.replace(/\D/g,'')" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Usia</label>
+              <input type="number" class="form-control shadow-sm" v-model="form.usiaL" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Pekerjaan</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.pekerjaanL" />
+            </div>
+
+            <!-- Lingkungan -->
+            <div class="col-12"><h6 class="fw-bold text-primary mt-3">Lingkungan</h6></div>
+
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Riwayat Penyakit</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.riwayat" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Jamban Sehat</label>
+              <select class="form-select shadow-sm" v-model="form.jamban">
+                <option value="">-- Pilih --</option>
+                <option value="Ya">Ya</option>
+                <option value="Tidak">Tidak</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Sumber Air Bersih</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.air" />
+            </div>
+
+            <!-- Intervensi -->
+            <div class="col-md-12">
+              <label class="form-label small fw-semibold text-secondary">Intervensi</label>
+              <textarea class="form-control shadow-sm" v-model="form.intervensi" rows="2"></textarea>
             </div>
           </form>
         </div>
@@ -285,11 +292,11 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
-          <h5 class="modal-title">Import File Ibu Hamil</h5>
+          <h5 class="modal-title">Import File Pendampingan TPK</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-success p-3">
+          <div class="alert alert-warning p-2">
             <ul>
               <li>Import data untuk kunjungan kehamilan oleh pendampingan TPK</li>
               <li>Pastikan data yang diimport, berformat xlxs</li>
@@ -330,17 +337,26 @@ export default {
       importTitle: 'Import File',
       showAlert: false,
       form: {
-        nik: '',
-        nama: '',
-        gender: '',
-        anemia: '',
-        kehamilan: '',
-        kek: '',
-        alamat: '',
-        rt: '',
-        rw: '',
-        usia: '',
+        catatan: '',
         kunjungan: '',
+        menikah: '',
+        namaP: '',
+        nikP: '',
+        usiaP: 0,
+        pekerjaanP: '',
+        bbP: 0,
+        tbP: 0,
+        lilaP: 0,
+        hbP: '',
+        namaL: '',
+        nikL: '',
+        usiaL: 0,
+        pekerjaanL: '',
+        riwayat: '',
+        jamban: '',
+        air: '',
+        intervensi: '',
+        kelola: ''
       },
       catin: [
         {
@@ -390,9 +406,12 @@ export default {
       ],
       // filter
       filter: {
-        nik: '',
+        nikP: '',
       },
       advancedFilter: {
+        namaP: '',
+        namaL: '',
+        intervensi: '',
         menikah: '',
         kunjungan: '',
       },
@@ -412,9 +431,12 @@ export default {
       return this.catin.filter((item) => {
         return (
           // NIK realtime
-          (!this.filter.nik || item.nik.includes(this.filter.nik)) &&
+          (!this.filter.nikP || item.nikP.includes(this.filter.nikP)) &&
           // Advanced filter hanya aktif setelah "Cari"
-          (!this.appliedFilter.menikah || item.rw === this.appliedFilter.menikah) &&
+          (!this.appliedFilter.namaP || item.namaP === this.appliedFilter.namaP) &&
+          (!this.appliedFilter.namaL || item.namaL === this.appliedFilter.namaL) &&
+          (!this.appliedFilter.intervensi || item.intervensi === this.appliedFilter.intervensi) &&
+          (!this.appliedFilter.menikah || item.menikah === this.appliedFilter.menikah) &&
           (!this.appliedFilter.kunjungan || item.kunjungan === this.appliedFilter.kunjungan)
         )
       })
@@ -429,8 +451,11 @@ export default {
       this.appliedFilter = { ...this.advancedFilter }
     },
     resetFilter() {
-      this.filter.nik = ''
+      this.filter.nikP = ''
       this.advancedFilter = {
+        namaP: '',
+        namaL: '',
+        intervensi: '',
         menikah: '',
         kunjungan: '',
       }
@@ -506,14 +531,14 @@ export default {
 </script>
 
 <style scoped>
-.pregnancy-wrapper {
+.bride-wrapper {
   padding-top: 60px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;
 }
 /* Gradient Banner */
-.pregnancy-banner {
+.bride-banner {
   background: linear-gradient(90deg, var(--bs-primary), var(--bs-secondary));
   border-radius: 0 0 1rem 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -574,4 +599,15 @@ export default {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   border: none;
 }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;   /* ✅ Scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* smooth di mobile */
+}
+
+.table-modern {
+  min-width: 1000px;  /* ✅ Supaya kolom tidak terlalu sempit */
+  white-space: nowrap; /* teks tidak pecah ke bawah */
+}
+
 </style>

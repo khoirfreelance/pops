@@ -19,7 +19,7 @@
       >
         <!-- Banner -->
         <div
-          class="configuration-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="pregnancy-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
         >
           <div>
             <h2 class="fw-bold mb-2">Data Ibu Hamil</h2>
@@ -125,7 +125,7 @@
         </div>
 
         <!-- Alert -->
-        <div class="container-fluid mt-4" v-if="showAlert">
+        <div class="container-fluid mt-4">
           <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
         </div>
 
@@ -155,7 +155,12 @@
   <!-- Modal Tambah -->
   <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-content shadow-lg border-0 rounded-4" :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }">
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold text-primary">Tambah Data Ibu Hamil</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -182,36 +187,14 @@
               <input type="text" class="form-control shadow-sm" v-model="form.nama" required />
             </div>
 
-            <!-- Gender -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
-              <select class="form-select shadow-sm" v-model="form.gender" required>
-                <option disabled value="">-- Pilih --</option>
-                <option value="L">Laki-laki</option>
-                <option value="P">Perempuan</option>
-              </select>
-            </div>
-
-            <!-- Tanggal Lahir -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Tanggal Lahir</label>
-              <input
-                type="date"
-                class="form-control shadow-sm"
-                v-model="form.tgl_lahir"
-                @change="hitungUsia"
-                required
-              />
-            </div>
-
             <!-- Usia -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Usia (bulan)</label>
+              <label class="form-label small fw-semibold text-secondary">Usia</label>
               <input
-                type="text"
+                type="number"
+                min="1"
                 class="form-control bg-light shadow-sm"
                 v-model="form.usia"
-                readonly
               />
             </div>
 
@@ -251,13 +234,13 @@
             <!-- RT -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">RT</label>
-              <input type="number" class="form-control shadow-sm" v-model="form.rt" />
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rt" />
             </div>
 
             <!-- RW -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">RW</label>
-              <input type="number" class="form-control shadow-sm" v-model="form.rw" />
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rw" />
             </div>
 
             <!-- Kunjungan -->
@@ -283,7 +266,12 @@
   <!-- Modal Import -->
   <div class="modal fade" id="modalImport" ref="modalImport" tabindex="-1">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }">
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title">Import File Ibu Hamil</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -309,6 +297,64 @@
       </div>
     </div>
   </div>
+
+  <!-- Spinner Loading -->
+  <div v-if="isLoading" class="d-flex justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-25" style="z-index:1055;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Modal Success -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4" :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }">
+        <div class="modal-header bg-success text-white rounded-top-4">
+          <h5 class="modal-title">✅ Berhasil</h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0">Data Anak berhasil disimpan ke <strong>localStorage</strong>.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader Overlay with Animated Progress -->
+  <div
+    v-if="isLoadingImport"
+    class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-dark bg-opacity-50"
+    style="z-index: 2000"
+  >
+    <div class="w-50">
+      <div class="progress" style="height: 1.8rem; border-radius: 1rem; overflow: hidden">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          :style="{ width: importProgress + '%' }"
+          :data-progress="progressLevel"
+        >
+          <span class="fw-bold">{{ animatedProgress }}%</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-white mt-3">Mengimpor data... {{ currentRow }}/{{ totalRows }} baris</p>
+  </div>
 </template>
 
 <script>
@@ -329,6 +375,11 @@ export default {
       isFilterOpen: false,
       importTitle: 'Import File',
       showAlert: false,
+      isLoadingImport: false,
+      importProgress: 0,
+      animatedProgress: 0,
+      currentRow: 0,
+      totalRows: 1, // default 1 agar tidak bagi 0
       form: {
         nik: '',
         nama: '',
@@ -345,8 +396,7 @@ export default {
       bumil: [
         {
           nik: '3276012309870001',
-          nama: 'Ahmad Fauzi',
-          gender: 'L',
+          nama: 'Dummyah',
           anemia: '-',
           kehamilan: '-',
           kek: '-',
@@ -359,7 +409,6 @@ export default {
         {
           nik: '1266792309870001',
           nama: 'Dina K',
-          gender: 'P',
           anemia: '-',
           kehamilan: '-',
           kek: '-',
@@ -373,11 +422,10 @@ export default {
       headers: [
         { text: 'NIK', value: 'nik' },
         { text: 'Nama', value: 'nama' },
-        { text: 'L/P', value: 'gender' },
         { text: 'Anemia', value: 'anemia' },
         { text: 'Kehamilan Beresiko', value: 'kehamilan' },
         { text: 'KEK', value: 'kek' },
-        { text: 'Usia (Bulan)', value: 'usia' },
+        { text: 'Usia', value: 'usia' },
         { text: 'Alamat', value: 'alamat' },
         { text: 'RT', value: 'rt' },
         { text: 'RW', value: 'rw' },
@@ -389,7 +437,6 @@ export default {
       },
       advancedFilter: {
         nama: '',
-        gender: '',
         rt: '',
         rw: '',
         kunjungan: '',
@@ -414,7 +461,6 @@ export default {
           // Advanced filter hanya aktif setelah "Cari"
           (!this.appliedFilter.nama ||
             item.nama.toLowerCase().includes(this.appliedFilter.nama.toLowerCase())) &&
-          (!this.appliedFilter.gender || item.gender === this.appliedFilter.gender) &&
           (!this.appliedFilter.rt || item.rt === this.appliedFilter.rt) &&
           (!this.appliedFilter.rw || item.rw === this.appliedFilter.rw) &&
           (!this.appliedFilter.kunjungan || item.kunjungan === this.appliedFilter.kunjungan)
@@ -423,6 +469,36 @@ export default {
     },
   },
   methods: {
+    closeModal(id) {
+      const el = document.getElementById(id)
+      if (el) {
+        const instance = Modal.getOrCreateInstance(el)
+        instance.hide()
+      }
+
+      // jaga-jaga kalau backdrop masih nyangkut
+      setTimeout(() => {
+        document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove())
+        document.body.classList.remove('modal-open')
+        document.body.style.removeProperty('overflow')
+        document.body.style.removeProperty('padding-right')
+      }, 300) // delay biar nunggu animasi fade
+    },
+    updateProgressBar(percent, row, total) {
+      this.importProgress = percent
+      this.currentRow = row
+      this.totalRows = total
+
+      const start = this.animatedProgress
+      const end = percent
+      const step = (end - start) / 10
+      let i = 0
+      const interval = setInterval(() => {
+        this.animatedProgress = Math.min(end, Math.round(start + step * i))
+        i++
+        if (this.animatedProgress >= end) clearInterval(interval)
+      }, 30)
+    },
     toggleExpand() {
       this.isFilterOpen = !this.isFilterOpen
     },
@@ -434,7 +510,6 @@ export default {
       this.filter.nik = ''
       this.advancedFilter = {
         nama: '',
-        gender: '',
         rt: '',
         rw: '',
         kunjungan: '',
@@ -444,42 +519,60 @@ export default {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
     },
-    hitungUsia() {
-      if (!this.form.tgl_lahir) return
-      const lahir = new Date(this.form.tgl_lahir)
-      const now = new Date()
-      const months =
-        (now.getFullYear() - lahir.getFullYear()) * 12 + (now.getMonth() - lahir.getMonth())
-      this.form.usia = months
-    },
     saveData() {
-      this.bumil.push({ ...this.form })
-      this.showAlert = true
-      setTimeout(() => (this.showAlert = false), 3000)
-      this.form = {
-        nik: '',
-        nama: '',
-        gender: '',
-        alamat: '',
-        tgl_lahir: '',
-        usia: 0,
-        anemia: '',
-        kehamilan: '',
-        kek: '',
-        rt: '',
-        rw: '',
-        kunjungan: '',
-      }
       this.closeModal('modalTambah')
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
+      this.currentRow = 0
+      this.totalRows = 1 // hanya 1 record, bisa disesuaikan kalau batch
+
+      // simulasi progress bertahap
+      let step = 0
+      const interval = setInterval(() => {
+        step += 10
+        this.importProgress = Math.min(step, 100)
+        this.animatedProgress = this.importProgress
+        this.currentRow = Math.round((this.totalRows * this.importProgress) / 100)
+
+        if (this.importProgress >= 100) {
+          clearInterval(interval)
+
+          // lanjut simpan data
+
+          this.bumil.push({ ...this.form })
+          this.showAlert = true
+          setTimeout(() => (this.showAlert = false), 3000)
+
+          // reset form
+          this.form = {
+            nik: '',
+            nama: '',
+            usia: 0,
+            anemia: '',
+            kehamilan: '',
+            kek: '',
+            rt: '',
+            rw: '',
+            kunjungan: '',
+          }
+
+          this.$nextTick(() => {
+            const el = document.getElementById('successModal')
+            if (el) {
+              const instance = Modal.getOrCreateInstance(el)
+              instance.show()
+            }
+          })
+
+          this.isLoadingImport = false
+        }
+      }, 150) // jeda antar progress
     },
     openImport(title) {
       this.importTitle = title
       const el = this.$refs.modalImport
       Modal.getOrCreateInstance(el).show()
-    },
-    closeModal(id) {
-      const el = document.getElementById(id)
-      if (el) Modal.getOrCreateInstance(el).hide()
     },
     handleImport() {
       const file = this.$refs.csvFile?.files[0]
@@ -502,9 +595,6 @@ export default {
         setTimeout(() => (this.showAlert = false), 3000)
       }
       reader.readAsText(file)
-    },
-    toggleFilter() {
-      this.isFilterOpen = !this.isFilterOpen
     },
   },
 }
