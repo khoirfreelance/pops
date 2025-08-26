@@ -17,62 +17,46 @@
           backgroundAttachment: 'fixed',
         }"
       >
-        <!-- Gradient Banner -->
-        <div class="position-relative">
-          <div
-            class="configuration-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
-          >
-            <!-- Left Content -->
-            <div>
-              <h2 class="fw-bold mb-2">Data Anak</h2>
-              <p class="mb-0">List daftar anak yang terdaftar di dalam posyandu dengan usia maksimal 5 tahun (60 bulan)</p>
-            </div>
-
-            <!-- Right Content: Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-              <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item">
-                  <router-link to="/admin" class="text-decoration-none text-white-50"
-                    >Dashboard</router-link
-                  >
-                </li>
-                <li class="breadcrumb-item active text-white" aria-current="page">Ibu Hamil</li>
-              </ol>
-            </nav>
+        <!-- Banner -->
+        <div
+          class="nutrition-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+        >
+          <div>
+            <h2 class="fw-bold mb-2">Data Anak</h2>
+            <p class="mb-0">
+              List daftar anak yang terdaftar di dalam posyandu dengan usia maksimal 5 tahun (60
+              bulan)
+            </p>
           </div>
+          <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <router-link to="/admin" class="text-decoration-none text-white-50">
+                  Dashboard
+                </router-link>
+              </li>
+              <li class="breadcrumb-item active text-white" aria-current="page">Data Anak</li>
+            </ol>
+          </nav>
         </div>
 
         <!-- Filter -->
-        <div
-          class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container"
-          :class="{ 'expanded-overlay': isFilterOpen }"
-        >
-          <form class="row g-2 align-items-center" @submit.prevent>
-            <!-- NIK -->
-            <div class="col-md-2">
-              <label for="nik" class="form-label mb-0">NIK Orang Tua:</label>
+        <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+          <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
+            <!-- NIK (selalu tampil, realtime filter) -->
+            <div class="col-md-12">
+              <label for="nik" class="form-label">NIK Orang Tua</label>
+              <input
+                type="text"
+                v-model="filter.nik"
+                id="nik"
+                class="form-control"
+                placeholder="Cari berdasarkan NIK"
+              />
             </div>
-            <div class="col-md-8">
-              <input type="text" v-model="filter.nik" id="nik" class="form-control" />
-            </div>
-            <div class="col-md-2">
-              <button type="button" class="btn btn-primary w-100">
-                <i class="bi bi-search"></i> Cari
-              </button>
-            </div>
-          </form>
 
-          <!-- Tombol expand filter -->
-          <div class="text-end mt-2">
-            <button class="btn btn-outline-secondary btn-sm" type="button" @click="toggleFilter">
-              <i class="bi bi-funnel"></i>
-              {{ isFilterOpen ? 'Tutup Filter' : 'Filter Lanjutan' }}
-            </button>
-          </div>
-
-          <!-- Collapse filter -->
-          <div v-show="isFilterOpen" class="mt-3">
-            <form class="row g-3" @submit.prevent>
+            <!-- Expandable section -->
+            <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
               <!-- Usia -->
               <div class="col-md-3">
                 <label for="usia" class="form-label">Usia</label>
@@ -80,7 +64,7 @@
                   type="number"
                   class="form-control"
                   id="usia"
-                  v-model="filter.usia"
+                  v-model="advancedFilter.usia"
                   placeholder="Tahun"
                 />
               </div>
@@ -88,7 +72,7 @@
               <!-- Status BB -->
               <div class="col-md-3">
                 <label for="status_bb2" class="form-label">Status BB</label>
-                <select class="form-select" id="status_bb2" v-model="filter.status_bb">
+                <select class="form-select" id="status_bb2" v-model="advancedFilter.status_bb">
                   <option value="">-- semua --</option>
                   <option value="Sangat Kurang">Sangat Kurang</option>
                   <option value="Kurang">Kurang</option>
@@ -100,7 +84,7 @@
               <!-- Status TB -->
               <div class="col-md-3">
                 <label for="status_tb" class="form-label">Status TB</label>
-                <select class="form-select" id="status_tb" v-model="filter.status_tb">
+                <select class="form-select" id="status_tb" v-model="advancedFilter.status_tb">
                   <option value="">-- semua --</option>
                   <option value="Sangat Pendek">Sangat Pendek</option>
                   <option value="Pendek">Pendek</option>
@@ -112,7 +96,7 @@
               <!-- Status Gizi -->
               <div class="col-md-3">
                 <label for="status_gizi" class="form-label">Status Gizi</label>
-                <select class="form-select" id="status_gizi" v-model="filter.status_bb_tb">
+                <select class="form-select" id="status_gizi" v-model="advancedFilter.status_bb_tb">
                   <option value="">-- semua --</option>
                   <option value="Gizi Buruk">Gizi Buruk</option>
                   <option value="Gizi Kurang">Gizi Kurang</option>
@@ -130,17 +114,32 @@
                   type="date"
                   class="form-control"
                   id="tgl_kunjungan"
-                  v-model="filter.kunjungan"
+                  v-model="advancedFilter.kunjungan"
                 />
               </div>
 
-              <!-- Tombol filter -->
-              <div class="col-12 text-end">
-                <button type="submit" class="btn btn-success">
-                  <i class="bi bi-funnel-fill"></i> Terapkan Filter
+              <!-- Tombol -->
+              <div class="col-md-12">
+                <button
+                  type="submit"
+                  class="btn btn-primary float-start"
+                  @click="applyAdvancedFilter"
+                >
+                  <i class="bi bi-search"></i> Cari
+                </button>
+                <button type="button" class="btn btn-secondary float-end" @click="resetFilter">
+                  <i class="bi bi-arrow-clockwise"></i> Reset
                 </button>
               </div>
-            </form>
+            </div>
+          </form>
+
+          <!-- Expand/Collapse Button -->
+          <div class="text-end mt-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" @click="toggleExpand">
+              <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+              {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+            </button>
           </div>
         </div>
 
@@ -327,11 +326,11 @@
             <!-- RT, RW -->
             <div class="col-md-3">
               <label class="form-label small fw-semibold text-secondary">RT</label>
-              <input type="number" class="form-control shadow-sm" v-model="form.rt" />
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rt" />
             </div>
             <div class="col-md-3">
               <label class="form-label small fw-semibold text-secondary">RW</label>
-              <input type="number" class="form-control shadow-sm" v-model="form.rw" />
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rw" />
             </div>
 
             <!-- Kunjungan Terakhir -->
@@ -423,6 +422,52 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Modal Success -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header bg-success text-white rounded-top-4">
+          <h5 class="modal-title">✅ Berhasil</h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0">Data Anak berhasil disimpan ke <strong>localStorage</strong>.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader Overlay with Animated Progress -->
+  <div
+    v-if="isLoadingImport"
+    class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-dark bg-opacity-50"
+    style="z-index: 2000"
+  >
+    <div class="w-50">
+      <div class="progress" style="height: 1.8rem; border-radius: 1rem; overflow: hidden">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          :style="{ width: importProgress + '%' }"
+          :data-progress="progressLevel"
+        >
+          <span class="fw-bold">{{ animatedProgress }}%</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-white mt-3">Mengimpor data... {{ currentRow }}/{{ totalRows }} baris</p>
   </div>
 </template>
 
@@ -540,7 +585,21 @@
   background-color: #f1f5ff !important;
   transition: background 0.2s ease-in-out;
 }
+
+.progress-bar {
+  transition: width 0.4s ease-in-out;
+}
+.progress-bar[data-progress='low'] {
+  background-color: #0d6efd; /* biru awal */
+}
+.progress-bar[data-progress='mid'] {
+  background-color: #ffc107; /* kuning tengah */
+}
+.progress-bar[data-progress='high'] {
+  background-color: #198754; /* hijau akhir */
+}
 </style>
+
 <script>
 import CopyRight from '@/components/CopyRight.vue'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
@@ -564,7 +623,12 @@ export default {
       chartTB: null,
       chartBBTB: null,
       showAlert: false,
-      //background: null, // <-- INI YANG BELUM ADA
+      showSuccessModal: false, // kontrol popup sukses
+      isLoadingImport: false,
+      importProgress: 0,
+      animatedProgress: 0,
+      currentRow: 0,
+      totalRows: 0,
       form: {
         nik: '',
         nama: '',
@@ -631,6 +695,15 @@ export default {
       // filter
       filter: {
         nik: '',
+      },
+      advancedFilter: {
+        usia: '',
+        status_bb: '',
+        status_tb: '',
+        status_bb_tb: '',
+        kunjungan: '',
+      },
+      appliedAdvancedFilter: {
         usia: '',
         status_bb: '',
         status_tb: '',
@@ -646,15 +719,24 @@ export default {
     },
     filteredAnak() {
       return this.anak.filter((item) => {
+        const af = this.appliedAdvancedFilter
+
+        const usiaFilter = af.usia ? Number(item.usia) === Number(af.usia) : true
+
         return (
           (this.filter.nik === '' || item.nik.includes(this.filter.nik)) &&
-          (this.filter.usia === '' || item.usia.includes(this.filter.usia)) &&
-          (this.filter.status_bb === '' || item.status_bb === this.filter.status_bb) &&
-          (this.filter.status_tb === '' || item.tb === this.filter.status_tb) &&
-          (this.filter.status_bb_tb === '' || item.bb_tb === this.filter.status_bb_tb) &&
-          (this.filter.kunjungan === '' || item.kunjungan === this.filter.kunjungan)
+          usiaFilter &&
+          (af.status_bb === '' || item.status_bb === af.status_bb) &&
+          (af.status_tb === '' || item.status_tb === af.status_tb) &&
+          (af.status_bb_tb === '' || item.status_bb_tb === af.status_bb_tb) &&
+          (af.kunjungan === '' || item.kunjungan === af.kunjungan)
         )
       })
+    },
+    progressLevel() {
+      if (this.importProgress < 40) return 'low'
+      if (this.importProgress < 80) return 'mid'
+      return 'high'
     },
   },
   methods: {
@@ -695,6 +777,68 @@ export default {
       }
     },
     saveData() {
+      this.closeModal('modalTambah')
+
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
+
+      let start = null
+      const duration = 2000
+      let frameId = null
+
+      const animate = (timestamp) => {
+        if (!start) start = timestamp
+        const elapsed = timestamp - start
+        const progress = Math.min((elapsed / duration) * 100, 100)
+
+        this.importProgress = progress
+        this.animatedProgress = Math.floor(progress)
+
+        if (progress < 100) {
+          frameId = requestAnimationFrame(animate)
+        } else {
+          cancelAnimationFrame(frameId)
+
+          // ✅ push salinan data
+          const newData = { ...this.form }
+          this.anak.push(newData)
+
+          // refresh chart kalau ada
+          if (this.refreshCharts) this.refreshCharts()
+
+          // reset form
+          this.form = {
+            nik: '',
+            nama: '',
+            gender: 'L', // default isi biar gak kosong
+            alamat: '',
+            tgl_lahir: '',
+            usia: '',
+            status_bb: '',
+            status_tb: '',
+            status_bb_tb: '',
+            rt: '',
+            rw: '',
+            kunjungan: '',
+          }
+
+          this.isLoadingImport = false
+
+          // ✅ kasih jeda supaya Vue render tabel dulu, baru show modal
+          this.$nextTick(() => {
+            const el = document.getElementById('successModal')
+            if (el) {
+              const instance = Modal.getOrCreateInstance(el)
+              instance.show()
+            }
+          })
+        }
+      }
+
+      frameId = requestAnimationFrame(animate)
+    },
+    /* saveData() {
       // clone object biar gak kepengaruh reactive ref
       const newAnak = { ...this.form }
       this.anak.push(newAnak)
@@ -724,7 +868,7 @@ export default {
 
       // refresh chart
       this.refreshCharts()
-    },
+    }, */
     openImport(title) {
       this.importTitle = title
       const el = this.$refs.modalImport
@@ -734,12 +878,12 @@ export default {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
     },
-    toggleFilter() {
+    toggleExpand() {
       this.isFilterOpen = !this.isFilterOpen
     },
-    applyFilter(e) {
+    /* applyFilter(e) {
       e.preventDefault()
-    },
+    }, */
     hitungUsia() {
       if (!this.form.tgl_lahir) {
         this.form.usia = 0
@@ -804,8 +948,14 @@ export default {
       })
     },
     handleImport() {
+      this.closeModal('modalImport')
+
       const fileInput = this.$refs.csvFile
       if (!fileInput || !fileInput.files.length) return
+
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
 
       const file = fileInput.files[0]
       const reader = new FileReader()
@@ -817,16 +967,17 @@ export default {
           .map((r) => r.trim())
           .filter((r) => r)
         const headers = rows[0].split(',').map((h) => h.trim())
+        const total = rows.length - 1
+        this.totalRows = total
 
-        rows.slice(1).forEach((row) => {
+        rows.slice(1).forEach((row, idx) => {
           const values = row.split(',').map((v) => v.trim())
           const obj = {}
           headers.forEach((h, i) => {
             obj[h] = values[i] || ''
           })
 
-          // Map agar sesuai struktur anak
-          const newAnak = {
+          this.anak.push({
             nik: obj.nik || '',
             nama: obj.nama || '',
             gender: obj.gender || '',
@@ -839,24 +990,50 @@ export default {
             rt: obj.rt || '',
             rw: obj.rw || '',
             kunjungan: obj.kunjungan || '',
-          }
+          })
 
-          this.anak.push(newAnak)
+          const percent = Math.round(((idx + 1) / total) * 100)
+          this.updateProgressBar(percent, idx + 1, total)
         })
 
-        // tutup modal + alert
-        this.closeModal('modalImport')
-        this.showAlert = true
-        setTimeout(() => (this.showAlert = false), 3000)
-
-        // refresh chart
-        this.refreshCharts()
-
-        // reset input file
-        fileInput.value = ''
+        setTimeout(() => {
+          this.isLoadingImport = false
+          const el = document.getElementById('successModal')
+          const instance = Modal.getOrCreateInstance(el)
+          instance.show()
+        }, 500)
       }
 
       reader.readAsText(file)
+    },
+    applyAdvancedFilter() {
+      // Salin isi input advancedFilter ke appliedAdvancedFilter
+      this.appliedAdvancedFilter = { ...this.advancedFilter }
+    },
+    resetFilter() {
+      this.advancedFilter = {
+        usia: '',
+        status_bb: '',
+        status_tb: '',
+        status_bb_tb: '',
+        kunjungan: '',
+      }
+      this.appliedAdvancedFilter = { ...this.advancedFilter }
+    },
+    updateProgressBar(percent, row, total) {
+      this.importProgress = percent
+      this.currentRow = row
+      this.totalRows = total
+
+      const start = this.animatedProgress
+      const end = percent
+      const step = (end - start) / 10
+      let i = 0
+      const interval = setInterval(() => {
+        this.animatedProgress = Math.min(end, Math.round(start + step * i))
+        i++
+        if (this.animatedProgress >= end) clearInterval(interval)
+      }, 30)
     },
   },
   watch: {
