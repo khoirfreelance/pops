@@ -45,7 +45,7 @@
               <label for="nik" class="form-label">NIK Perempuan</label>
               <input
                 type="text"
-                v-model="filter.nik"
+                v-model="filter.nikP"
                 id="nikP"
                 class="form-control"
                 placeholder="Cari berdasarkan NIK Pengantin Wanita"
@@ -55,9 +55,14 @@
             <!-- Expandable section -->
             <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
               <!-- Nama -->
-              <div class="col-md-2">
+              <div class="col-md-6">
                 <label for="nama" class="form-label">Nama Pengantin Wanita</label>
-                <input type="text" v-model="advancedFilter.nama" id="nama" class="form-control" />
+                <input type="text" v-model="advancedFilter.namaP" id="namaP" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="nama" class="form-label">Nama Pengantin Pria</label>
+                <input type="text" v-model="advancedFilter.namaL" id="namaL" class="form-control" />
               </div>
 
               <!-- RT -->
@@ -73,7 +78,7 @@
               </div>
 
               <!-- Menikah -->
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <label for="menikah" class="form-label">Tanggal Menikah</label>
                 <input
                   type="date"
@@ -84,7 +89,7 @@
               </div>
 
               <!-- Kunjungan -->
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <label for="kunjungan" class="form-label">Kunjungan</label>
                 <input
                   type="date"
@@ -134,17 +139,15 @@
         <div class="container-fluid">
           <div class="card modern-card mt-4">
             <div class="card-body">
-              <div class="table-responsive">
-                <div class="table-wrapper">
-                  <EasyDataTable
-                    :headers="headers"
-                    :items="filteredCatin"
-                    buttons-pagination
-                    :rows-per-page="5"
-                    table-class="table-modern"
-                    theme-color="#0d6efd"
-                  />
-                </div>
+              <div class="datatable-responsive">
+                <EasyDataTable
+                  :headers="headers"
+                  :items="filteredCatin"
+                  buttons-pagination
+                  :rows-per-page="5"
+                  table-class="table-modern"
+                  theme-color="var(--bs-primary)"
+                />
               </div>
             </div>
           </div>
@@ -158,12 +161,15 @@
   <!-- Modal Tambah -->
   <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-content shadow-lg border-0 rounded-4" :style="{
+      <div
+        class="modal-content shadow-lg border-0 rounded-4"
+        :style="{
           backgroundImage: background ? `url(${background})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-        }">
+        }"
+      >
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold text-primary">Tambah Data Calon Pengantin</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -172,25 +178,25 @@
         <div class="modal-body">
           <form class="row g-4" @submit.prevent="saveData">
             <!-- Catatan Berisiko -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Catatan Berisiko</label>
               <input type="text" class="form-control shadow-sm" v-model="form.catatan" />
             </div>
 
             <!-- Tanggal Kunjungan -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Tanggal Kunjungan</label>
               <input type="date" class="form-control shadow-sm" v-model="form.kunjungan" />
             </div>
 
             <!-- Tanggal Menikah -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Tanggal Menikah</label>
               <input type="date" class="form-control shadow-sm" v-model="form.menikah" />
             </div>
 
             <!-- Catin Perempuan -->
-            <div class="col-12"><h6 class="fw-bold text-primary mt-3">Catin Perempuan</h6></div>
+            <div class="col-12"><h5 class="fw-bold text-primary mt-3">Catin Perempuan</h5></div>
 
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Nama</label>
@@ -198,8 +204,13 @@
             </div>
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">NIK</label>
-              <input type="text" class="form-control shadow-sm" v-model="form.nikP" maxlength="16"
-                @input="form.nikP = form.nikP.replace(/\D/g,'')" />
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form.nikP"
+                maxlength="16"
+                @input="form.nikP = form.nikP.replace(/\D/g, '')"
+              />
             </div>
             <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Usia</label>
@@ -227,7 +238,7 @@
             </div>
 
             <!-- Catin Laki-laki -->
-            <div class="col-12"><h6 class="fw-bold text-primary mt-3">Catin Laki-laki</h6></div>
+            <div class="col-12"><h5 class="fw-bold text-primary mt-3">Catin Laki-laki</h5></div>
 
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Nama</label>
@@ -235,8 +246,13 @@
             </div>
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">NIK</label>
-              <input type="text" class="form-control shadow-sm" v-model="form.nikL" maxlength="16"
-                @input="form.nikL = form.nikL.replace(/\D/g,'')" />
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form.nikL"
+                maxlength="16"
+                @input="form.nikL = form.nikL.replace(/\D/g, '')"
+              />
             </div>
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Usia</label>
@@ -248,7 +264,7 @@
             </div>
 
             <!-- Lingkungan -->
-            <div class="col-12"><h6 class="fw-bold text-primary mt-3">Lingkungan</h6></div>
+            <div class="col-12"><h5 class="fw-bold text-primary mt-3">Lingkungan</h5></div>
 
             <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Riwayat Penyakit</label>
@@ -270,7 +286,11 @@
             <!-- Intervensi -->
             <div class="col-md-12">
               <label class="form-label small fw-semibold text-secondary">Intervensi</label>
-              <textarea class="form-control shadow-sm" v-model="form.intervensi" rows="2"></textarea>
+              <textarea
+                class="form-control shadow-sm"
+                v-model="form.intervensi"
+                rows="2"
+              ></textarea>
             </div>
           </form>
         </div>
@@ -290,7 +310,15 @@
   <!-- Modal Import -->
   <div class="modal fade" id="modalImport" ref="modalImport" tabindex="-1">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div
+        class="modal-content"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title">Import File Pendampingan TPK</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -316,6 +344,60 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Success -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content border-0 shadow-lg rounded-4"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
+        <div class="modal-header bg-success text-white rounded-top-4">
+          <h5 class="modal-title">✅ Berhasil</h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0">Data Anak berhasil disimpan ke <strong>localStorage</strong>.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader Overlay with Animated Progress -->
+  <div
+    v-if="isLoadingImport"
+    class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-dark bg-opacity-50"
+    style="z-index: 2000"
+  >
+    <div class="w-50">
+      <div class="progress" style="height: 1.8rem; border-radius: 1rem; overflow: hidden">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          :style="{ width: importProgress + '%' }"
+          :data-progress="progressLevel"
+        >
+          <span class="fw-bold">{{ animatedProgress }}%</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-white mt-3">Mengimpor data... {{ currentRow }}/{{ totalRows }} baris</p>
+  </div>
 </template>
 
 <script>
@@ -336,6 +418,11 @@ export default {
       isFilterOpen: false,
       importTitle: 'Import File',
       showAlert: false,
+      isLoadingImport: false,
+      importProgress: 0,
+      animatedProgress: 0,
+      currentRow: 0,
+      totalRows: 1, // default 1 agar tidak bagi 0
       form: {
         catatan: '',
         kunjungan: '',
@@ -356,7 +443,7 @@ export default {
         jamban: '',
         air: '',
         intervensi: '',
-        kelola: ''
+        kelola: '',
       },
       catin: [
         {
@@ -443,6 +530,36 @@ export default {
     },
   },
   methods: {
+    closeModal(id) {
+      const el = document.getElementById(id)
+      if (el) {
+        const instance = Modal.getOrCreateInstance(el)
+        instance.hide()
+      }
+
+      // jaga-jaga kalau backdrop masih nyangkut
+      setTimeout(() => {
+        document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove())
+        document.body.classList.remove('modal-open')
+        document.body.style.removeProperty('overflow')
+        document.body.style.removeProperty('padding-right')
+      }, 300) // delay biar nunggu animasi fade
+    },
+    updateProgressBar(percent, row, total) {
+      this.importProgress = percent
+      this.currentRow = row
+      this.totalRows = total
+
+      const start = this.animatedProgress
+      const end = percent
+      const step = (end - start) / 10
+      let i = 0
+      const interval = setInterval(() => {
+        this.animatedProgress = Math.min(end, Math.round(start + step * i))
+        i++
+        if (this.animatedProgress >= end) clearInterval(interval)
+      }, 30)
+    },
     toggleExpand() {
       this.isFilterOpen = !this.isFilterOpen
     },
@@ -465,72 +582,152 @@ export default {
       this.isCollapsed = !this.isCollapsed
     },
     saveData() {
-      this.catin.push({ ...this.form })
-      this.showAlert = true
-      setTimeout(() => (this.showAlert = false), 3000)
-      this.form = {
-        catatan: '',
-        kunjungan: '',
-        menikah: '',
-        namaP: '',
-        nikP: '',
-        usiaP: '',
-        pekerjaanP: '',
-        bbP: '',
-        tbP: '',
-        lilaP: '',
-        hbP: '',
-        namaL: '',
-        nikL: '',
-        usiaL: '',
-        pekerjaanL: '',
-        riwayat: '',
-        jamban: '',
-        air: '',
-        intervensi: '',
-        kelola: '',
-      }
       this.closeModal('modalTambah')
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
+      this.currentRow = 0
+      this.totalRows = 1 // hanya 1 record, bisa disesuaikan kalau batch
+
+      // simulasi progress bertahap
+      let step = 0
+      const interval = setInterval(() => {
+        step += 10
+        this.importProgress = Math.min(step, 100)
+        this.animatedProgress = this.importProgress
+        this.currentRow = Math.round((this.totalRows * this.importProgress) / 100)
+
+        if (this.importProgress >= 100) {
+          clearInterval(interval)
+
+          // lanjut simpan data
+
+          this.catin.push({ ...this.form })
+          this.showAlert = true
+          setTimeout(() => (this.showAlert = false), 3000)
+
+          // reset form
+          this.form = {
+            catatan: '',
+            kunjungan: '',
+            menikah: '',
+            namaP: '',
+            nikP: '',
+            usiaP: '',
+            pekerjaanP: '',
+            bbP: '',
+            tbP: '',
+            lilaP: '',
+            hbP: '',
+            namaL: '',
+            nikL: '',
+            usiaL: '',
+            pekerjaanL: '',
+            riwayat: '',
+            jamban: '',
+            air: '',
+            intervensi: '',
+            kelola: '',
+          }
+
+          this.$nextTick(() => {
+            const el = document.getElementById('successModal')
+            if (el) {
+              const instance = Modal.getOrCreateInstance(el)
+              instance.show()
+            }
+          })
+
+          this.isLoadingImport = false
+        }
+      }, 150) // jeda antar progress
     },
     openImport(title) {
       this.importTitle = title
       const el = this.$refs.modalImport
       Modal.getOrCreateInstance(el).show()
     },
-    closeModal(id) {
-      const el = document.getElementById(id)
-      if (el) Modal.getOrCreateInstance(el).hide()
-    },
     handleImport() {
-      const file = this.$refs.csvFile?.files[0]
-      if (!file) return
+      this.closeModal('modalImport')
+
+      const fileInput = this.$refs.csvFile
+      if (!fileInput || !fileInput.files.length) return
+
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
+
+      const file = fileInput.files[0]
       const reader = new FileReader()
+
       reader.onload = (e) => {
-        const [headerLine, ...lines] = e.target.result
+        const text = e.target.result
+        const rows = text
           .split('\n')
           .map((r) => r.trim())
-          .filter(Boolean)
-        const headers = headerLine.split(',').map((h) => h.trim())
-        lines.forEach((line) => {
-          const values = line.split(',').map((v) => v.trim())
+          .filter((r) => r)
+        const headers = rows[0].split(',').map((h) => h.trim())
+        const total = rows.length - 1
+        this.totalRows = total
+
+        rows.slice(1).forEach((row, idx) => {
+          const values = row.split(',').map((v) => v.trim())
           const obj = {}
-          headers.forEach((h, i) => (obj[h] = values[i] || ''))
-          this.catin.push(obj)
+          headers.forEach((h, i) => {
+            obj[h] = values[i] || ''
+          })
+
+          this.catin.push({
+            catatan: obj.catatan || '',
+            kunjungan: obj.kunjungan || '',
+            menikah: obj.menikah || '',
+            nikP: obj.nikP || '',
+            namaP: obj.namaP || '',
+            usiaP: obj.usiaP || '',
+            pekerjaanP: obj.pekerjaanP || '',
+            bbP: obj.bbP || 0,
+            tbP: obj.tbP || 0,
+            lilaP: obj.lilaP || 0,
+            hbP: obj.hbP || '',
+            nikL: obj.nikL || '',
+            namaL: obj.namaL || '',
+            usiaL: obj.usiaL || '',
+            pekerjaanL: obj.pekerjaanL || '',
+            riwayat: obj.riwayat || '',
+            jamban: obj.jamban || '',
+            air: obj.air || '',
+            intervensi: obj.intervensi || '',
+            kelola: obj.kelola || '',
+          })
+
+          const percent = Math.round(((idx + 1) / total) * 100)
+          this.updateProgressBar(percent, idx + 1, total)
         })
-        this.closeModal('modalImport')
-        this.showAlert = true
-        setTimeout(() => (this.showAlert = false), 3000)
+
+        setTimeout(() => {
+          this.isLoadingImport = false
+          const el = document.getElementById('successModal')
+          const instance = Modal.getOrCreateInstance(el)
+          instance.show()
+        }, 500)
       }
+
       reader.readAsText(file)
-    },
-    toggleFilter() {
-      this.isFilterOpen = !this.isFilterOpen
     },
   },
 }
 </script>
 
 <style scoped>
+.datatable-responsive {
+  width: 100%;
+  overflow-x: auto; /* aktifkan scroll horizontal */
+}
+
+.datatable-responsive table {
+  min-width: 300px; /* sesuaikan lebar minimal tabel */
+}
+
 .bride-wrapper {
   padding-top: 60px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -601,13 +798,18 @@ export default {
 }
 .table-wrapper {
   width: 100%;
-  overflow-x: auto;   /* ✅ Scroll horizontal */
+  overflow-x: auto; /* ✅ Scroll horizontal */
   -webkit-overflow-scrolling: touch; /* smooth di mobile */
 }
 
 .table-modern {
-  min-width: 1000px;  /* ✅ Supaya kolom tidak terlalu sempit */
+  min-width: 1000px; /* ✅ Supaya kolom tidak terlalu sempit */
   white-space: nowrap; /* teks tidak pecah ke bawah */
 }
-
+form h5 {
+  position: relative;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--bs-secondary); /* default pakai secondary */
+}
 </style>

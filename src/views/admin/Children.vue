@@ -58,7 +58,7 @@
             <!-- Expandable section -->
             <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
               <!-- Usia -->
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label for="usia" class="form-label">Usia</label>
                 <input
                   type="number"
@@ -70,7 +70,7 @@
               </div>
 
               <!-- Status BB -->
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label for="status_bb2" class="form-label">Status BB</label>
                 <select class="form-select" id="status_bb2" v-model="advancedFilter.status_bb">
                   <option value="">-- semua --</option>
@@ -82,7 +82,7 @@
               </div>
 
               <!-- Status TB -->
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label for="status_tb" class="form-label">Status TB</label>
                 <select class="form-select" id="status_tb" v-model="advancedFilter.status_tb">
                   <option value="">-- semua --</option>
@@ -94,7 +94,7 @@
               </div>
 
               <!-- Status Gizi -->
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label for="status_gizi" class="form-label">Status Gizi</label>
                 <select class="form-select" id="status_gizi" v-model="advancedFilter.status_bb_tb">
                   <option value="">-- semua --</option>
@@ -108,7 +108,7 @@
               </div>
 
               <!-- Tanggal Kunjungan -->
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <label for="tgl_kunjungan" class="form-label">Tanggal Kunjungan</label>
                 <input
                   type="date"
@@ -207,7 +207,7 @@
                   buttons-pagination
                   :rows-per-page="5"
                   table-class="table-modern"
-                  theme-color="#0d6efd"
+                  theme-color="var(--bs-primary)"
                 />
               </div>
             </div>
@@ -223,12 +223,15 @@
   <!-- Modal Tambah -->
   <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content shadow-lg border-0 rounded-4"  :style="{
-      backgroundImage: background ? `url(${background})` : 'none',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
-    }">
+      <div
+        class="modal-content shadow-lg border-0 rounded-4"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
         <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold text-primary">Tambah Data Anak</h5>
@@ -362,12 +365,15 @@
   <!-- Modal Import -->
   <div class="modal fade" id="modalImport" ref="modalImport" tabindex="-1">
     <div class="modal-dialog">
-      <div class="modal-content" :style="{
-      backgroundImage: background ? `url(${background})` : 'none',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
-    }">
+      <div
+        class="modal-content"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
         <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title">{{ importTitle }}</h5>
@@ -410,12 +416,15 @@
     aria-hidden="true"
   >
     <div class="modal-dialog modal-xl">
-      <div class="modal-content" :style="{
+      <div
+        class="modal-content"
+        :style="{
           backgroundImage: background ? `url(${background})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-        }">
+        }"
+      >
         <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold" id="modalGrafikLabel">Grafik Status Gizi Anak</h5>
@@ -449,12 +458,15 @@
   <!-- Modal Success -->
   <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg rounded-4" :style="{
+      <div
+        class="modal-content border-0 shadow-lg rounded-4"
+        :style="{
           backgroundImage: background ? `url(${background})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-        }">
+        }"
+      >
         <div class="modal-header bg-success text-white rounded-top-4">
           <h5 class="modal-title">✅ Berhasil</h5>
           <button
@@ -521,10 +533,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .filter-wrapper {
-  position: relative;
-  z-index: 1050;
+  position: relative; /* biar ikut alur layout */
+  z-index: 0; /* pastikan di bawah sidebar */
   margin-top: -30px !important;
   width: 97%;
+  border-radius: 0.75rem;
 }
 /* Timeline Style */
 .timeline li {
@@ -591,33 +604,56 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   border: none;
 }
-
 .table-modern {
   border: none !important;
   border-radius: 0.75rem;
   overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+/* Header */
 .table-modern th {
-  background-color: #f8f9fa !important;
+  background-color: var(--bs-primary) !important; /* primary */
+  color: #fff !important;
   font-weight: 600;
-  color: #495057;
+  padding: 0.75rem;
+  text-align: left;
 }
 
+/* Cell */
 .table-modern td {
   vertical-align: middle;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid #f1f1f1;
 }
 
+/* Row hover */
 .table-modern tr:hover {
-  background-color: #f1f5ff !important;
+  background-color: rgba(13, 110, 253, 0.08) !important;
   transition: background 0.2s ease-in-out;
+}
+
+/* Pagination & footer */
+.table-modern .pagination {
+  margin-top: 1rem;
+}
+
+.table-modern .pagination .page-link {
+  border-radius: 0.5rem;
+  color: var(--bs-primary);
+}
+
+.table-modern .pagination .active .page-link {
+  background-color: #6c757d; /* secondary */
+  border-color: #6c757d;
+  color: #fff;
 }
 
 .progress-bar {
   transition: width 0.4s ease-in-out;
 }
 .progress-bar[data-progress='low'] {
-  background-color: #0d6efd; /* biru awal */
+  background-color: var(--bs-primary); /* biru awal */
 }
 .progress-bar[data-progress='mid'] {
   background-color: #ffc107; /* kuning tengah */
@@ -872,71 +908,10 @@ export default {
         }
       }, 150) // jeda antar progress
       // refresh chart kalau ada
-      if (typeof this.refreshCharts === "function") {
+      if (typeof this.refreshCharts === 'function') {
         this.refreshCharts()
       }
     },
-    /* saveData() {
-      this.closeModal('modalTambah')
-
-      this.isLoadingImport = true
-      this.importProgress = 0
-      this.animatedProgress = 0
-
-      let start = null
-      const duration = 2000
-
-      const animate = (timestamp) => {
-        if (!start) start = timestamp
-        const elapsed = timestamp - start
-        const progress = Math.min((elapsed / duration) * 100, 100)
-
-        this.importProgress = progress
-        this.animatedProgress = Math.floor(progress)
-
-        if (elapsed < duration) {
-          requestAnimationFrame(animate)
-        } else {
-          // ✅ push salinan data
-          const newData = { ...this.form }
-          this.anak.push(newData)
-
-          // refresh chart kalau ada
-          if (typeof this.refreshCharts === "function") {
-            this.refreshCharts()
-          }
-
-          // reset form
-          this.form = {
-            nik: '',
-            nama: '',
-            gender: 'L',
-            alamat: '',
-            tgl_lahir: '',
-            usia: 0,
-            status_bb: '',
-            status_tb: '',
-            status_bb_tb: '',
-            rt: '',
-            rw: '',
-            kunjungan: '',
-          }
-
-          this.isLoadingImport = false
-
-          // ✅ kasih jeda supaya Vue render tabel dulu, baru show modal
-          this.$nextTick(() => {
-            const el = document.getElementById('successModal')
-            if (el) {
-              const instance = Modal.getOrCreateInstance(el)
-              instance.show()
-            }
-          })
-        }
-      }
-
-      requestAnimationFrame(animate)
-    }, */
     openImport(title) {
       this.importTitle = title
       const el = this.$refs.modalImport
@@ -1085,7 +1060,6 @@ export default {
       }
       this.appliedAdvancedFilter = { ...this.advancedFilter }
     },
-
   },
   watch: {
     anak: {
