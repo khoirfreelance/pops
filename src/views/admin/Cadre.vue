@@ -142,7 +142,16 @@
                   :rows-per-page="5"
                   table-class="table-modern"
                   theme-color="var(--bs-primary)"
-                />
+                >
+                  <!-- Render kolom action sebagai HTML -->
+                  <template #item-action="item">
+                    <a v-if="item && item.no_tpk" :href="`?no_tpk=${item.no_tpk}`" class="btn btn-secondary">
+                      <i class="fa fa-pencil"></i>
+                    </a>
+                    <span v-else>-</span>
+                  </template>
+
+                </EasyDataTable>
               </div>
             </div>
           </div>
@@ -405,7 +414,7 @@ export default {
           email: 'local_1@email.com',
           role: 'Admin',
           unit_posyandu: 'Flamboyan',
-          action: '<a href="?no_tpk=1" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
+          //action: '<a href="?no_tpk=1" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
         },
         {
           no_tpk: '2',
@@ -416,7 +425,7 @@ export default {
           email: 'local_2@email.com',
           role: 'Admin',
           unit_posyandu: 'Flamboyan',
-          action: '<a href="?no_tpk=2" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
+          //action: '<a href="?no_tpk=2" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
         },
         {
           no_tpk: '3',
@@ -427,7 +436,7 @@ export default {
           email: 'local_3@email.com',
           role: 'Bidan',
           unit_posyandu: 'Flamboyan',
-          action: '<a href="?no_tpk=3" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
+          //action: '<a href="?no_tpk=3" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
         },
         {
           no_tpk: '4',
@@ -438,7 +447,7 @@ export default {
           email: 'local_4@email.com',
           role: 'Admin',
           unit_posyandu: 'Flamboyan',
-          action: '<a href="?no_tpk=4" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
+          //action: '<a href="?no_tpk=4" class="btn btn-info"><i class="fa fa-pencil"></i></a>',
         },
       ],
       headers: [
@@ -576,6 +585,7 @@ export default {
             unit_posyandu: '',
             password: '',
             confirm_password: '',
+            status: 'Active',
           }
 
           this.$nextTick(() => {
@@ -621,16 +631,14 @@ export default {
           })
 
           this.cadre.push({
-            nik: obj.nik || '',
             no_tpk: obj.no_tpk || '',
+            nik: obj.nik || '',
             nama: obj.nama || '',
             email: obj.email || '',
             phone: obj.phone || '',
             role: obj.role || '',
             unit_posyandu: obj.unit_posyandu || '',
-            password: obj.password || '',
-            confirm_password: obj.confirm_password || '',
-            status: 'Active',
+            status: obj.status || 'Active',
           })
 
           const percent = Math.round(((idx + 1) / total) * 100)

@@ -19,7 +19,7 @@
       aria-labelledby="adminSidebarLabel"
     >
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title fw-bold" id="adminSidebarLabel">Admin Panel</h5>
+        <!-- <h5 class="offcanvas-title fw-bold" id="adminSidebarLabel">Admin Panel</h5> -->
         <button
           type="button"
           class="btn-close"
@@ -56,3 +56,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.offcanvas{
+  max-width: 35% !important;
+}
+</style>

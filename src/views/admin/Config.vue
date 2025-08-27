@@ -71,7 +71,12 @@
                       @change="handleFileChange($event, 'logo')"
                     />
                   </div>
-                  <div v-if="previewLogo" class="mt-3 text-center">
+                </div>
+
+                <!-- Preview Logo-->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Preview</label>
+                  <div v-if="previewLogo" class="mt-2 text-center">
                     <img
                       :src="previewLogo"
                       alt="Logo Preview"
@@ -79,16 +84,11 @@
                       style="max-height: 100px"
                     />
                   </div>
-                </div>
-
-                <!-- Logo Width -->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Logo Width (px)</label>
                   <input
                     type="number"
                     v-model="form.logoWidth"
-                    class="form-control modern-input"
-                    placeholder="e.g. 120"
+                    class="form-control modern-input mt-3"
+                    placeholder="Logo Width (px) e.g. 120"
                   />
                 </div>
 
@@ -112,6 +112,11 @@
                       @change="handleFileChange($event, 'background')"
                     />
                   </div>
+                </div>
+
+                <!-- Preview Background-->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Preview</label>
                   <div v-if="previewBackground" class="mt-3 text-center">
                     <img
                       :src="previewBackground"
@@ -123,7 +128,7 @@
                 </div>
 
                 <!-- Theme -->
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <label class="form-label fw-semibold">Color Theme</label>
                   <input
                     type="color"
@@ -132,20 +137,8 @@
                   />
                 </div>
 
-                <!-- Footer Column -->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Footer Column</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="6"
-                    v-model="form.footerColumn"
-                    class="form-control modern-input"
-                  />
-                </div>
-
                 <!-- Maintenance Mode -->
-                <div class="col-md-6 d-flex align-items-center justify-content-between">
+                <div class="col-md-12 d-flex align-items-center justify-content-between">
                   <label class="form-label fw-semibold mb-0">Maintenance Mode</label>
                   <div class="form-check form-switch">
                     <input
