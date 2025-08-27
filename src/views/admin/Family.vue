@@ -114,7 +114,7 @@
             <i class="bi bi-plus-square"></i> Tambah Data
           </button>
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImport">
-            <i class="bi bi-filetype-csv"></i> Import Pendampingan TPK (bumil)
+            <i class="bi bi-filetype-csv"></i> Import Data Keluarga
           </button>
         </div>
 
@@ -158,13 +158,73 @@
           backgroundAttachment: 'fixed',
         }"
       >
+        <!-- Header -->
         <div class="modal-header text-primary bg-light border-0 rounded-top-4">
           <h5 class="modal-title fw-bold text-primary">Tambah Data Keluarga</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
+        <!-- Body -->
         <div class="modal-body">
-          <form class="row g-4" @submit.prevent="saveData">
+          <form class="row g-4">
+            <!-- No KK -->
+            <div class="col-md-12">
+              <label class="form-label small fw-semibold text-secondary">No KK</label>
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form.no_kk"
+                @input="form.no_kk = form.no_kk.replace(/\D/g, '')"
+                maxlength="16"
+              />
+            </div>
+
+            <!-- Alamat -->
+            <div class="col-md-12">
+              <label class="form-label small fw-semibold text-secondary">Alamat</label>
+              <textarea class="form-control shadow-sm" rows="2" v-model="form.alamat"></textarea>
+            </div>
+
+            <!-- RT, RW , Kelurahan -->
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">RT</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rt" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">RW</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rw" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Kelurahan</label>
+              <select class="form-select shadow-sm" v-model="form.kelurahan">
+                <option value="">Pilih</option>
+              </select>
+            </div>
+
+            <!-- Kecamatan & Kota -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Kecamatan</label>
+              <select class="form-select shadow-sm" v-model="form.kecamatan">
+                <option value="">Pilih</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Kota</label>
+              <select class="form-select shadow-sm" v-model="form.kota">
+                <option value="">Pilih</option>
+              </select>
+            </div>
+
+            <!-- Kepala Keluarga -->
+            <div class="col-12">
+              <h5 class="fw-bold text-primary mt-3">Data Kepala Keluarga</h5>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label small fw-semibold text-secondary">Nama Lengkap</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.kepala" />
+            </div>
+
             <!-- NIK -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">NIK</label>
@@ -174,80 +234,62 @@
                 v-model="form.nik"
                 maxlength="16"
                 @input="form.nik = form.nik.replace(/\D/g, '')"
-                required
               />
             </div>
 
-            <!-- Nama -->
+            <!-- Jenis Kelamin -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Nama</label>
-              <input type="text" class="form-control shadow-sm" v-model="form.nama" required />
+              <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
+              <select class="form-select shadow-sm" v-model="form.gender">
+                <option value="">L/P</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
             </div>
 
-            <!-- Usia -->
+            <!-- Tempat Lahir -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Usia</label>
+              <label class="form-label small fw-semibold text-secondary">Tempat Lahir</label>
               <input
-                type="number"
-                min="15"
-                class="form-control bg-light shadow-sm"
-                v-model="form.usia"
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form.tmpt_lahir"
+                maxlength="16"
+                @input="form.tmpt_lahir = form.tmpt_lahir"
               />
             </div>
 
-            <!-- Anemia -->
+            <!-- Tanggal lahir-->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Anemia</label>
-              <select class="form-select shadow-sm" v-model="form.anemia">
-                <option value="-">Tidak</option>
-                <option value="Ya">Ya</option>
+              <label class="form-label small fw-semibold text-secondary">Tanggal Lahir</label>
+              <input type="date" class="form-control shadow-sm" v-model="form.tgl_lahir" />
+            </div>
+
+            <!-- Pendidikan -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Pendidikan</label>
+              <select class="form-select shadow-sm" v-model="form.pendidikan">
+                <option value="">Pendidikan</option>
+                <option value="TK">TK</option>
+                <option value="SD">SD</option>
+                <option value="SMP">SMP</option>
+                <option value="SMA/SMK">SMA/sederajat</option>
+                <option value="SARJANA">Sarjana</option>
+                <option value="MAGISTER">Magister</option>
+                <option value="DOKTORAL">Doktoral</option>
+                <option value="PROFESSOR">Professor</option>
               </select>
             </div>
 
-            <!-- Kehamilan -->
+            <!-- Pekerjaan -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Kehamilan Beresiko</label>
-              <select class="form-select shadow-sm" v-model="form.kehamilan">
-                <option value="-">Tidak</option>
-                <option value="Ya">Ya</option>
-              </select>
-            </div>
-
-            <!-- KEK -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">KEK</label>
-              <select class="form-select shadow-sm" v-model="form.kek">
-                <option value="-">Tidak</option>
-                <option value="Ya">Ya</option>
-              </select>
-            </div>
-
-            <!-- Alamat -->
-            <div class="col-md-12">
-              <label class="form-label small fw-semibold text-secondary">Alamat</label>
-              <textarea class="form-control shadow-sm" v-model="form.alamat" rows="2"></textarea>
-            </div>
-
-            <!-- RT -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">RT</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rt" />
-            </div>
-
-            <!-- RW -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">RW</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rw" />
-            </div>
-
-            <!-- Kunjungan -->
-            <div class="col-md-12">
-              <label class="form-label small fw-semibold text-secondary">Tanggal Kunjungan</label>
-              <input type="date" class="form-control shadow-sm" v-model="form.kunjungan" />
+              <label class="form-label small fw-semibold text-secondary">Pekerjaan</label>
+              <input type="text" class="form-control shadow-sm" v-model="form.pekerjaan" />
             </div>
           </form>
         </div>
 
+        <!-- Footer -->
         <div class="modal-footer border-0 d-flex justify-content-between">
           <button class="btn btn-light border rounded-pill px-4" data-bs-dismiss="modal">
             <i class="bi bi-x-circle me-2"></i> Batal
@@ -470,8 +512,8 @@ export default {
           // Advanced filter hanya aktif setelah "Cari"
           (!this.appliedFilter.kepala ||
             item.kepala.toLowerCase().includes(this.appliedFilter.kepala.toLowerCase())) &&
-          (!this.appliedFilter.rt || item.rt === this.appliedFilter.rt) &&
-          (!this.appliedFilter.rw || item.rw === this.appliedFilter.rw)
+          (!this.appliedFilter.rt || Number(item.rt) === Number(this.appliedFilter.rt)) &&
+          (!this.appliedFilter.rw || Number(item.rw) === Number(this.appliedFilter.rw))
         )
       })
     },
