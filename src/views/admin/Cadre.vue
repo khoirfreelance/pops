@@ -31,7 +31,7 @@
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
                 <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Dashboard
+                  Beranda
                 </router-link>
               </li>
               <li class="breadcrumb-item active text-white" aria-current="page">Pengguna</li>
@@ -145,12 +145,15 @@
                 >
                   <!-- Render kolom action sebagai HTML -->
                   <template #item-action="item">
-                    <a v-if="item && item.no_tpk" :href="`?no_tpk=${item.no_tpk}`" class="btn btn-secondary">
+                    <a
+                      v-if="item && item.no_tpk"
+                      :href="`?no_tpk=${item.no_tpk}`"
+                      class="btn btn-secondary"
+                    >
                       <i class="fa fa-pencil"></i>
                     </a>
                     <span v-else>-</span>
                   </template>
-
                 </EasyDataTable>
               </div>
             </div>

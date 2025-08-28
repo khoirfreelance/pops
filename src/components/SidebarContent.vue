@@ -4,8 +4,8 @@
     <ul class="nav flex-column mt-3 px-2">
       <li>
         <router-link to="/admin" class="nav-link" :class="{ active: isActive('/admin') }">
-          <i class="bi bi-speedometer2"></i>
-          <span v-if="!isCollapsed">Dashboard</span>
+          <i class="bi bi-house"></i>
+          <span v-if="!isCollapsed">Beranda</span>
         </router-link>
       </li>
 

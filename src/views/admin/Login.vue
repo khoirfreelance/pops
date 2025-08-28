@@ -73,7 +73,7 @@ export default {
         title: 'Login Berhasil!',
         text: 'Selamat datang!',
         icon: 'success',
-        confirmButtonText: 'Go to Dashboard',
+        confirmButtonText: 'ke Beranda',
         showClass: {
           popup: 'animate__animated animate__fadeInDown',
         },

@@ -31,7 +31,7 @@
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
                 <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Dashboard
+                  Beranda
                 </router-link>
               </li>
               <li class="breadcrumb-item active text-white" aria-current="page">No TPK</li>
@@ -190,7 +190,7 @@
 
 <script>
 import CopyRight from '@/components/CopyRight.vue'
-import HeaderAdmin from '@/components/HeaderAdmin.vue';
+import HeaderAdmin from '@/components/HeaderAdmin.vue'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
 import EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
@@ -252,7 +252,7 @@ export default {
       return this.member.filter((item) => {
         return (
           // NIK realtime
-          (!this.filter.no_tpk || item.no_tpk.includes(this.filter.no_tpk))
+          !this.filter.no_tpk || item.no_tpk.includes(this.filter.no_tpk)
         )
       })
     },
@@ -294,7 +294,6 @@ export default {
     },
     resetFilter() {
       this.filter.no_tpk = ''
-
     },
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed

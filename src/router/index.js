@@ -14,6 +14,7 @@ import Family from '@/views/admin/Family.vue'
 import Cadre from '@/views/admin/Cadre.vue'
 import Membership from '@/views/admin/Membership.vue'
 import Profile from '@/views/admin/Profile.vue'
+import Chart from '@/views/admin/Chart.vue'
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     path: '/admin/tpk',
     name: 'membership',
     component: Membership,
+  },
+  {
+    path: '/admin/grafik',
+    name: 'chart',
+    component: Chart,
   },
   //auth
   {

@@ -32,7 +32,7 @@
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
                 <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Dashboard
+                  Beranda
                 </router-link>
               </li>
               <li class="breadcrumb-item active text-white" aria-current="page">Data Anak</li>
