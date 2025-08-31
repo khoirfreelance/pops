@@ -664,7 +664,6 @@ export default {
 
 <style scoped>
 .cadre-wrapper {
-  padding-top: 60px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;

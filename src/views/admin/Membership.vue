@@ -346,7 +346,7 @@ export default {
 
 <style scoped>
 .membership-wrapper {
-  padding-top: 60px; /* tinggi navbar bootstrap default */
+   /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;

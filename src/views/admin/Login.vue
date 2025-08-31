@@ -33,9 +33,9 @@
           </button>
         </form>
         <div class="mt-3 text-center">
-          <a href="/admin/forgot" class="text-decoration-none text-brand fw-semibold"
-            >Lupa Password?</a
-          >
+          <a href="/admin/forgot" class="text-decoration-none text-brand fw-semibold">
+            Lupa Password?
+          </a>
         </div>
       </div>
     </div>
@@ -52,9 +52,7 @@ import { useRouter } from 'vue-router'
 
 export default {
   name: 'LoginView',
-  components: {
-    FooterUser,
-  },
+  components: { FooterUser },
   data() {
     return {
       email: '',
@@ -67,36 +65,44 @@ export default {
   },
   methods: {
     handleLogin() {
-      console.log('Login attempt:', this.email, this.password)
+      const validEmail = 'admin@email.com'
+      const validPassword = 'Welcome@2025'
 
-      Swal.fire({
-        title: 'Login Berhasil!',
-        text: 'Selamat datang!',
-        icon: 'success',
-        confirmButtonText: 'ke Beranda',
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown',
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp',
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.router.push('/admin')
-        }
-      })
+      if (this.email === validEmail && this.password === validPassword) {
+        // simpan session ke localStorage
+        localStorage.setItem('isLoggedIn', 'true')
+        localStorage.setItem('userEmail', this.email)
+
+        // tampilkan modal sukses
+        Swal.fire({
+          title: 'Login Berhasil!',
+          text: 'Selamat datang!',
+          icon: 'success',
+          timer: 1500,            // otomatis hilang 1.5 detik
+          showConfirmButton: false,
+          showClass: { popup: 'animate__animated animate__fadeInDown' },
+          hideClass: { popup: 'animate__animated animate__fadeOutUp' },
+        })
+
+        // langsung redirect
+        this.router.push('/admin')
+      } else {
+        Swal.fire({
+          title: 'Login Gagal!',
+          text: 'Email atau password salah.',
+          icon: 'error',
+          confirmButtonText: 'Coba Lagi',
+        })
+      }
     },
   },
 }
 </script>
 
 <style scoped>
-/* Warna teks brand */
 .text-brand {
   color: #006341;
 }
-
-/* Tombol gradient */
 .btn-brand-gradient {
   background: linear-gradient(90deg, #006341, #b3a369);
   border: none;

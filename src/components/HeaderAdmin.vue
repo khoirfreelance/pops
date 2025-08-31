@@ -1,165 +1,149 @@
 <template>
-  <nav class="navbar fixed-top apple-navbar px-3 py-2">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-      <!-- Kiri: Logo + Toggle Sidebar -->
-      <div class="d-flex align-items-center gap-3">
-        <a class="navbar-brand mb-0" href="#">
-          <img src="/src/assets/tf_primary.png" alt="Logo" height="30" />
-        </a>
+  <header class="navbar navbar-light bg-white shadow-sm px-3 py-2">
+    <!-- Left -->
+    <div class="d-flex align-items-center">
+      <button
+        class="btn btn-outline-primary me-3"
+        @click="$emit('toggle-sidebar')"
+      >
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <a class="navbar-brand mb-0" href="#">
+        <img src="/src/assets/tf_primary.png" alt="Logo" height="30" />
+      </a>
+    </div>
+
+    <!-- Right -->
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <!-- Notification -->
+      <div class="dropdown">
         <button
-          class="btn btn-icon d-none d-md-inline-flex align-items-center"
-          @click="$emit('toggle-sidebar')"
+          class="btn btn-link position-relative p-0"
+          @click="toggleNotification = !toggleNotification"
         >
-          <i class="bi bi-list fs-4"></i>
+          <i class="bi bi-bell fs-5"></i>
+          <span
+            v-if="events.length > 0"
+            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+          ></span>
         </button>
+
+        <!-- Dropdown -->
+        <div
+          v-if="toggleNotification"
+          class="dropdown-menu dropdown-menu-end show mt-2 p-0 notification-menu"
+          style="min-width: 260px; max-height: 260px; overflow-y: auto;"
+        >
+          <div class="p-2 border-bottom fw-semibold small text-muted">
+            Upcoming Events
+          </div>
+
+          <div v-if="events.length === 0" class="p-2 text-center text-muted small">
+            No events
+          </div>
+
+          <div
+            v-for="ev in events"
+            :key="ev.id"
+            class="dropdown-item py-2 border-bottom"
+          >
+            <div class="fw-semibold">{{ ev.title }}</div>
+            <small class="text-muted d-block">
+              {{ ev.date }} {{ ev.time || '' }}
+            </small>
+          </div>
+        </div>
       </div>
 
-      <!-- Kanan: Notifikasi + User -->
-      <div class="d-flex align-items-center gap-3">
-        <!-- Dropdown Notifikasi -->
-        <div class="dropdown">
-          <button
-            class="btn btn-icon position-relative"
-            type="button"
-            id="dropdownNotif"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="bi bi-bell fs-5"></i>
-            <span class="badge-dot bg-danger"></span>
-          </button>
-          <ul
-            class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 animate-dropdown"
-            aria-labelledby="dropdownNotif"
-          >
-            <li><h6 class="dropdown-header fw-semibold">Notifikasi</h6></li>
-            <li><a class="dropdown-item small" href="#">Update Sistem</a></li>
-            <li><a class="dropdown-item small" href="#">Pesan Baru</a></li>
-            <li><a class="dropdown-item small" href="#">Tugas Selesai</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a class="dropdown-item text-center text-primary fw-semibold" href="#">Lihat Semua</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Dropdown User -->
-        <div class="dropdown">
-          <button
-            class="btn btn-icon dropdown-toggle d-flex align-items-center"
-            type="button"
-            id="dropdownUser"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="https://ui-avatars.com/api/?name=Admin&background=dddddd&color=000&size=32"
-              alt="User"
-              class="rounded-circle border border-1 border-primary"
-              width="32"
-              height="32"
-            />
-          </button>
-          <ul
-            class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 animate-dropdown"
-            aria-labelledby="dropdownUser"
-          >
-            <li>
-              <router-link
-                to="/admin/profile"
-                class="dropdown-item small"
-                :class="{ active: isActive('/admin/profile') }"
-              >
-                Profile
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                to="/admin/config"
-                class="dropdown-item small"
-                :class="{ active: isActive('/admin/config') }"
-              >
-                Settings
-              </router-link>
-              <!-- <a class="dropdown-item small" href="#">Settings</a> -->
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item text-danger small" href="#">Logout</a></li>
-          </ul>
-        </div>
+      <!-- User Menu -->
+      <div class="dropdown">
+        <button
+          class="btn btn-link dropdown-toggle p-0"
+          id="userMenu"
+          data-bs-toggle="dropdown"
+        >
+          <i class="bi bi-person-circle fs-5"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <button class="dropdown-item text-danger" @click="handleLogout">
+              Logout
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script>
-import { Dropdown } from 'bootstrap'
+import { eventBus } from "@/eventBus"
+import Swal from "sweetalert2"
 
 export default {
-  name: 'HeaderAdmin',
-  props: {
-    isCollapsed: { type: Boolean, default: false },
-  },
-  methods: {
-    isActive(path) {
-      return this.$route.path === path
-    },
+  name: "HeaderAdmin",
+  data() {
+    return {
+      events: [],
+      toggleNotification: false,
+      storageKey: "moodle_calendar_events"
+    }
   },
   mounted() {
-    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((el) => {
-      new Dropdown(el)
-    })
+    this.loadEvents()
+    eventBus.on("eventsUpdated", this.loadEvents)
   },
+  beforeUnmount() {
+    eventBus.off("eventsUpdated", this.loadEvents)
+  },
+  methods: {
+    loadEvents() {
+      try {
+        this.events =
+          JSON.parse(localStorage.getItem(this.storageKey)) || []
+      } catch {
+        this.events = []
+      }
+    },
+    handleLogout() {
+      Swal.fire({
+        title: "Logout?",
+        text: "Anda yakin ingin keluar dari aplikasi?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, Logout",
+        cancelButtonText: "Batal"
+      }).then(result => {
+        if (result.isConfirmed) {
+          localStorage.clear()
+          window.location.href = "/login"
+        }
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
-/* Navbar gaya Apple: blur + transparan */
-.apple-navbar {
-  backdrop-filter: saturate(180%) blur(20px);
-  background: rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+header {
+  z-index: 1050;
 }
 
-/* Icon button minimalis */
-.btn-icon {
-  border: none;
-  background: transparent;
-  padding: 6px;
-  border-radius: 50%;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
-  color: #006341;
-}
-.btn-icon:hover {
-  /* background: rgba(0, 0, 0, 0.05); */
-  color: #6fa287;
+/* fix posisi dropdown notifikasi */
+.dropdown-menu.notification-menu {
+  right: auto !important;     /* matikan bawaan dropdown-menu-end */
+  left: -200px !important;    /* geser ke kiri sesuai lebar menu */
 }
 
-/* Badge titik kecil elegan */
-.badge-dot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
+.dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
 }
-
-/* Dropdown animasi smooth */
-.animate-dropdown {
-  animation: fadeDown 0.2s ease;
-}
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.dropdown-item:last-child {
+  border-bottom: none;
 }
 </style>
+

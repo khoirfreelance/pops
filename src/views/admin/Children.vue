@@ -184,14 +184,31 @@
           </div>
 
           <!-- Grafik Gizi -->
-          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalGrafik">
+          <router-link to="/admin/grafik" class="btn btn-secondary">
             <i class="bi bi-graph-up"></i> Grafik Gizi
-          </button>
+          </router-link>
         </div>
 
         <!-- Alert -->
         <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm">✅ Data anak berhasil disimpan!</div>
+          <div class="alert alert-success shadow-sm mb-2">
+            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 1291 data secara keseluruhan (terdaftar & tidak di data keluarga)
+            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
+              Lihat Data . . .
+            </router-link>
+          </div>
+          <div class="alert alert-success shadow-sm mb-2">
+            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 789 data tidak tercatat di data keluarga
+            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
+              Lihat Data . . .
+            </router-link>
+          </div>
+          <div class="alert alert-success shadow-sm mb-2">
+            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 110 data tercatat sebagai penerima bantuan
+            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
+              Lihat Data . . .
+            </router-link>
+          </div>
         </div>
 
         <!-- Cards Section -->
@@ -407,54 +424,6 @@
     </div>
   </div>
 
-  <!-- Modal Grafik -->
-  <div
-    class="modal fade"
-    id="modalGrafik"
-    tabindex="-1"
-    aria-labelledby="modalGrafikLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-xl">
-      <div
-        class="modal-content"
-        :style="{
-          backgroundImage: background ? `url(${background})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }"
-      >
-        <!-- Header -->
-        <div class="modal-header text-primary bg-light border-0 rounded-top-4">
-          <h5 class="modal-title fw-bold" id="modalGrafikLabel">Grafik Status Gizi Anak</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Body -->
-        <div class="modal-body row g-4 text-center">
-          <!-- Grafik BB -->
-          <div class="col-md-4">
-            <h6 class="fw-bold mb-3">Status BB</h6>
-            <canvas id="chartBB"></canvas>
-          </div>
-
-          <!-- Grafik TB -->
-          <div class="col-md-4">
-            <h6 class="fw-bold mb-3">Status TB</h6>
-            <canvas id="chartTB"></canvas>
-          </div>
-
-          <!-- Grafik BB/TB -->
-          <div class="col-md-4">
-            <h6 class="fw-bold mb-3">Status BB/TB</h6>
-            <canvas id="chartBBTB"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal Success -->
   <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -521,7 +490,6 @@
 }
 
 .nutrition-wrapper {
-  padding-top: 60px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;
@@ -669,7 +637,7 @@ import NavbarAdmin from '@/components/NavbarAdmin.vue'
 import HeaderAdmin from '@/components/HeaderAdmin.vue'
 import EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
-import { Chart } from 'chart.js/auto' // ini ganti <script src=...>
+//import { Chart } from 'chart.js/auto' // ini ganti <script src=...>
 import { Modal } from 'bootstrap' // <-- butuh ini untuk kontrol modal
 
 export default {
@@ -680,11 +648,7 @@ export default {
     return {
       isCollapsed: false,
       isFilterOpen: false,
-      chartGizi: null,
       importTitle: 'Import File', // <-- judul modal dinamis
-      chartBB: null,
-      chartTB: null,
-      chartBBTB: null,
       showAlert: false,
       showSuccessModal: false, // kontrol popup sukses
       isLoadingImport: false,
@@ -834,26 +798,6 @@ export default {
         if (this.animatedProgress >= end) clearInterval(interval)
       }, 30)
     },
-    refreshCharts() {
-      if (this.chartBB) {
-        const newData = this.getChartData('status_bb')
-        this.chartBB.data.labels = newData.labels
-        this.chartBB.data.datasets[0].data = newData.datasets[0].data
-        this.chartBB.update()
-      }
-      if (this.chartTB) {
-        const newData = this.getChartData('status_tb')
-        this.chartTB.data.labels = newData.labels
-        this.chartTB.data.datasets[0].data = newData.datasets[0].data
-        this.chartTB.update()
-      }
-      if (this.chartBBTB) {
-        const newData = this.getChartData('status_bb_tb')
-        this.chartBBTB.data.labels = newData.labels
-        this.chartBBTB.data.datasets[0].data = newData.datasets[0].data
-        this.chartBBTB.update()
-      }
-    },
     saveData() {
       this.closeModal('modalTambah')
 
@@ -941,52 +885,6 @@ export default {
       }
       this.form.usia = usia >= 0 ? usia : 0
     },
-    getChartData(statusKey) {
-      const counts = {}
-      this.anak.forEach((item) => {
-        const val = item[statusKey]
-        counts[val] = (counts[val] || 0) + 1
-      })
-
-      return {
-        labels: Object.keys(counts),
-        datasets: [
-          {
-            data: Object.values(counts),
-            backgroundColor: [
-              getComputedStyle(document.documentElement).getPropertyValue('--bs-primary').trim(),
-              getComputedStyle(document.documentElement).getPropertyValue('--bs-secondary').trim(),
-              getComputedStyle(document.documentElement).getPropertyValue('--bs-warning').trim(),
-              getComputedStyle(document.documentElement).getPropertyValue('--bs-danger').trim(),
-              getComputedStyle(document.documentElement).getPropertyValue('--bs-info').trim(),
-            ],
-          },
-        ],
-      }
-    },
-    initCharts() {
-      const ctxBB = document.getElementById('chartBB')
-      const ctxTB = document.getElementById('chartTB')
-      const ctxBBTB = document.getElementById('chartBBTB')
-
-      this.chartBB = new Chart(ctxBB, {
-        type: 'pie',
-        data: this.getChartData('status_bb'),
-        options: { responsive: true, maintainAspectRatio: true },
-      })
-
-      this.chartTB = new Chart(ctxTB, {
-        type: 'pie',
-        data: this.getChartData('status_tb'),
-        options: { responsive: true, maintainAspectRatio: true },
-      })
-
-      this.chartBBTB = new Chart(ctxBBTB, {
-        type: 'pie',
-        data: this.getChartData('status_bb_tb'),
-        options: { responsive: true, maintainAspectRatio: true },
-      })
-    },
     handleImport() {
       this.closeModal('modalImport')
 
@@ -1069,8 +967,6 @@ export default {
       deep: true,
     },
   },
-  mounted() {
-    this.initCharts()
-  },
+
 }
 </script>

@@ -26,46 +26,55 @@ const routes = [
     path: '/admin',
     name: 'dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/anak',
     name: 'children',
     component: Children,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/hamil',
     name: 'pregnancy',
     component: Pregnancy,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/catin',
     name: 'bride',
     component: Bride,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/jadwal',
     name: 'schedule',
     component: Schedule,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/keluarga',
     name: 'family',
     component: Family,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/kader',
     name: 'cadre',
     component: Cadre,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/tpk',
     name: 'membership',
     component: Membership,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/grafik',
     name: 'chart',
     component: Chart,
+    meta: { requiresAuth: true },
   },
   //auth
   {
@@ -83,11 +92,13 @@ const routes = [
     path: '/admin/config',
     name: 'config',
     component: Config,
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/profile',
     name: 'profile',
     component: Profile,
+    meta: { requiresAuth: true },
   },
 ]
 
@@ -95,5 +106,21 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
+
+// Route Guard
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    // kalau belum login, lempar ke login
+    next({ name: 'login' })
+  } else if (to.name === 'login' && isLoggedIn) {
+    // kalau sudah login, jangan balik ke login
+    next({ name: 'dashboard' })
+  } else {
+    next()
+  }
+})
+
 
 export default router

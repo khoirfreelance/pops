@@ -197,7 +197,6 @@
 
 <style scoped>
 .configuration-wrapper {
-  padding-top: 60px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;

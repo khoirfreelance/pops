@@ -232,12 +232,68 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Success -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content border-0 shadow-lg rounded-4"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
+        <div class="modal-header bg-success text-white rounded-top-4">
+          <h5 class="modal-title">✅ Berhasil</h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0">Data Anak berhasil disimpan ke <strong>localStorage</strong>.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader Overlay with Animated Progress -->
+  <div
+    v-if="isLoadingImport"
+    class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-dark bg-opacity-50"
+    style="z-index: 2000"
+  >
+    <div class="w-50">
+      <div class="progress" style="height: 1.8rem; border-radius: 1rem; overflow: hidden">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          :style="{ width: importProgress + '%' }"
+          :data-progress="progressLevel"
+        >
+          <span class="fw-bold">{{ animatedProgress }}%</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-white mt-3">Mengimpor data... {{ currentRow }}/{{ totalRows }} baris</p>
+  </div>
 </template>
 
 <script>
 import CopyRight from '@/components/CopyRight.vue'
 import HeaderAdmin from '@/components/HeaderAdmin.vue'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
+import { Modal } from 'bootstrap'
+import { eventBus } from '@/eventBus'
 
 function toLocalISODate(date) {
   const d = new Date(date)
@@ -247,6 +303,7 @@ function toLocalISODate(date) {
   return `${year}-${month}-${day}`
 }
 
+// eslint-disable-next-line no-unused-vars
 const categoryColors = {
   'Gizi Anak': 'primary',
   'Ibu Hamil': 'danger',
@@ -359,7 +416,35 @@ export default {
       this.saveEvents()
     }
   },
+  mounted() {
+    eventBus.on('jumpToDate', (date) => {
+      this.focusDate(date) // method kamu buat untuk set tanggal aktif
+    })
+  },
+  beforeUnmount() {
+    eventBus.off('jumpToDate')
+  },
   methods: {
+    async runProgressSimulation() {
+      this.isLoadingImport = true
+      this.importProgress = 0
+      this.animatedProgress = 0
+      this.currentRow = 0
+
+      return new Promise((resolve) => {
+        const interval = setInterval(() => {
+          if (this.importProgress >= 100) {
+            clearInterval(interval)
+            this.isLoadingImport = false
+            resolve()
+          } else {
+            this.importProgress += 10
+            this.animatedProgress = this.importProgress
+            this.currentRow = this.importProgress
+          }
+        }, 200) // kecepatan animasi progress
+      })
+    },
     filterNames() {
       const q = this.form.pj.toLowerCase()
       this.filteredNames = this.allNames.filter((n) => n.toLowerCase().includes(q))
@@ -407,9 +492,9 @@ export default {
       this.showModal = false
       this.editingEvent = null
     },
-    saveEvent() {
+    async saveEvent() {
       const cat = this.form.category
-      const bootstrapColor = categoryColors[cat] || 'secondary'
+      const bootstrapColor = this.categoryColors[cat] || '#ccc'
 
       const newEvent = {
         ...this.form,
@@ -424,7 +509,18 @@ export default {
         this.events.push(newEvent)
       }
 
+      // Simpan ke localStorage
+      this.saveEvents()
+
+      // Tutup modal input
       this.closeModal()
+
+      // Jalankan progress simulasi
+      await this.runProgressSimulation()
+
+      // ✅ Perbaikan di sini
+      const successModal = new Modal(document.getElementById('successModal'))
+      successModal.show()
     },
     deleteEvent(id) {
       if (confirm('Hapus event ini?')) {
@@ -441,11 +537,16 @@ export default {
     },
     saveEvents() {
       localStorage.setItem(this.storageKey, JSON.stringify(this.events))
-      this.$emit('update:events', this.events)
+      // 🔥 beritahu semua komponen lain (termasuk HeaderAdmin)
+      eventBus.emit('eventsUpdated', this.events)
     },
     formatEventDate(ev) {
       return `${ev.date}${ev.time ? ` ${ev.time}` : ''} • ${ev.category || '—'}`
     },
+    focusDate(date) {
+      // contoh: ubah currentDate jadi date event
+      this.currentDate = new Date(date)
+    }
   },
 }
 </script>
@@ -460,7 +561,7 @@ export default {
 }
 
 .schedule-wrapper {
-  padding-top: 60px; /* tinggi navbar bootstrap default */
+  /*   tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;

@@ -23,7 +23,7 @@
             >
               <!-- Kiri: Teks Welcome -->
               <div class="text-start">
-                <h2 class="fw-bold mb-2">Selamat Datang, {{ username }}</h2>
+                <h2 class="fw-bold mb-2">Selamat datang, {{ username }}</h2>
                 <p class="text-light mb-1">Semoga harimu menyenangkan 🎉</p>
                 <p class="text-light">
                   Ada <span class="fw-bold text-light">2 pesan penting</span> untukmu.
@@ -370,6 +370,7 @@ export default {
   components: { NavbarAdmin, CopyRight, HeaderAdmin },
   data() {
     return {
+      username: '',
       stats: [
         { title: 'Total RW', value: '1,000', icon: 'fa-solid fa-house-chimney-window' },
         { title: 'Total RT', value: '100,000', icon: 'bi bi-house-fill' },
@@ -421,11 +422,28 @@ export default {
       return config && config.background ? config.background : null
     },
   },
+  created() {
+    const storedEmail = localStorage.getItem('userEmail')
+    if (storedEmail) {
+      // Ambil bagian sebelum @
+      let namePart = storedEmail.split('@')[0]
+
+      // Ganti titik/underscore jadi spasi
+      namePart = namePart.replace(/[._]/g, ' ')
+
+      // Ubah huruf pertama tiap kata jadi kapital
+      this.username = namePart
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    } else {
+      this.username = 'User'
+    }
+  },
 }
 </script>
 <style scoped>
 .dashboard-wrapper {
-  padding-top: 56px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   color: #333;

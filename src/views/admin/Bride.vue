@@ -132,7 +132,7 @@
 
         <!-- Alert -->
         <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
+          <div class="alert alert-success shadow-sm"> <i class="bi bi-info-circle-fill"></i>&nbsp; Daftar Calon Pengantin</div>
         </div>
 
         <!-- Table -->
@@ -141,12 +141,10 @@
             <div class="card-body">
               <div class="datatable-responsive">
                 <EasyDataTable
-                  :headers="headers"
+                  :headers="visibleHeaders"
                   :items="filteredCatin"
                   buttons-pagination
                   :rows-per-page="5"
-                  table-class="table-modern"
-                  theme-color="var(--bs-primary)"
                 />
               </div>
             </div>
@@ -423,6 +421,7 @@ export default {
       animatedProgress: 0,
       currentRow: 0,
       totalRows: 1, // default 1 agar tidak bagi 0
+      visibleColumns: ['catatan','kunjungan','menikah','namaP','nikP'], // default
       form: {
         catatan: '',
         kunjungan: '',
@@ -528,6 +527,9 @@ export default {
         )
       })
     },
+    visibleHeaders() {
+      return this.headers.filter(h => this.visibleColumns.includes(h.value))
+    }
   },
   methods: {
     closeModal(id) {
@@ -729,7 +731,6 @@ export default {
 }
 
 .bride-wrapper {
-  padding-top: 60px; /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;
@@ -802,14 +803,23 @@ export default {
   -webkit-overflow-scrolling: touch; /* smooth di mobile */
 }
 
-.table-modern {
-  min-width: 1000px; /* ✅ Supaya kolom tidak terlalu sempit */
-  white-space: nowrap; /* teks tidak pecah ke bawah */
+.table-modern td {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 form h5 {
   position: relative;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
   border-bottom: 2px solid var(--bs-secondary); /* default pakai secondary */
 }
+@media (max-width: 768px) {
+  .table-modern {
+    min-width: auto;
+  }
+}
+
 </style>

@@ -116,7 +116,12 @@
 
         <!-- Alert -->
         <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
+          <div class="alert alert-success shadow-sm mb-2">
+            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 110 data tidak tercatat di data keluarga
+            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
+              Lihat Data . . .
+            </router-link>
+          </div>
         </div>
 
         <!-- Table -->
@@ -623,7 +628,7 @@ export default {
 
 <style scoped>
 .pregnancy-wrapper {
-  padding-top: 60px; /* tinggi navbar bootstrap default */
+   /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;
