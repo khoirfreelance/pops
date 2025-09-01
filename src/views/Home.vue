@@ -46,10 +46,10 @@
     </section>
 
     <!-- Section Gizi -->
-    <section class="py-5" id="section2">
+    <section class="py-5" id="section2" style="background-image: url('/src/assets/pattern_bg.png');background-position: center;background-size: contain;">
       <div class="container">
         <ul class="nav nav-pills justify-content-center mb-4" id="chartTabs" role="tablist">
-          <li class="nav-item">
+          <li class="nav-item me-2">
             <button
               class="nav-link active"
               id="gizi-tab"
@@ -58,7 +58,7 @@
               type="button"
               role="tab"
             >
-              Status Gizi Anak
+               Gizi Anak
             </button>
           </li>
           <li class="nav-item">
@@ -70,56 +70,27 @@
               type="button"
               role="tab"
             >
-              Status Ibu Hamil
+              Ibu Hamil
             </button>
           </li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="gizi" role="tabpanel">
             <!-- Alert -->
-            <div class="alert alert-info">
+            <!-- <div class="alert alert-info">
               <i></i>
               Total Data <strong>Gizi Anak</strong> Per Bulan {{ currentMonthYear }}:
               <strong>{{ totalData }}</strong>
-            </div>
-
-            <!-- Filter Form -->
-            <div class="my-3">
-              <div class="card border-0 shadow-sm p-3">
-                <h5 class="mb-3">Filter Data</h5>
-                <form class="row g-3 align-items-center" @submit.prevent="applyFilter">
-                  <div class="col-auto">
-                    <select v-model="selectedMonth" class="form-select">
-                      <option v-for="(m, idx) in months" :key="idx" :value="idx + 1">
-                        {{ m }}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-auto">
-                    <select v-model="selectedYear" class="form-select">
-                      <option v-for="y in yearOptions" :key="y" :value="y">
-                        {{ y }}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">
-                      <i class="bi bi-search me-1"></i> Cari
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
+            </div> -->
 
             <div class="mt-5">
               <h5 class="mb-0 fw-bold">Status Gizi Anak</h5>
               <h1 class="text-primary fw-bold">Berdasarkan Kategori Usia</h1>
             </div>
 
-            <!-- content -->
-            <div class="bg-light p-4 rounded shadow-sm text-center">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
               <!-- Nav Pills -->
-              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <ul class="nav nav-pills mb-2 mb-md-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button
                     class="nav-link active"
@@ -158,12 +129,35 @@
                 </li>
               </ul>
 
+              <!-- Filter Form -->
+              <form class="d-flex align-items-center gap-2" @submit.prevent="applyFilter">
+                <select v-model="selectedMonth" class="form-select">
+                  <option v-for="(m, idx) in months" :key="idx" :value="idx + 1">
+                    {{ m }}
+                  </option>
+                </select>
+
+                <select v-model="selectedYear" class="form-select">
+                  <option v-for="y in yearOptions" :key="y" :value="y">
+                    {{ y }}
+                  </option>
+                </select>
+
+                <button type="submit" class="btn btn-gradient px-5">
+                  Cari
+                </button>
+              </form>
+            </div>
+
+            <!-- content -->
+            <div class="p-4 rounded shadow-sm text-center">
+
               <!-- Tabs Content -->
               <div class="tab-content" id="pills-tabContent">
                 <!-- BB/U -->
                 <div class="tab-pane fade show active" id="pills-bb-usia" role="tabpanel">
                   <h5>Berat Badan / Usia</h5>
-                  <div class="chart-container">
+                  <div class="bg-light chart-container">
                     <canvas id="chart-bb-usia"></canvas>
                   </div>
                 </div>
@@ -171,7 +165,7 @@
                 <!-- TB/U -->
                 <div class="tab-pane fade" id="pills-tb-usia" role="tabpanel">
                   <h5>Tinggi Badan / Usia</h5>
-                  <div class="chart-container">
+                  <div class="bg-light chart-container">
                     <canvas id="chart-tb-usia"></canvas>
                   </div>
                 </div>
@@ -179,7 +173,7 @@
                 <!-- BB/TB -->
                 <div class="tab-pane fade" id="pills-bb-tb" role="tabpanel">
                   <h5>Berat Badan / Tinggi Badan</h5>
-                  <div class="chart-container">
+                  <div class="bg-light chart-container">
                     <canvas id="chart-bb-tb"></canvas>
                   </div>
                 </div>
@@ -192,7 +186,7 @@
             </div>
 
             <!-- content 2 -->
-            <div class="bg-light p-4 rounded shadow-sm text-center">
+            <div class="p-4 rounded shadow-sm text-center">
               <!-- Nav Pills -->
               <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -238,7 +232,7 @@
                 <!-- BB/U -->
                 <div class="tab-pane fade show active" id="pills-bb-usia-12" role="tabpanel">
                   <h5>Berat Badan / Usia</h5>
-                  <div class="chart-container">
+                  <div class="bg-light chart-container">
                     <canvas id="chart-bb-usia-12"></canvas>
                   </div>
                 </div>
@@ -246,7 +240,7 @@
                 <!-- TB/U -->
                 <div class="tab-pane fade" id="pills-tb-usia-12" role="tabpanel">
                   <h5>Tinggi Badan / Usia</h5>
-                  <div class="chart-container">
+                  <div class="bg-light chart-container">
                     <canvas id="chart-tb-usia-12"></canvas>
                   </div>
                 </div>
@@ -254,7 +248,7 @@
                 <!-- BB/TB -->
                 <div class="tab-pane fade" id="pills-bb-tb-12" role="tabpanel">
                   <h5>Berat Badan / Tinggi Badan</h5>
-                  <div class="chart-container">
+                  <div class="bg-light chart-container">
                     <canvas id="chart-bb-tb-12"></canvas>
                   </div>
                 </div>
@@ -267,8 +261,8 @@
               <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
             </div>
 
-            <div class="bg-light p-4 rounded shadow-sm text-center">
-              <div class="chart-container">
+            <div class="p-4 rounded shadow-sm text-center">
+              <div class="bg-light chart-container">
                 <canvas id="chart-bb-tb-indikator"></canvas>
               </div>
             </div>
@@ -315,8 +309,8 @@
                 <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
               </div>
 
-              <div class="bg-light p-4 rounded shadow-sm text-center">
-                <div class="chart-container">
+              <div class="p-4 rounded shadow-sm text-center">
+                <div class="bg-light chart-container">
                   <canvas id="chart-bumil"></canvas>
                 </div>
               </div>
@@ -352,8 +346,8 @@
                 <h5 class="mb-0 fw-bold">Indikator Utama (persentase)</h5>
                 <h1 class="text-primary fw-bold">Dalam 12 Bulan Terakhir</h1>
               </div>
-              <div class="bg-light p-4 rounded shadow-sm text-center">
-                <div class="chart-container">
+              <div class="p-4 rounded shadow-sm text-center">
+                <div class="bg-light chart-container">
                   <canvas id="chart-bumil-indikator"></canvas>
                 </div>
               </div>
@@ -377,39 +371,19 @@
             class="mx-auto mb-3"
             style="width: 90px; height: 4px; background: #fff; border-radius: 3px"
           ></div>
-          <p class="lead fw-light text-light">
-            Inisiatif berbasis data untuk percepatan penurunan stunting di Indonesia
-          </p>
         </div>
 
         <!-- Split Layout -->
-        <div class="row align-items-center mb-5">
-          <div class="col-lg-6 text-white">
+        <div class="row align-items-center mb-5 text-white">
             <p class="lh-lg" style="text-align: justify">
-              <strong>Tanoto Foundation</strong> bersama <strong>BKKBN</strong> dan pemerintah
-              daerah bekerja sama dalam mengembangkan program percepatan penurunan stunting di Jawa
-              Barat, termasuk Kabupaten Bogor.
+              <strong>Tanoto Foundation</strong> bersama <strong>BKKBN</strong> dan pemerintah daerah bekerja sama dalam mengembangkan program percepatan penurunan stunting di empat kabupaten/kota di Provinsi Jawa Barat, Kabupaten Bogor. Strategi pengembangan program tidak saja fokus kepada dukungan teknis konvergensi dan koordinasi dalam penyusunan kebijakan strategi percepatan penurunan stunting, namun juga mewujudkan layanan pencegahan stunting yang lebih berkualitas di tingkat masyarakat.
             </p>
             <p class="lh-lg" style="text-align: justify">
-              Melalui <strong>POPS (Pusat Operasi Penurunan Stunting)</strong>, pengelolaan program
-              dilakukan berbasis data. Pilot program diinisiasi di
-              <strong>Desa Kluwut, Kabupaten Brebes</strong> dengan tahapan assesmen, kesepakatan
-              alur data, hingga pengembangan dashboard.
+              Agar program pendampingan percepatan penurunan stunting tersebut dilakukan secara tepat sasaran sesuai dengan ketersediaan sumber daya hingga di tingkat desa, Tanoto Foundation berupaya menginisiasi pengelolaan program stunting berbasis data penerima sasaran di tingkat desa melalui program POPS (Pusat Operasi Penurunan Stunting). Inisiatif ini akan diujicobakan (pilot) di Desa Kluwut, Kabupaten Brebes. Dalam mempersiapkan program tersebut, beberapa tahapan akan dilakukan diantaranya ; Pertemuan assesmen kebutuhan (needs assessment) untuk menggali kebutuhan dan situasi di desa secara komprehensif sehingga kerangka program POPS yang dikembangkan tepat untuk membantu TPPS desa melakukan pengambilan keputusan intervensi stunting yang efektif, Menyepakati alur proses pengumpulan data dan informasi yang dibutuhkan, dan pengembangan website – applikasi POPS sebagai media yang akan ditampilkan dalam penyajian data.
             </p>
             <p class="lh-lg" style="text-align: justify">
-              Program POPS melibatkan <strong>Tanoto Foundation</strong>, <strong>YSKK</strong>,
-              Pemerintah, dan Kader Desa agar berkelanjutan dan efektif.
+              Dalam pelaksanaan Program POPS ini, Tanoto Foundation bekerjasama dengan Yayasan Satu Karsa Karya (YSKK) sebagai mitra implementasi di Lapangan, dan juga mengajak Pemerintah dan Kader Desa Kluwut untuk membantu dalam penggalian/pengumpulan data dan informasi. Pelibatan Desa Kluwut sejak awal program POPS perlu dilakukan untuk memastikan adanya jaminan keberlanjutan Program POPS ini. Terkait dengan hal tersebut untuk mempermudah memahami alur porses program POPS berikut kami susun acuan program untuk bisa dibaca dan dipahami oleh para pihak yang akan terlibat dalam implementasi program ini.
             </p>
-          </div>
-          <!-- Ilustrasi / Gambar -->
-          <div class="col-lg-6 text-center mt-4 mt-lg-0">
-            <img
-              src="/src/assets/tf_reserved_primary.png"
-              alt="POPS Illustration"
-              class="img-fluid animate-fade-in-up border p-5 border-5 rounded-5"
-              style="max-width: 70%"
-            />
-          </div>
         </div>
 
         <!-- Goals Section -->
@@ -464,7 +438,7 @@
     <!-- Section KMS -->
     <section id="section3" class="py-5 bg-light position-relative">
       <div class="container px-4">
-        <h2 class="text-center mb-2 fw-bold text-primary">Kartu Menuju Sehat (KMS)</h2>
+        <h2 class="text-center mb-2 fw-bold text-primary">Kalkulator Mandiri</h2>
         <p class="text-center text-muted mb-4">Pantau pertumbuhan anak dengan mudah dan cepat</p>
         <hr class="my-3 w-50 mx-auto" />
 
@@ -491,7 +465,8 @@
             <div class="modal-content border-0 rounded-4 shadow-lg">
               <div class="modal-header bg-primary text-white rounded-top-4">
                 <h5 class="modal-title fw-bold" id="kmsModalLabel">
-                  Form Cek Indeks Berat dan Tinggi Badan
+                  <small class="fw-normal"> Untuk Anak Usia 0 - 5 Tahun </small><br>
+                  Cek Indeks Berat dan Tinggi Badan Menurut Umur
                 </h5>
                 <button
                   type="button"
@@ -750,17 +725,6 @@ export default {
         },
       })
     },
-
-    hexToRgba(hex, alpha) {
-      let c
-      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-        c = hex.substring(1).split('')
-        if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]]
-        c = '0x' + c.join('')
-        return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${alpha})`
-      }
-      return hex
-    },
   },
   computed: {
     currentMonthYear() {
@@ -970,15 +934,7 @@ export default {
   border-radius: 50%;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
-.btn-gradient {
-  background: linear-gradient(135deg, #006341, #b3a369);
-  color: #fff;
-  border: none;
-}
-.btn-gradient:hover {
-  background: linear-gradient(135deg, #004d33, #9d8a55);
-  opacity: 0.9;
-}
+
 .hover-scale {
   transition:
     transform 0.3s ease,

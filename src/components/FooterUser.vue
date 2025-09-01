@@ -68,13 +68,13 @@
                 <div class="col-6 col-md-6">
                   <ul class="list-unstyled">
                     <li><a href="#section0" class="footer-link my-2">Home</a></li>
-                    <li><a href="#section1" class="footer-link my-2">About Pops</a></li>
+                    <li><a href="#section1" class="footer-link my-2">Tentang Pops</a></li>
                   </ul>
                 </div>
                 <div class="col-6 col-md-6">
                   <ul class="list-unstyled">
-                    <li><a href="#section2" class="footer-link my-2">Infographics</a></li>
-                    <li><a href="#section3" class="footer-link my-2">Kalkulator KMS</a></li>
+                    <li><a href="#section2" class="footer-link my-2">Status Gizi</a></li>
+                    <li><a href="#section3" class="footer-link my-2">Kalkulator Mandiri</a></li>
                   </ul>
                 </div>
               </div>

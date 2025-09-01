@@ -120,6 +120,7 @@ Chart.register(
 )
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Kms',
   data() {
     return {

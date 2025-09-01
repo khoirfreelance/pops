@@ -29,17 +29,40 @@ $font-family-base: 'Inter', sans-serif;
   background-color: $additional2 !important;
 }
 
-/* .btn-additional {
-  color: #fff;
-  background: $additional;
-  border-color: $additional;
+.nav-pills {
+  .nav-link {
+    border: 1px solid $primary;
+    border-radius: 0.5rem;
+    margin: 2px 5px;
+    padding: 0.5rem 2rem; // lebih balance daripada hanya left/right
+    transition: 0.3s ease;
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &.active {
+      color: #fff;
+      background: linear-gradient(135deg, $primary, $additional);
+      border: none;
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
+  }
 }
 
-.btn-additional:hover {
+.btn-gradient {
+  background: linear-gradient(180deg, $additional, $primary);
   color: #fff;
-  background: #358f5f;
-  border-color: #358f5f;
-} */
+  border: none;
+}
+.btn-gradient:hover {
+  background: linear-gradient(180deg, $additional,$primary);
+  color: #fff;
+  opacity: 0.9;
+}
 
 .text-additional2 {
   color: $additional2 !important;
