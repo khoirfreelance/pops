@@ -1,16 +1,18 @@
 <template>
-  <header class="navbar navbar-light bg-white shadow-sm px-3 py-2">
+  <header class="navbar navbar-light bg-primary shadow-sm px-3 py-2">
     <!-- Left -->
     <div class="d-flex align-items-center">
+      <a class="navbar-brand p-2 ms-5" href="#">
+        <img src="/src/assets/tf_reserved_primary.png" alt="Logo" height="30" />
+      </a>
+      <!-- tombol toggle di kiri kalau expanded -->
       <button
-        class="btn btn-outline-primary me-3"
+        v-if="!isCollapsed"
+        class="btn btn-outline-light ms-3"
         @click="$emit('toggle-sidebar')"
       >
-        <i class="bi bi-arrow-left"></i>
+        <i class="bi bi-list"></i>
       </button>
-      <a class="navbar-brand mb-0" href="#">
-        <img src="/src/assets/tf_primary.png" alt="Logo" height="30" />
-      </a>
     </div>
 
     <!-- Right -->
@@ -18,7 +20,7 @@
       <!-- Notification -->
       <div class="dropdown">
         <button
-          class="btn btn-link position-relative p-0"
+          class="btn btn-link position-relative p-0 text-white"
           @click="toggleNotification = !toggleNotification"
         >
           <i class="bi bi-bell fs-5"></i>
@@ -32,25 +34,15 @@
         <div
           v-if="toggleNotification"
           class="dropdown-menu dropdown-menu-end show mt-2 p-0 notification-menu"
-          style="min-width: 260px; max-height: 260px; overflow-y: auto;"
+          style="min-width: 260px; max-height: 260px; overflow-y: auto"
         >
-          <div class="p-2 border-bottom fw-semibold small text-muted">
-            Upcoming Events
-          </div>
+          <div class="p-2 border-bottom fw-semibold small text-muted">Upcoming Events</div>
 
-          <div v-if="events.length === 0" class="p-2 text-center text-muted small">
-            No events
-          </div>
+          <div v-if="events.length === 0" class="p-2 text-center text-muted small">No events</div>
 
-          <div
-            v-for="ev in events"
-            :key="ev.id"
-            class="dropdown-item py-2 border-bottom"
-          >
+          <div v-for="ev in events" :key="ev.id" class="dropdown-item py-2 border-bottom">
             <div class="fw-semibold">{{ ev.title }}</div>
-            <small class="text-muted d-block">
-              {{ ev.date }} {{ ev.time || '' }}
-            </small>
+            <small class="text-muted d-block"> {{ ev.date }} {{ ev.time || '' }} </small>
           </div>
         </div>
       </div>
@@ -58,7 +50,7 @@
       <!-- User Menu -->
       <div class="dropdown">
         <button
-          class="btn btn-link dropdown-toggle p-0"
+          class="btn btn-link dropdown-toggle p-0 text-white"
           id="userMenu"
           data-bs-toggle="dropdown"
         >
@@ -68,9 +60,7 @@
           <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <button class="dropdown-item text-danger" @click="handleLogout">
-              Logout
-            </button>
+            <button class="dropdown-item text-danger" @click="handleLogout">Logout</button>
           </li>
         </ul>
       </div>
@@ -79,50 +69,49 @@
 </template>
 
 <script>
-import { eventBus } from "@/eventBus"
-import Swal from "sweetalert2"
+import { eventBus } from '@/eventBus'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "HeaderAdmin",
+  name: 'HeaderAdmin',
   data() {
     return {
       events: [],
       toggleNotification: false,
-      storageKey: "moodle_calendar_events"
+      storageKey: 'moodle_calendar_events',
     }
   },
   mounted() {
     this.loadEvents()
-    eventBus.on("eventsUpdated", this.loadEvents)
+    eventBus.on('eventsUpdated', this.loadEvents)
   },
   beforeUnmount() {
-    eventBus.off("eventsUpdated", this.loadEvents)
+    eventBus.off('eventsUpdated', this.loadEvents)
   },
   methods: {
     loadEvents() {
       try {
-        this.events =
-          JSON.parse(localStorage.getItem(this.storageKey)) || []
+        this.events = JSON.parse(localStorage.getItem(this.storageKey)) || []
       } catch {
         this.events = []
       }
     },
     handleLogout() {
       Swal.fire({
-        title: "Logout?",
-        text: "Anda yakin ingin keluar dari aplikasi?",
-        icon: "warning",
+        title: 'Logout?',
+        text: 'Anda yakin ingin keluar dari aplikasi?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Ya, Logout",
-        cancelButtonText: "Batal"
-      }).then(result => {
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal',
+      }).then((result) => {
         if (result.isConfirmed) {
           localStorage.clear()
-          window.location.href = "/login"
+          window.location.href = '/login'
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -133,8 +122,8 @@ header {
 
 /* fix posisi dropdown notifikasi */
 .dropdown-menu.notification-menu {
-  right: auto !important;     /* matikan bawaan dropdown-menu-end */
-  left: -200px !important;    /* geser ke kiri sesuai lebar menu */
+  right: auto !important; /* matikan bawaan dropdown-menu-end */
+  left: -200px !important; /* geser ke kiri sesuai lebar menu */
 }
 
 .dropdown-menu {
@@ -146,4 +135,3 @@ header {
   border-bottom: none;
 }
 </style>
-

@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style>
-.offcanvas{
+.offcanvas {
   max-width: 35% !important;
 }
 </style>

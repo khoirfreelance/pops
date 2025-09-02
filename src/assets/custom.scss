@@ -59,7 +59,7 @@ $font-family-base: 'Inter', sans-serif;
   border: none;
 }
 .btn-gradient:hover {
-  background: linear-gradient(180deg, $additional,$primary);
+  background: linear-gradient(180deg, $additional, $primary);
   color: #fff;
   opacity: 0.9;
 }
@@ -73,4 +73,9 @@ ul.nav .nav-link.active {
   color: #fff !important;
   font-weight: 500;
   border-radius: 0.375rem;
+}
+
+.card.welcome-card {
+  border-radius: 1rem;
+  background: linear-gradient(135deg, $primary, $additional) !important;
 }

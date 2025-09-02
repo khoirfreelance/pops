@@ -19,29 +19,31 @@
           <!-- Welcome Card -->
           <div class="card welcome-card shadow-sm mb-4 border-0">
             <div
-              class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between"
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
             >
               <!-- Kiri: Teks Welcome -->
               <div class="text-start">
-                <h2 class="fw-bold mb-2">Selamat datang, {{ username }}</h2>
-                <p class="text-light mb-1">Semoga harimu menyenangkan 🎉</p>
-                <p class="text-light">
-                  Ada <span class="fw-bold text-light">2 pesan penting</span> untukmu.
+                <h1 class="text-light mb-5">
+                  <span class="text-light fw-normal fs-6">Selamat datang,</span> <br />
+                  {{ username }}
+                </h1>
+                <p class="text-light" style="font-size: 14px">
+                  <span class="bg-light rounded-circle p-2"
+                    ><i class="bi bi-calendar text-primary"></i
+                  ></span>
+                  &nbsp; Anda memiliki
+                  <router-link to="/admin/jadwal" class="fw-bold text-light text-decoration-none">
+                    1 jadwal intervensi
+                  </router-link>
+                  hari ini.
                 </p>
               </div>
 
               <!-- Kanan: Gambar -->
               <div class="mt-3 mt-md-0">
-                <img src="/src/assets/cover2.png" alt="Welcome" class="img-fluid welcome-img" />
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
               </div>
             </div>
-          </div>
-
-          <!-- Last Update Alert -->
-          <div class="alert alert-success shadow-sm border-0 rounded-3 mb-4">
-            <i class="bi bi-info-circle-fill me-2"></i>
-            Data Total RW, Total RT, Penduduk, Keluarga, Balita diupdate terakhir pada
-            <strong>2024-05-16 09:32:58</strong>
           </div>
 
           <!-- Statistic Cards -->
@@ -49,9 +51,9 @@
             <div
               v-for="(stat, index) in stats"
               :key="index"
-              class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3"
+              class="col-6 col-md-4 col-lg-3 col-xl stat-col p-2"
             >
-              <div class="card stat-card h-100 border-0 shadow-sm">
+              <div class="card stat-card h-100 border border-1 border-primary shadow-sm">
                 <div
                   class="card-body p-3 d-flex flex-column align-items-center justify-content-center"
                 >
@@ -76,22 +78,36 @@
 
           <!-- Filter Form -->
           <div class="mt-5">
-            <div class="card border-0 shadow-sm p-3">
-              <form class="row g-3 align-items-center">
-                <div class="col-auto">
-                  <select name="month" id="month" class="form-select">
+            <div class="card border-0 shadow-sm p-3 bg-light">
+              <h3 class="text-primary fw-bold py-2">Filter:</h3>
+              <form class="row g-3 align-items-end">
+                <div class="col-3">
+                  <label for="kecamatan">Kecamatan</label>
+                  <select name="kecamatan" id="kecamatan" class="form-select">
                     <option value="1">Januari</option>
                     <option value="2">Februari</option>
                     <option value="3">Maret</option>
                   </select>
                 </div>
-                <div class="col-auto">
-                  <select name="year" id="year" class="form-select">
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
+                <div class="col-3">
+                  <label for="kelurahan">Kelurahan</label>
+                  <select name="kelurahan" id="kelurahan" class="form-select">
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
                   </select>
                 </div>
-                <div class="col-auto">
+                <div class="col-4">
+                  <label for="periode"> Periode</label>
+                  <input
+                    type="text"
+                    id="daterange"
+                    class="form-control"
+                    placeholder="Pilih rentang tanggal"
+                    readonly
+                  />
+                </div>
+                <div class="col-2">
                   <button type="submit" class="btn btn-primary">
                     <i class="bi bi-search me-1"></i> Cari
                   </button>
@@ -102,51 +118,52 @@
 
           <!-- Tabs -->
           <div class="mt-5">
-            <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link active"
-                  id="home-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#home-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="home-tab-pane"
-                  aria-selected="true"
-                >
-                  Status Gizi Anak
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link"
-                  id="profile-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#profile-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile-tab-pane"
-                  aria-selected="false"
-                >
-                  Status Kesehatan Ibu Hamil
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link"
-                  id="contact-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#contact-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="contact-tab-pane"
-                  aria-selected="false"
-                >
-                  Calon Pengantin Berisiko
-                </button>
-              </li>
-            </ul>
-
+            <div class="d-flex justify-content-center">
+              <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="home-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#home-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="home-tab-pane"
+                    aria-selected="true"
+                  >
+                    Status Gizi Anak
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="profile-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#profile-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="profile-tab-pane"
+                    aria-selected="false"
+                  >
+                    Status Kesehatan Ibu Hamil
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="contact-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#contact-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="contact-tab-pane"
+                    aria-selected="false"
+                  >
+                    Calon Pengantin Berisiko
+                  </button>
+                </li>
+              </ul>
+            </div>
             <div class="tab-content" id="myTabContent">
               <!-- Tab 1 -->
               <div
@@ -160,133 +177,142 @@
                   <h2 class="fw-bold">Status Gizi Anak</h2>
                   <a href="/admin/grafik" class="text-decoration-none">Selengkapnya...</a>
                 </div>
-                <!-- Berat Badan / Usia -->
-                <div class="card border-0 shadow-sm p-3 my-3">
-                  <h4 class="fw-bold">Berat Badan / Usia</h4>
-                  <table class="table table-borderless align-middle">
-                    <tbody>
-                      <tr>
-                        <td class="text-additional fw-bold">Status</td>
-                        <td class="text-muted fw-bold">Jumlah</td>
-                        <td class="text-muted fw-bold">Persen</td>
-                        <td class="text-muted fw-bold">Tren</td>
-                      </tr>
-                      <tr>
-                        <td>Sangat Kurang</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Kurang</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Normal</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 100 %</td>
-                      </tr>
-                      <tr>
-                        <td>Tinggi</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
 
-                <!-- Tinggi Badan / Usia -->
-                <div class="card border-0 shadow-sm p-3 my-3">
-                  <h4 class="fw-bold">Tinggi Badan / Usia</h4>
-                  <table class="table table-borderless align-middle">
-                    <tbody>
-                      <tr>
-                        <td class="text-additional fw-bold">Status</td>
-                        <td class="text-muted fw-bold">Jumlah</td>
-                        <td class="text-muted fw-bold">Persen</td>
-                        <td class="text-muted fw-bold">Tren</td>
-                      </tr>
-                      <tr>
-                        <td>Sangat Pendek</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Pendek</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Normal</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 100 %</td>
-                      </tr>
-                      <tr>
-                        <td>Tinggi</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <!-- Berat Badan / Usia -->
+                    <div class="card border border-primary shadow p-3 my-3">
+                      <h4 class="fw-bold text-primary">Berat Badan / Usia</h4>
+                      <div class="row">
+                        <!-- Table -->
+                        <div class="col-12 col-md-8">
+                          <table class="table table-borderless align-middle">
+                            <tbody>
+                              <tr>
+                                <td class="text-additional fw-bold">Status</td>
+                                <td class="text-muted fw-bold">Jumlah</td>
+                                <td class="text-muted fw-bold">Persen</td>
+                                <td class="text-muted fw-bold">Tren</td>
+                              </tr>
+                              <tr v-for="(row, index) in dataTable_bb" :key="index">
+                                <td>{{ row.status }}</td>
+                                <td>{{ row.jumlah }}</td>
+                                <td>{{ row.persen }} %</td>
+                                <td :class="row.trenClass">
+                                  <span v-if="row.tren !== '-'">
+                                    <i :class="row.trenIcon"></i> {{ row.tren }}
+                                  </span>
+                                  <span v-else>-</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
 
-                <!-- Berat Badan / Tinggi Badan -->
-                <div class="card border-0 shadow-sm p-3 my-3">
-                  <h4 class="fw-bold">Berat Badan / Tinggi Badan</h4>
-                  <table class="table table-borderless align-middle">
-                    <tbody>
-                      <tr>
-                        <td class="text-additional fw-bold">Status</td>
-                        <td class="text-muted fw-bold">Jumlah</td>
-                        <td class="text-muted fw-bold">Persen</td>
-                        <td class="text-muted fw-bold">Tren</td>
-                      </tr>
-                      <tr>
-                        <td>Gizi Buruk</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Gizi Kurang</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Gizi Baik</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 91.63 %</td>
-                      </tr>
-                      <tr>
-                        <td>Resiko Gizi Lebih</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td class="text-success"><i class="bi bi-caret-down-fill"></i> 8.37 %</td>
-                      </tr>
-                      <tr>
-                        <td>Gizi Lebih</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Obesitas</td>
-                        <td>0</td>
-                        <td>0 %</td>
-                        <td>-</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                        <!-- Chart -->
+                        <div class="col-12 col-md-4">
+                          <canvas ref="pieChart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tinggi Badan / Usia -->
+                    <div class="card border border-primary shadow p-3 my-3">
+                      <h4 class="fw-bold text-primary">Tinggi Badan / Usia</h4>
+                      <table class="table table-borderless align-middle">
+                        <tbody>
+                          <tr>
+                            <td class="text-additional fw-bold">Status</td>
+                            <td class="text-muted fw-bold">Jumlah</td>
+                            <td class="text-muted fw-bold">Persen</td>
+                            <td class="text-muted fw-bold">Tren</td>
+                          </tr>
+                          <tr>
+                            <td>Sangat Pendek</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                          <tr>
+                            <td>Pendek</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                          <tr>
+                            <td>Normal</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td class="text-success">
+                              <i class="bi bi-caret-down-fill"></i> 100 %
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Tinggi</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <!-- Berat Badan / Tinggi Badan -->
+                    <div class="card border border-primary shadow p-3 my-3">
+                      <h4 class="fw-bold text-primary">Berat Badan / Tinggi Badan</h4>
+                      <table class="table table-borderless align-middle">
+                        <tbody>
+                          <tr>
+                            <td class="text-additional fw-bold">Status</td>
+                            <td class="text-muted fw-bold">Jumlah</td>
+                            <td class="text-muted fw-bold">Persen</td>
+                            <td class="text-muted fw-bold">Tren</td>
+                          </tr>
+                          <tr>
+                            <td>Gizi Buruk</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                          <tr>
+                            <td>Gizi Kurang</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                          <tr>
+                            <td>Gizi Baik</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td class="text-success">
+                              <i class="bi bi-caret-down-fill"></i> 91.63 %
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Resiko Gizi Lebih</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td class="text-success">
+                              <i class="bi bi-caret-down-fill"></i> 8.37 %
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Gizi Lebih</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                          <tr>
+                            <td>Obesitas</td>
+                            <td>0</td>
+                            <td>0 %</td>
+                            <td>-</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -363,6 +389,21 @@
 import CopyRight from '@/components/CopyRight.vue'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
 import HeaderAdmin from '@/components/HeaderAdmin.vue'
+import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js'
+
+Chart.register(PieController, ArcElement, Tooltip, Legend)
+
+document.addEventListener('DOMContentLoaded', function () {
+  // eslint-disable-next-line no-undef
+  new Litepicker({
+    element: document.getElementById('daterange'),
+    singleMode: false, // biar bisa pilih range (awal - akhir)
+    format: 'DD MMM YYYY',
+    numberOfMonths: 2, // tampil 2 bulan
+    numberOfColumns: 2,
+    lang: 'id-ID', // bahasa Indonesia
+  })
+})
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -408,12 +449,49 @@ export default {
         { nama: 'Resiko', values: Array(12).fill(0) },
         { nama: 'Tinggi', values: Array(12).fill(0) },
       ],
+      dataTable_bb: [
+        { status: 'Sangat Kurang', jumlah: 0, persen: 0, tren: '-', trenClass: '', trenIcon: '' },
+        { status: 'Kurang', jumlah: 0, persen: 0, tren: '-', trenClass: '', trenIcon: '' },
+        {
+          status: 'Normal',
+          jumlah: 0,
+          persen: 100,
+          tren: '100 %',
+          trenClass: 'text-success',
+          trenIcon: 'bi bi-caret-down-fill',
+        },
+        { status: 'Tinggi', jumlah: 0, persen: 0, tren: '-', trenClass: '', trenIcon: '' },
+      ],
       isCollapsed: false,
     }
   },
   methods: {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
+    },
+    renderChart() {
+      console.log(this.$refs.pieChart) // harusnya <canvas> element
+      const ctx = this.$refs.pieChart?.getContext('2d')
+      if (!ctx) return // biar aman kalau null
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: this.dataTable_bb.map((row) => row.status),
+          datasets: [
+            {
+              data: this.dataTable_bb.map((row) => row.persen),
+              backgroundColor: ['#e74c3c', '#f39c12', '#2ecc71', '#3498db'],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+          },
+        },
+      })
     },
   },
   computed: {
@@ -434,15 +512,27 @@ export default {
       // Ubah huruf pertama tiap kata jadi kapital
       this.username = namePart
         .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ')
     } else {
       this.username = 'User'
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.renderChart()
+    })
+  },
 }
 </script>
 <style scoped>
+@media (min-width: 1200px) {
+  .stat-col {
+    flex: 0 0 10%;
+    max-width: 10%;
+  }
+}
+
 .dashboard-wrapper {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
@@ -472,36 +562,15 @@ export default {
   color: #1a7f37;
 }
 
-/* Alert */
-.alert {
-  border-radius: 1rem;
-  background: #f0f9f5;
-  color: #1a7f37;
-  font-weight: 500;
-}
-
 /* Form & Select */
 .form-select,
 .btn {
-  border-radius: 0.75rem;
+  /* border-radius: 0.75rem; */
   transition: all 0.2s ease-in-out;
 }
 .form-select:focus,
 .btn:focus {
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
-}
-
-/* Tabs */
-.nav-pills .nav-link {
-  border-radius: 0.75rem;
-  font-weight: 500;
-  color: #6c757d;
-  transition: all 0.2s ease;
-}
-.nav-pills .nav-link.active {
-  background: var(--bs-primary);
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.25);
 }
 
 /* Card konten */
@@ -525,19 +594,5 @@ export default {
 }
 .table td {
   color: #333;
-}
-.welcome-card {
-  border-radius: 1rem;
-  background: linear-gradient(135deg, #006341, #b3a369);
-}
-
-.welcome-card h2 {
-  font-size: 1.5rem;
-  color: #fff;
-}
-
-.welcome-img {
-  max-height: 120px;
-  object-fit: contain;
 }
 </style>
