@@ -211,7 +211,7 @@
 
                         <!-- Chart -->
                         <div class="col-12 col-md-4">
-                          <canvas ref="pieChart"></canvas>
+                          <canvas ref="pieChart_bb"></canvas>
                         </div>
                       </div>
                     </div>
@@ -219,98 +219,69 @@
                     <!-- Tinggi Badan / Usia -->
                     <div class="card border border-primary shadow p-3 my-3">
                       <h4 class="fw-bold text-primary">Tinggi Badan / Usia</h4>
-                      <table class="table table-borderless align-middle">
-                        <tbody>
-                          <tr>
-                            <td class="text-additional fw-bold">Status</td>
-                            <td class="text-muted fw-bold">Jumlah</td>
-                            <td class="text-muted fw-bold">Persen</td>
-                            <td class="text-muted fw-bold">Tren</td>
-                          </tr>
-                          <tr>
-                            <td>Sangat Pendek</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                          <tr>
-                            <td>Pendek</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                          <tr>
-                            <td>Normal</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td class="text-success">
-                              <i class="bi bi-caret-down-fill"></i> 100 %
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Tinggi</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div class="row">
+                        <div class="col-12 col-md-8">
+                          <table class="table table-borderless align-middle">
+                            <tbody>
+                              <tr>
+                                <td class="text-additional fw-bold">Status</td>
+                                <td class="text-muted fw-bold">Jumlah</td>
+                                <td class="text-muted fw-bold">Persen</td>
+                                <td class="text-muted fw-bold">Tren</td>
+                              </tr>
+                              <tr v-for="(row, index) in dataTable_tb" :key="index">
+                                <td>{{ row.status }}</td>
+                                <td>{{ row.jumlah }}</td>
+                                <td>{{ row.persen }} %</td>
+                                <td :class="row.trenClass">
+                                  <span v-if="row.tren !== '-'">
+                                    <i :class="row.trenIcon"></i> {{ row.tren }}
+                                  </span>
+                                  <span v-else>-</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <canvas ref="pieChart_tb"></canvas>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-12 col-md-6">
+
                     <!-- Berat Badan / Tinggi Badan -->
                     <div class="card border border-primary shadow p-3 my-3">
                       <h4 class="fw-bold text-primary">Berat Badan / Tinggi Badan</h4>
-                      <table class="table table-borderless align-middle">
-                        <tbody>
-                          <tr>
-                            <td class="text-additional fw-bold">Status</td>
-                            <td class="text-muted fw-bold">Jumlah</td>
-                            <td class="text-muted fw-bold">Persen</td>
-                            <td class="text-muted fw-bold">Tren</td>
-                          </tr>
-                          <tr>
-                            <td>Gizi Buruk</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                          <tr>
-                            <td>Gizi Kurang</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                          <tr>
-                            <td>Gizi Baik</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td class="text-success">
-                              <i class="bi bi-caret-down-fill"></i> 91.63 %
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Resiko Gizi Lebih</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td class="text-success">
-                              <i class="bi bi-caret-down-fill"></i> 8.37 %
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Gizi Lebih</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                          <tr>
-                            <td>Obesitas</td>
-                            <td>0</td>
-                            <td>0 %</td>
-                            <td>-</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div class="row">
+                        <div class="col-12">
+                          <table class="table table-borderless align-middle">
+                            <tbody>
+                              <tr>
+                                <td class="text-additional fw-bold">Status</td>
+                                <td class="text-muted fw-bold">Jumlah</td>
+                                <td class="text-muted fw-bold">Persen</td>
+                                <td class="text-muted fw-bold">Tren</td>
+                              </tr>
+                              <tr v-for="(row, index) in dataTable_status" :key="index">
+                                <td>{{ row.status }}</td>
+                                <td>{{ row.jumlah }}</td>
+                                <td>{{ row.persen }} %</td>
+                                <td :class="row.trenClass">
+                                  <span v-if="row.tren !== '-'">
+                                    <i :class="row.trenIcon"></i> {{ row.tren }}
+                                  </span>
+                                  <span v-else>-</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-12">
+                          <canvas ref="pieChart_status" class="mx-auto d-block" style="max-width:300px; max-height:300px;"></canvas>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -390,8 +361,9 @@ import CopyRight from '@/components/CopyRight.vue'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
 import HeaderAdmin from '@/components/HeaderAdmin.vue'
 import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
-Chart.register(PieController, ArcElement, Tooltip, Legend)
+Chart.register(PieController, ArcElement, Tooltip, Legend, ChartDataLabels)
 
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-undef
@@ -450,17 +422,25 @@ export default {
         { nama: 'Tinggi', values: Array(12).fill(0) },
       ],
       dataTable_bb: [
-        { status: 'Sangat Kurang', jumlah: 0, persen: 0, tren: '-', trenClass: '', trenIcon: '' },
-        { status: 'Kurang', jumlah: 0, persen: 0, tren: '-', trenClass: '', trenIcon: '' },
-        {
-          status: 'Normal',
-          jumlah: 0,
-          persen: 100,
-          tren: '100 %',
-          trenClass: 'text-success',
-          trenIcon: 'bi bi-caret-down-fill',
-        },
-        { status: 'Tinggi', jumlah: 0, persen: 0, tren: '-', trenClass: '', trenIcon: '' },
+        { status: 'Sangat Kurang', jumlah: 24, persen: 2.80, tren: '2.80%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill' },
+        { status: 'Kurang', jumlah: 94, persen: 10.96, tren: '10.96', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
+        { status: 'Normal', jumlah: 725, persen: 84.50, tren: '84.50 %', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
+        { status: 'Risiko Lebih', jumlah: 15, persen: 1.75, tren: '1.75%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill' },
+        { status: 'Tidak Naik', jumlah: 287, persen: 33.45, tren: '33.45%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill' },
+      ],
+      dataTable_tb: [
+        { status: 'Sangat Pendek', jumlah: 21, persen: 2.45, tren: '0.63%', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
+        { status: 'Pendek', jumlah: 149, persen: 17.37, tren: '0.29%', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
+        { status: 'Normal', jumlah: 688, persen: 80.19, tren: ' 0.92%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
+        { status: 'Tinggi', jumlah: 0, persen: 0, tren: '-', trenClass: 'text-muted', trenIcon: '' },
+      ],
+      dataTable_status: [
+        { status: 'Gizi Buruk', jumlah: 4, persen: 0.47, tren: '2.80%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
+        { status: 'Gizi Kurang', jumlah: 20, persen: 2.33, tren: '10.96%', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
+        { status: 'Gizi Baik', jumlah: 769, persen: 89.63, tren: ' 84.50%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
+        { status: 'Risiko Gizi Lebih', jumlah: 53, persen: 6.18, tren: '1.75%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
+        { status: 'Gizi Lebih', jumlah: 8, persen: 0.93, tren: '33.45%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
+        { status: 'Obesitas', jumlah: 0, persen: 0, tren: '-', trenClass: 'text-muted', trenIcon: '' },
       ],
       isCollapsed: false,
     }
@@ -469,26 +449,41 @@ export default {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
     },
-    renderChart() {
-      console.log(this.$refs.pieChart) // harusnya <canvas> element
-      const ctx = this.$refs.pieChart?.getContext('2d')
-      if (!ctx) return // biar aman kalau null
+    renderChart(refName, dataSource, colors) {
+      const ctx = this.$refs[refName]?.getContext('2d')
+      if (!ctx) return
 
-      new Chart(ctx, {
+      // hancurkan chart lama kalau ada
+      if (this[refName + 'Instance']) {
+        this[refName + 'Instance'].destroy()
+      }
+
+      this[refName + 'Instance'] = new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: this.dataTable_bb.map((row) => row.status),
+          labels: dataSource.map((row) => row.status),
           datasets: [
             {
-              data: this.dataTable_bb.map((row) => row.persen),
-              backgroundColor: ['#e74c3c', '#f39c12', '#2ecc71', '#3498db'],
+              data: dataSource.map((row) => row.persen),
+              backgroundColor: colors,
             },
           ],
         },
         options: {
           responsive: true,
           plugins: {
-            legend: { position: 'bottom' },
+            legend: { display: false },
+            datalabels: {
+              color: '#fff',
+              formatter: (value, context) => {
+                const label = context.chart.data.labels[context.dataIndex]
+                return `${label}\n${value}%`
+              },
+              font: {
+                weight: 'bold',
+                size: 12,
+              },
+            },
           },
         },
       })
@@ -519,8 +514,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.renderChart()
+     this.$nextTick(() => {
+      this.renderChart('pieChart_bb', this.dataTable_bb, ['#66a38c', '#338267', '#006341', '#004b30', '#00331f'])
+      this.renderChart('pieChart_tb', this.dataTable_tb, ['#66a38c', '#338267', '#006341', '#004b30', '#00331f'])
+      this.renderChart('pieChart_status', this.dataTable_status, ['#66a38c', '#338267', '#006341', '#004b30', '#00331f'])
     })
   },
 }

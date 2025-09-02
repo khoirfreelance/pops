@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar navbar-light bg-primary shadow-sm px-3 py-2">
+  <header class="navbar navbar-light bg-gradient shadow-sm px-3 py-2">
     <!-- Left -->
     <div class="d-flex align-items-center">
       <a class="navbar-brand p-2 ms-5" href="#">
@@ -118,6 +118,10 @@ export default {
 <style scoped>
 header {
   z-index: 1050;
+}
+
+.bg-gradient{
+  background: linear-gradient(90deg, #006341, #6fa287) !important;
 }
 
 /* fix posisi dropdown notifikasi */
