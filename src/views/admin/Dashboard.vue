@@ -178,7 +178,7 @@
                   <a href="/admin/grafik" class="text-decoration-none">Selengkapnya...</a>
                 </div>
 
-                <div class="row">
+                <div class="row mb-4">
                   <div class="col-12 col-md-6">
                     <!-- Berat Badan / Usia -->
                     <div class="card border border-primary shadow p-3 my-3">
@@ -250,7 +250,6 @@
                     </div>
                   </div>
                   <div class="col-12 col-md-6">
-
                     <!-- Berat Badan / Tinggi Badan -->
                     <div class="card border border-primary shadow p-3 my-3">
                       <h4 class="fw-bold text-primary">Berat Badan / Tinggi Badan</h4>
@@ -280,6 +279,117 @@
                         </div>
                         <div class="col-12">
                           <canvas ref="pieChart_status" class="mx-auto d-block" style="max-width:300px; max-height:300px;"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link active"
+                        id="bb-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#bb-tab-pane"
+                        type="button"
+                        role="tab"
+                        aria-controls="bb-tab-pane"
+                        aria-selected="true"
+                      >
+                        Berat Badan / Usia
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="tb-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#tb-tab-pane"
+                        type="button"
+                        role="tab"
+                        aria-controls="tb-tab-pane"
+                        aria-selected="false"
+                      >
+                        Tinggi Badan / Usia
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="bbtb-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#bbtb-tab-pane"
+                        type="button"
+                        role="tab"
+                        aria-controls="bbtb-tab-pane"
+                        aria-selected="false"
+                      >
+                        Berat Badan / Tinggi Badan
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content" id="mysubTabContent">
+                  <div class="tab-pane fade show active" id="bb-tab-pane" role="tabpanel" tabindex="0" >
+                    <!-- Title -->
+                    <div class="d-flex justify-content-between align-items-center my-3 mt-5">
+                      <h2 class="fw-bold">Berat Badan / Usia</h2>
+                    </div>
+
+                    <!-- Berat Badan / Usia -->
+                    <div class="card border border-primary shadow p-3 my-3">
+                      <table class="table table-borderless align-middle">
+                        <tbody>
+                          <tr>
+                            <td class="text-additional fw-bold">Status</td>
+                            <td class="text-muted fw-bold">Jumlah</td>
+                            <td class="text-muted fw-bold">Persen</td>
+                            <td class="text-muted fw-bold">Tren</td>
+                          </tr>
+                          <tr v-for="(row, index) in dataTable_bb" :key="index">
+                            <td>{{ row.status }}</td>
+                            <td>{{ row.jumlah }}</td>
+                            <td>{{ row.persen }} %</td>
+                            <td :class="row.trenClass">
+                              <span v-if="row.tren !== '-'">
+                                <i :class="row.trenIcon"></i> {{ row.tren }}
+                              </span>
+                              <span v-else>-</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12 col-lg-6 col-md-6">
+                        <div class="card border border-primary shadow p-3 my-3">
+                          <h4 class="text-primary fw-bold">Berdasarkan Kategori Usia</h4>
+                          <div class="table-responsive">
+                            <canvas id="usiaChart"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-6 col-md-6">
+                        <div class="card border border-primary shadow p-3 my-3">
+                          <h4 class="fw-bold mb-4 text-primary">Berdasarkan Jenis Kelamin</h4>
+                          <div class="row justify-content-center">
+                            <!-- Laki-laki -->
+                            <div class="col-md-6 mb-4" v-for="(item, index) in genderData" :key="index">
+                              <div :class="['circle', item.circleClass]">{{ item.total }}</div>
+                              <h5 class="title" :class="item.titleClass">{{ item.label }}</h5>
+                              <div class="d-flex justify-content-between px-5">
+                                <div>
+                                  <p v-for="(cat, i) in item.categories" :key="i">{{ cat.name }}</p>
+                                </div>
+                                <div class="fw-bold text-end" :class="item.valueClass">
+                                  <p v-for="(cat, i) in item.categories" :key="i">{{ cat.value }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -384,6 +494,36 @@ export default {
   data() {
     return {
       username: '',
+      genderData: [
+        {
+          label: "Laki - Laki",
+          total: 589,
+          circleClass: "male-circle",
+          titleClass: "text-success",
+          valueClass: "text-success",
+          categories: [
+            { name: "Sangat Kurang", value: 20 },
+            { name: "Kurang", value: 74 },
+            { name: "Normal", value: 393 },
+            { name: "Risiko Lebih", value: 11 },
+            { name: "Tidak Naik", value: 71 }
+          ]
+        },
+        {
+          label: "Perempuan",
+          total: 553,
+          circleClass: "female-circle",
+          titleClass: "text-warning",
+          valueClass: "text-warning",
+          categories: [
+            { name: "Sangat Kurang", value: 17 },
+            { name: "Kurang", value: 71 },
+            { name: "Normal", value: 389 },
+            { name: "Risiko Lebih", value: 9 },
+            { name: "Tidak Naik", value: 67 }
+          ]
+        }
+      ],
       stats: [
         { title: 'Total RW', value: '1,000', icon: 'fa-solid fa-house-chimney-window' },
         { title: 'Total RT', value: '100,000', icon: 'bi bi-house-fill' },
@@ -523,6 +663,29 @@ export default {
 }
 </script>
 <style scoped>
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 auto 15px auto;
+  color: #fff;
+}
+.male-circle {
+  background-color: rgba(0, 128, 96, 0.8);
+}
+.female-circle {
+  background-color: rgba(204, 170, 85, 0.6);
+}
+.title {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
 @media (min-width: 1200px) {
   .stat-col {
     flex: 0 0 10%;
