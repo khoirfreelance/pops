@@ -5,10 +5,10 @@
     <div class="d-flex flex-column flex-md-row">
       <!-- Sidebar -->
       <NavbarAdmin :is-collapsed="isCollapsed" />
-      <div class="flex-grow-1 d-flex flex-column">
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <!-- Main Content -->
         <div
-          class="flex-grow-1 p-4 bg-light"
+          class="flex-grow-1 p-4 bg-light container-fluid"
           :style="{
             backgroundImage: background ? `url(${background})` : 'none',
             backgroundSize: 'cover',
@@ -27,7 +27,7 @@
                   <span class="text-light fw-normal fs-6">Selamat datang,</span> <br />
                   {{ username }}
                 </h1>
-                <p class="text-light" style="font-size: 14px">
+                <p class="text-light small">
                   <span class="bg-light rounded-circle p-2"
                     ><i class="bi bi-calendar text-primary"></i
                   ></span>
@@ -41,7 +41,12 @@
 
               <!-- Kanan: Gambar -->
               <div class="mt-3 mt-md-0">
-                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+                <img
+                  src="/src/assets/admin.png"
+                  alt="Welcome"
+                  class="img-fluid welcome-img"
+                  style="max-width: 280px"
+                />
               </div>
             </div>
           </div>
@@ -278,7 +283,11 @@
                           </table>
                         </div>
                         <div class="col-12">
-                          <canvas ref="pieChart_status" class="mx-auto d-block" style="max-width:300px; max-height:300px;"></canvas>
+                          <canvas
+                            ref="pieChart_status"
+                            class="mx-auto d-block"
+                            style="max-width: 300px; max-height: 300px"
+                          ></canvas>
                         </div>
                       </div>
                     </div>
@@ -332,13 +341,18 @@
                   </ul>
                 </div>
                 <div class="tab-content" id="mysubTabContent">
-                  <div class="tab-pane fade show active" id="bb-tab-pane" role="tabpanel" tabindex="0" >
+                  <div
+                    class="tab-pane fade show active"
+                    id="bb-tab-pane"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
                     <!-- Title -->
                     <div class="d-flex justify-content-between align-items-center my-3 mt-5">
                       <h2 class="fw-bold">Berat Badan / Usia</h2>
                     </div>
 
-                    <!-- Berat Badan / Usia -->
+                    <!-- Statistik Berat Badan / Usia -->
                     <div class="card border border-primary shadow p-3 my-3">
                       <table class="table table-borderless align-middle">
                         <tbody>
@@ -363,12 +377,13 @@
                       </table>
                     </div>
 
-                    <div class="row">
+                    <!-- Statistik berdasarkan kelompok usia dan gender-->
+                    <div class="row my-3">
                       <div class="col-12 col-lg-6 col-md-6">
                         <div class="card border border-primary shadow p-3 my-3">
                           <h4 class="text-primary fw-bold">Berdasarkan Kategori Usia</h4>
                           <div class="table-responsive">
-                            <canvas id="usiaChart"></canvas>
+                            <canvas ref="usiaChart"></canvas>
                           </div>
                         </div>
                       </div>
@@ -376,8 +391,11 @@
                         <div class="card border border-primary shadow p-3 my-3">
                           <h4 class="fw-bold mb-4 text-primary">Berdasarkan Jenis Kelamin</h4>
                           <div class="row justify-content-center">
-                            <!-- Laki-laki -->
-                            <div class="col-md-6 mb-4" v-for="(item, index) in genderData" :key="index">
+                            <div
+                              class="col-md-6 col-sm-12 col-12 mb-4"
+                              v-for="(item, index) in genderData"
+                              :key="index"
+                            >
                               <div :class="['circle', item.circleClass]">{{ item.total }}</div>
                               <h5 class="title" :class="item.titleClass">{{ item.label }}</h5>
                               <div class="d-flex justify-content-between px-5">
@@ -385,10 +403,43 @@
                                   <p v-for="(cat, i) in item.categories" :key="i">{{ cat.name }}</p>
                                 </div>
                                 <div class="fw-bold text-end" :class="item.valueClass">
-                                  <p v-for="(cat, i) in item.categories" :key="i">{{ cat.value }}</p>
+                                  <p v-for="(cat, i) in item.categories" :key="i">
+                                    {{ cat.value }}
+                                  </p>
                                 </div>
                               </div>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Statistik berdasarkan 1 tahun terkahir -->
+                    <div class="row my-3">
+                      <div class="col-12">
+                        <div class="card border border-primary shadow p-3 my-3">
+                          <div class="table-responsive"><canvas ref="indiChart"></canvas></div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="card border border-primary shadow p-3 my-3">
+                          <div class="table-responsive">
+                            <table class="table table-bordered table-sm align-middle text-center">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>Indikator</th>
+                                  <th v-for="(bulan, idx) in bulanLabels" :key="idx">
+                                    {{ bulan }}
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr v-for="(values, indikator) in indikatorData" :key="indikator">
+                                  <td class="fw-bold">{{ indikator }}</td>
+                                  <td v-for="(val, idx) in values" :key="idx">{{ val }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       </div>
@@ -470,10 +521,35 @@
 import CopyRight from '@/components/CopyRight.vue'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
 import HeaderAdmin from '@/components/HeaderAdmin.vue'
-import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js'
+import {
+  Chart,
+  PieController,
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarController,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  LineController,
+  LineElement,
+  PointElement,
+  Filler,
+} from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 Chart.register(PieController, ArcElement, Tooltip, Legend, ChartDataLabels)
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Filler,
+)
 
 document.addEventListener('DOMContentLoaded', function () {
   // eslint-disable-next-line no-undef
@@ -496,33 +572,33 @@ export default {
       username: '',
       genderData: [
         {
-          label: "Laki - Laki",
+          label: 'Laki - Laki',
           total: 589,
-          circleClass: "male-circle",
-          titleClass: "text-success",
-          valueClass: "text-success",
+          circleClass: 'male-circle',
+          titleClass: 'text-success',
+          valueClass: 'text-success',
           categories: [
-            { name: "Sangat Kurang", value: 20 },
-            { name: "Kurang", value: 74 },
-            { name: "Normal", value: 393 },
-            { name: "Risiko Lebih", value: 11 },
-            { name: "Tidak Naik", value: 71 }
-          ]
+            { name: 'Sangat Kurang', value: 20 },
+            { name: 'Kurang', value: 74 },
+            { name: 'Normal', value: 393 },
+            { name: 'Risiko Lebih', value: 11 },
+            { name: 'Tidak Naik', value: 71 },
+          ],
         },
         {
-          label: "Perempuan",
+          label: 'Perempuan',
           total: 553,
-          circleClass: "female-circle",
-          titleClass: "text-warning",
-          valueClass: "text-warning",
+          circleClass: 'female-circle',
+          titleClass: 'text-warning',
+          valueClass: 'text-warning',
           categories: [
-            { name: "Sangat Kurang", value: 17 },
-            { name: "Kurang", value: 71 },
-            { name: "Normal", value: 389 },
-            { name: "Risiko Lebih", value: 9 },
-            { name: "Tidak Naik", value: 67 }
-          ]
-        }
+            { name: 'Sangat Kurang', value: 17 },
+            { name: 'Kurang', value: 71 },
+            { name: 'Normal', value: 389 },
+            { name: 'Risiko Lebih', value: 9 },
+            { name: 'Tidak Naik', value: 67 },
+          ],
+        },
       ],
       stats: [
         { title: 'Total RW', value: '1,000', icon: 'fa-solid fa-house-chimney-window' },
@@ -562,27 +638,150 @@ export default {
         { nama: 'Tinggi', values: Array(12).fill(0) },
       ],
       dataTable_bb: [
-        { status: 'Sangat Kurang', jumlah: 24, persen: 2.80, tren: '2.80%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill' },
-        { status: 'Kurang', jumlah: 94, persen: 10.96, tren: '10.96', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
-        { status: 'Normal', jumlah: 725, persen: 84.50, tren: '84.50 %', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
-        { status: 'Risiko Lebih', jumlah: 15, persen: 1.75, tren: '1.75%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill' },
-        { status: 'Tidak Naik', jumlah: 287, persen: 33.45, tren: '33.45%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill' },
+        {
+          status: 'Sangat Kurang',
+          jumlah: 24,
+          persen: 2.8,
+          tren: '2.80%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Kurang',
+          jumlah: 94,
+          persen: 10.96,
+          tren: '10.96',
+          trenClass: 'text-success',
+          trenIcon: 'bi bi-caret-down-fill',
+        },
+        {
+          status: 'Normal',
+          jumlah: 725,
+          persen: 84.5,
+          tren: '84.50 %',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Risiko Lebih',
+          jumlah: 15,
+          persen: 1.75,
+          tren: '1.75%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Tidak Naik',
+          jumlah: 287,
+          persen: 33.45,
+          tren: '33.45%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
       ],
       dataTable_tb: [
-        { status: 'Sangat Pendek', jumlah: 21, persen: 2.45, tren: '0.63%', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
-        { status: 'Pendek', jumlah: 149, persen: 17.37, tren: '0.29%', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
-        { status: 'Normal', jumlah: 688, persen: 80.19, tren: ' 0.92%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
-        { status: 'Tinggi', jumlah: 0, persen: 0, tren: '-', trenClass: 'text-muted', trenIcon: '' },
+        {
+          status: 'Sangat Pendek',
+          jumlah: 21,
+          persen: 2.45,
+          tren: '0.63%',
+          trenClass: 'text-success',
+          trenIcon: 'bi bi-caret-down-fill',
+        },
+        {
+          status: 'Pendek',
+          jumlah: 149,
+          persen: 17.37,
+          tren: '0.29%',
+          trenClass: 'text-success',
+          trenIcon: 'bi bi-caret-down-fill',
+        },
+        {
+          status: 'Normal',
+          jumlah: 688,
+          persen: 80.19,
+          tren: ' 0.92%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Tinggi',
+          jumlah: 0,
+          persen: 0,
+          tren: '-',
+          trenClass: 'text-muted',
+          trenIcon: '',
+        },
       ],
       dataTable_status: [
-        { status: 'Gizi Buruk', jumlah: 4, persen: 0.47, tren: '2.80%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
-        { status: 'Gizi Kurang', jumlah: 20, persen: 2.33, tren: '10.96%', trenClass: 'text-success', trenIcon: 'bi bi-caret-down-fill' },
-        { status: 'Gizi Baik', jumlah: 769, persen: 89.63, tren: ' 84.50%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
-        { status: 'Risiko Gizi Lebih', jumlah: 53, persen: 6.18, tren: '1.75%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
-        { status: 'Gizi Lebih', jumlah: 8, persen: 0.93, tren: '33.45%', trenClass: 'text-danger', trenIcon: 'bi bi-caret-up-fill'},
-        { status: 'Obesitas', jumlah: 0, persen: 0, tren: '-', trenClass: 'text-muted', trenIcon: '' },
+        {
+          status: 'Gizi Buruk',
+          jumlah: 4,
+          persen: 0.47,
+          tren: '2.80%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Gizi Kurang',
+          jumlah: 20,
+          persen: 2.33,
+          tren: '10.96%',
+          trenClass: 'text-success',
+          trenIcon: 'bi bi-caret-down-fill',
+        },
+        {
+          status: 'Gizi Baik',
+          jumlah: 769,
+          persen: 89.63,
+          tren: ' 84.50%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Risiko Gizi Lebih',
+          jumlah: 53,
+          persen: 6.18,
+          tren: '1.75%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Gizi Lebih',
+          jumlah: 8,
+          persen: 0.93,
+          tren: '33.45%',
+          trenClass: 'text-danger',
+          trenIcon: 'bi bi-caret-up-fill',
+        },
+        {
+          status: 'Obesitas',
+          jumlah: 0,
+          persen: 0,
+          tren: '-',
+          trenClass: 'text-muted',
+          trenIcon: '',
+        },
       ],
       isCollapsed: false,
+      usiaChartInstance: null,
+      kelompokUmur: ['0-5', '6-11', '12-17', '18-23', '24-35', '36-47', '48-60'],
+      statusData: {
+        'Sangat Kurang': [2, 3, 5, 6, 8, 4, 3],
+        Kurang: [4, 6, 7, 8, 10, 7, 6],
+        Normal: [10, 20, 75, 68, 170, 150, 110],
+        'Risiko Lebih': [1, 1, 2, 2, 3, 2, 1],
+        'Tidak Naik': [3, 5, 20, 22, 70, 60, 55],
+      },
+      indiChartInstance: null,
+      bulanLabels: [],
+      indikatorData: {
+        'Sangat Kurang': [29, 37, 20, 26, 24, 22, 24, 23, 56, 79, 10, 0],
+        Kurang: [134, 134, 126, 129, 134, 110, 94, 23, 67, 80, 12, 45],
+        Normal: [711, 702, 684, 723, 716, 732, 725, 706, 712, 450, 711, 734],
+        'Risiko Lebih': [25, 20, 23, 22, 16, 14, 15, 90, 16, 50, 11, 23],
+        'Tidak Naik': [199, 290, 206, 286, 294, 238, 0, 0, 0, 0, 90, 40],
+      },
     }
   },
   methods: {
@@ -628,6 +827,176 @@ export default {
         },
       })
     },
+    renderUsiaChart() {
+      const ctx = this.$refs.usiaChart.getContext('2d')
+
+      if (this.usiaChartInstance) {
+        this.usiaChartInstance.destroy()
+      }
+
+      this.usiaChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: this.kelompokUmur,
+          datasets: [
+            {
+              label: 'Sangat Kurang',
+              data: this.statusData['Sangat Kurang'],
+              backgroundColor: '#d9534f',
+            },
+            {
+              label: 'Kurang',
+              data: this.statusData['Kurang'],
+              backgroundColor: '#f0ad4e',
+            },
+            {
+              label: 'Normal',
+              data: this.statusData['Normal'],
+              backgroundColor: '#5cb85c',
+            },
+            {
+              label: 'Risiko Lebih',
+              data: this.statusData['Risiko Lebih'],
+              backgroundColor: '#0275d8',
+            },
+            {
+              label: 'Tidak Naik',
+              data: this.statusData['Tidak Naik'],
+              backgroundColor: '#9370db',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'right' },
+          },
+          scales: {
+            x: {
+              stacked: false,
+              title: {
+                display: true,
+                text: 'Kategori Usia (bulan)',
+              },
+            },
+            y: {
+              stacked: false,
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Total Individu',
+              },
+            },
+          },
+        },
+      })
+    },
+    getLast12Months() {
+      const monthNames = [
+        'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember',
+      ]
+      const labels = []
+      const now = new Date()
+      for (let i = 11; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+        labels.push(`${monthNames[d.getMonth()]} ${d.getFullYear()}`)
+      }
+      return labels
+    },
+    renderIndiChart() {
+      const ctx = this.$refs.indiChart.getContext('2d')
+
+      if (this.indiChartInstance) {
+        this.indiChartInstance.destroy()
+      }
+
+      this.indiChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: this.bulanLabels,
+          datasets: [
+            {
+              label: 'Sangat Kurang',
+              data: this.indikatorData['Sangat Kurang'],
+              borderColor: '#d9534f',
+              backgroundColor: 'rgba(217, 83, 79, 0.2)',
+              fill: false,
+              tension: 0.3,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+            {
+              label: 'Kurang',
+              data: this.indikatorData['Kurang'],
+              borderColor: '#f0ad4e',
+              backgroundColor: 'rgba(240, 173, 78, 0.2)',
+              fill: false,
+              tension: 0.3,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+            {
+              label: 'Normal',
+              data: this.indikatorData['Normal'],
+              borderColor: '#5cb85c',
+              backgroundColor: 'rgba(92, 184, 92, 0.3)',
+              fill: true, // area fill untuk Normal
+              tension: 0.3,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+            {
+              label: 'Risiko Lebih',
+              data: this.indikatorData['Risiko Lebih'],
+              borderColor: '#0275d8',
+              backgroundColor: 'rgba(2, 117, 216, 0.2)',
+              fill: false,
+              tension: 0.3,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+            {
+              label: 'Tidak Naik',
+              data: this.indikatorData['Tidak Naik'],
+              borderColor: '#9370db',
+              backgroundColor: 'rgba(147, 112, 219, 0.2)',
+              fill: false,
+              tension: 0.3,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'nearest', intersect: false },
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: { enabled: true },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Jumlah Individu' },
+            },
+            x: {
+              title: { display: true, text: 'Bulan' },
+            },
+          },
+        },
+      })
+    },
   },
   computed: {
     background() {
@@ -654,14 +1023,36 @@ export default {
     }
   },
   mounted() {
-     this.$nextTick(() => {
-      this.renderChart('pieChart_bb', this.dataTable_bb, ['#66a38c', '#338267', '#006341', '#004b30', '#00331f'])
-      this.renderChart('pieChart_tb', this.dataTable_tb, ['#66a38c', '#338267', '#006341', '#004b30', '#00331f'])
-      this.renderChart('pieChart_status', this.dataTable_status, ['#66a38c', '#338267', '#006341', '#004b30', '#00331f'])
+    this.$nextTick(() => {
+      this.bulanLabels = this.getLast12Months() // <- generate bulan realtime
+      this.renderUsiaChart()
+      this.renderIndiChart()
+      this.renderChart('pieChart_bb', this.dataTable_bb, [
+        '#66a38c',
+        '#338267',
+        '#006341',
+        '#004b30',
+        '#00331f',
+      ])
+      this.renderChart('pieChart_tb', this.dataTable_tb, [
+        '#66a38c',
+        '#338267',
+        '#006341',
+        '#004b30',
+        '#00331f',
+      ])
+      this.renderChart('pieChart_status', this.dataTable_status, [
+        '#66a38c',
+        '#338267',
+        '#006341',
+        '#004b30',
+        '#00331f',
+      ])
     })
   },
 }
 </script>
+
 <style scoped>
 .circle {
   width: 100px;

@@ -6,36 +6,9 @@
     <div class="d-flex flex-column flex-md-row">
       <!-- Sidebar -->
       <NavbarAdmin :is-collapsed="isCollapsed" />
-
-      <div class="flex-grow-1 d-flex flex-column">
-        <!-- Gradient Banner -->
-        <div class="position-relative">
-          <div
-            class="configuration-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
-          >
-            <!-- Left Content -->
-            <div>
-              <h2 class="fw-bold mb-2">Konfigurasi</h2>
-              <p class="mb-0">Halaman konfigurasi untuk melakukan pengaturan administrator</p>
-            </div>
-
-            <!-- Right Content: Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-              <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item">
-                  <router-link to="/admin" class="text-decoration-none text-white-50"
-                    >Beranda</router-link
-                  >
-                </li>
-                <li class="breadcrumb-item active text-white" aria-current="page">Konfigurasi</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-
-        <!-- Content -->
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <div
-          class="flex-grow-1 p-4"
+          class="flex-grow-1 p-4 bg-light container-fluid"
           :style="{
             backgroundImage: form.background ? `url(${form.background})` : 'none',
             backgroundSize: 'cover',
@@ -43,127 +16,163 @@
             backgroundAttachment: 'fixed',
           }"
         >
-          <div class="card glass-card border-0 rounded-4 shadow-sm">
-            <div class="card-body p-4">
-              <form @submit.prevent="handleSubmit" class="row g-4">
-                <!-- Upload Section -->
-                <div class="col-12">
-                  <h6 class="section-title">Branding</h6>
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
+            >
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <div class="my-3">
+                  <h2 class="fw-bold mt-3 mb-0 text-white">Konfigurasi</h2>
+                  <small class="text-white">
+                    Halaman konfigurasi untuk melakukan pengaturan administrator
+                  </small>
                 </div>
+                <nav aria-label="breadcrumb" class="mt-auto mb-2">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <router-link to="/admin" class="text-decoration-none text-white-50">
+                        Beranda
+                      </router-link>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">
+                      Konfigurasi
+                    </li>
+                  </ol>
+                </nav>
+              </div>
 
-                <!-- Upload Logo -->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Upload Logo</label>
-                  <div
-                    class="dropzone p-4 rounded-3 text-center"
-                    :class="{ 'border-primary bg-light': isLogoDrag }"
-                    @dragover.prevent="isLogoDrag = true"
-                    @dragleave.prevent="isLogoDrag = false"
-                    @drop.prevent="handleDrop($event, 'logo')"
-                  >
-                    <i class="bi bi-cloud-upload fs-1 text-primary"></i>
-                    <p class="mb-1 fw-medium">Drag & drop logo here</p>
-                    <small class="text-muted">or click to browse</small>
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="flex-grow-1 p-4">
+            <div class="card glass-card border-0 rounded-4 shadow-sm">
+              <div class="card-body p-4">
+                <form @submit.prevent="handleSubmit" class="row g-4">
+                  <!-- Upload Section -->
+                  <div class="col-12">
+                    <h6 class="section-title">Branding</h6>
+                  </div>
+
+                  <!-- Upload Logo -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Upload Logo</label>
+                    <div
+                      class="dropzone p-4 rounded-3 text-center"
+                      :class="{ 'border-primary bg-light': isLogoDrag }"
+                      @dragover.prevent="isLogoDrag = true"
+                      @dragleave.prevent="isLogoDrag = false"
+                      @drop.prevent="handleDrop($event, 'logo')"
+                    >
+                      <i class="bi bi-cloud-upload fs-1 text-primary"></i>
+                      <p class="mb-1 fw-medium">Drag & drop logo here</p>
+                      <small class="text-muted">or click to browse</small>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        class="position-absolute w-100 h-100 top-0 start-0 opacity-0"
+                        @change="handleFileChange($event, 'logo')"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Preview Logo-->
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Preview</label>
+                    <div v-if="previewLogo" class="mt-2 text-center">
+                      <img
+                        :src="previewLogo"
+                        alt="Logo Preview"
+                        class="img-fluid rounded shadow-sm"
+                        style="max-height: 100px"
+                      />
+                    </div>
                     <input
-                      type="file"
-                      accept="image/*"
-                      class="position-absolute w-100 h-100 top-0 start-0 opacity-0"
-                      @change="handleFileChange($event, 'logo')"
+                      type="number"
+                      v-model="form.logoWidth"
+                      class="form-control modern-input mt-3"
+                      placeholder="Logo Width (px) e.g. 120"
                     />
                   </div>
-                </div>
 
-                <!-- Preview Logo-->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Preview</label>
-                  <div v-if="previewLogo" class="mt-2 text-center">
-                    <img
-                      :src="previewLogo"
-                      alt="Logo Preview"
-                      class="img-fluid rounded shadow-sm"
-                      style="max-height: 100px"
-                    />
+                  <!-- Upload Background -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Upload Background</label>
+                    <div
+                      class="dropzone p-4 rounded-3 text-center"
+                      :class="{ 'border-primary bg-light': isBgDrag }"
+                      @dragover.prevent="isBgDrag = true"
+                      @dragleave.prevent="isBgDrag = false"
+                      @drop.prevent="handleDrop($event, 'background')"
+                    >
+                      <i class="bi bi-image fs-1 text-primary"></i>
+                      <p class="mb-1 fw-medium">Drag & drop background</p>
+                      <small class="text-muted">or click to browse</small>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        class="position-absolute w-100 h-100 top-0 start-0 opacity-0"
+                        @change="handleFileChange($event, 'background')"
+                      />
+                    </div>
                   </div>
-                  <input
-                    type="number"
-                    v-model="form.logoWidth"
-                    class="form-control modern-input mt-3"
-                    placeholder="Logo Width (px) e.g. 120"
-                  />
-                </div>
 
-                <!-- Upload Background -->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Upload Background</label>
-                  <div
-                    class="dropzone p-4 rounded-3 text-center"
-                    :class="{ 'border-primary bg-light': isBgDrag }"
-                    @dragover.prevent="isBgDrag = true"
-                    @dragleave.prevent="isBgDrag = false"
-                    @drop.prevent="handleDrop($event, 'background')"
-                  >
-                    <i class="bi bi-image fs-1 text-primary"></i>
-                    <p class="mb-1 fw-medium">Drag & drop background</p>
-                    <small class="text-muted">or click to browse</small>
+                  <!-- Preview Background-->
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Preview</label>
+                    <div v-if="previewBackground" class="mt-3 text-center">
+                      <img
+                        :src="previewBackground"
+                        alt="Background Preview"
+                        class="img-fluid rounded shadow-sm"
+                        style="max-height: 150px"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Theme -->
+                  <div class="col-md-12">
+                    <label class="form-label fw-semibold">Color Theme</label>
                     <input
-                      type="file"
-                      accept="image/*"
-                      class="position-absolute w-100 h-100 top-0 start-0 opacity-0"
-                      @change="handleFileChange($event, 'background')"
+                      type="color"
+                      v-model="form.colorTheme"
+                      class="form-control form-control-color modern-input"
                     />
                   </div>
-                </div>
 
-                <!-- Preview Background-->
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Preview</label>
-                  <div v-if="previewBackground" class="mt-3 text-center">
-                    <img
-                      :src="previewBackground"
-                      alt="Background Preview"
-                      class="img-fluid rounded shadow-sm"
-                      style="max-height: 150px"
-                    />
+                  <!-- Maintenance Mode -->
+                  <div class="col-md-12 d-flex align-items-center justify-content-between">
+                    <label class="form-label fw-semibold mb-0">Maintenance Mode</label>
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        v-model="form.maintenance"
+                      />
+                      <label class="form-check-label">
+                        {{ form.maintenance ? 'On' : 'Off' }}
+                      </label>
+                    </div>
                   </div>
-                </div>
 
-                <!-- Theme -->
-                <div class="col-md-12">
-                  <label class="form-label fw-semibold">Color Theme</label>
-                  <input
-                    type="color"
-                    v-model="form.colorTheme"
-                    class="form-control form-control-color modern-input"
-                  />
-                </div>
-
-                <!-- Maintenance Mode -->
-                <div class="col-md-12 d-flex align-items-center justify-content-between">
-                  <label class="form-label fw-semibold mb-0">Maintenance Mode</label>
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      v-model="form.maintenance"
-                    />
-                    <label class="form-check-label">
-                      {{ form.maintenance ? 'On' : 'Off' }}
-                    </label>
+                  <!-- Save Button -->
+                  <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow">
+                      <i class="bi bi-save me-2"></i> Simpan
+                    </button>
                   </div>
-                </div>
-
-                <!-- Save Button -->
-                <div class="col-12 text-end">
-                  <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow">
-                    <i class="bi bi-save me-2"></i> Simpan
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-
         <CopyRight />
       </div>
     </div>

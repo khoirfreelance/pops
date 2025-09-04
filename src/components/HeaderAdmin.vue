@@ -8,7 +8,7 @@
       <!-- tombol toggle di kiri kalau expanded -->
       <button
         v-if="!isCollapsed"
-        class="btn btn-outline-light ms-3"
+        class="btn btn-outline-light ms-3 d-none d-md-inline"
         @click="$emit('toggle-sidebar')"
       >
         <i class="bi bi-list"></i>
@@ -57,7 +57,9 @@
           <i class="bi bi-person-circle fs-5"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li>
+            <router-link to="/admin/profile" class="dropdown-item"> Profile </router-link>
+          </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
             <button class="dropdown-item text-danger" @click="handleLogout">Logout</button>
@@ -120,7 +122,7 @@ header {
   z-index: 1050;
 }
 
-.bg-gradient{
+.bg-gradient {
   background: linear-gradient(90deg, #006341, #6fa287) !important;
 }
 

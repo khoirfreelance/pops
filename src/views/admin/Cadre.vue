@@ -8,158 +8,169 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
 
       <!-- Main Content -->
-      <div
-        class="flex-grow-1 d-flex flex-column"
-        :style="{
-          backgroundImage: background ? `url(${background})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }"
-      >
-        <!-- Banner -->
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <div
-          class="cadre-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="flex-grow-1 p-4 bg-light container-fluid"
+          :style="{
+            backgroundImage: background ? `url(${background})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }"
         >
-          <div>
-            <h2 class="fw-bold mb-2">Pengguna</h2>
-            <p class="mb-0">
-              List daftar pengguna yang terdaftar sebagai admin untuk mengelola data
-            </p>
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
+            >
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <div class="my-3">
+                  <h2 class="fw-bold mt-3 mb-0 text-white">Admin / Kader</h2>
+                  <small class="text-white">
+                    List daftar pengguna yang terdaftar sebagai admin untuk mengelola data
+                  </small>
+                </div>
+                <nav aria-label="breadcrumb" class="mt-auto mb-2">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <router-link to="/admin" class="text-decoration-none text-white-50">
+                        Beranda
+                      </router-link>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Kader</li>
+                  </ol>
+                </nav>
+              </div>
+
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
+            </div>
           </div>
-          <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Beranda
-                </router-link>
-              </li>
-              <li class="breadcrumb-item active text-white" aria-current="page">Pengguna</li>
-            </ol>
-          </nav>
-        </div>
 
-        <!-- Filter -->
-        <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
-          <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
-            <!-- NIK (selalu tampil, realtime filter) -->
-            <div class="col-md-6">
-              <label for="nik" class="form-label">NIK</label>
-              <input
-                type="text"
-                v-model="filter.nik"
-                id="nik"
-                class="form-control"
-                placeholder="Cari berdasarkan NIK"
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="no_tpk" class="form-label">No. TPK</label>
-              <input
-                type="text"
-                v-model="filter.no_tpk"
-                id="no_tpk"
-                class="form-control"
-                placeholder="Cari berdasarkan No. Kartu Keluarga"
-              />
-            </div>
-
-            <!-- Expandable section -->
-            <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
-              <!-- Nama -->
+          <!-- Filter -->
+          <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+            <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
+              <!-- NIK (selalu tampil, realtime filter) -->
               <div class="col-md-6">
-                <label for="nama" class="form-label">Nama </label>
-                <input type="text" v-model="advancedFilter.nama" id="nama" class="form-control" />
+                <label for="nik" class="form-label">NIK</label>
+                <input
+                  type="text"
+                  v-model="filter.nik"
+                  id="nik"
+                  class="form-control"
+                  placeholder="Cari berdasarkan NIK"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="no_tpk" class="form-label">No. TPK</label>
+                <input
+                  type="text"
+                  v-model="filter.no_tpk"
+                  id="no_tpk"
+                  class="form-control"
+                  placeholder="Cari berdasarkan No. Kartu Keluarga"
+                />
               </div>
 
-              <!-- Status -->
-              <div class="col-md-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select shadow-sm" v-model="advancedFilter.status">
-                  <option value="">Pilih</option>
-                  <option value="Active">Active</option>
-                  <option value="Suspended">Suspended</option>
-                </select>
-              </div>
+              <!-- Expandable section -->
+              <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                <!-- Nama -->
+                <div class="col-md-6">
+                  <label for="nama" class="form-label">Nama </label>
+                  <input type="text" v-model="advancedFilter.nama" id="nama" class="form-control" />
+                </div>
 
-              <!-- Role-->
-              <div class="col-md-3">
-                <label for="role" class="form-label">Role</label>
-                <select class="form-select shadow-sm" v-model="advancedFilter.role">
-                  <option value="">Pilih</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Bidan">Bidan</option>
-                  <option value="Kader PKK">Kader PKK</option>
-                  <option value="Kader KB">Kader KB</option>
-                </select>
-              </div>
+                <!-- Status -->
+                <div class="col-md-3">
+                  <label for="status" class="form-label">Status</label>
+                  <select class="form-select shadow-sm" v-model="advancedFilter.status">
+                    <option value="">Pilih</option>
+                    <option value="Active">Active</option>
+                    <option value="Suspended">Suspended</option>
+                  </select>
+                </div>
 
-              <!-- Tombol -->
-              <div class="col-md-12">
-                <button type="submit" class="btn btn-primary float-start" @click="applyFilter">
-                  <i class="bi bi-search"></i> Cari
-                </button>
-                <button type="button" class="btn btn-secondary float-end" @click="resetFilter">
-                  <i class="bi bi-arrow-clockwise"></i> Reset
-                </button>
+                <!-- Role-->
+                <div class="col-md-3">
+                  <label for="role" class="form-label">Role</label>
+                  <select class="form-select shadow-sm" v-model="advancedFilter.role">
+                    <option value="">Pilih</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Bidan">Bidan</option>
+                    <option value="Kader PKK">Kader PKK</option>
+                    <option value="Kader KB">Kader KB</option>
+                  </select>
+                </div>
+
+                <!-- Tombol -->
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-primary float-start" @click="applyFilter">
+                    <i class="bi bi-search"></i> Cari
+                  </button>
+                  <button type="button" class="btn btn-secondary float-end" @click="resetFilter">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                  </button>
+                </div>
               </div>
+            </form>
+
+            <!-- Expand/Collapse Button -->
+            <div class="text-end mt-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" @click="toggleExpand">
+                <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+              </button>
             </div>
-          </form>
+          </div>
 
-          <!-- Expand/Collapse Button -->
-          <div class="text-end mt-2">
-            <button type="button" class="btn btn-outline-secondary btn-sm" @click="toggleExpand">
-              <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-              {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+          <!-- Button Group -->
+          <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+              <i class="bi bi-plus-square"></i> Tambah Data
+            </button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImport">
+              <i class="bi bi-filetype-csv"></i> Import Data Pengguna
             </button>
           </div>
-        </div>
 
-        <!-- Button Group -->
-        <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
-            <i class="bi bi-plus-square"></i> Tambah Data
-          </button>
-          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImport">
-            <i class="bi bi-filetype-csv"></i> Import Data Pengguna
-          </button>
-        </div>
+          <!-- Alert -->
+          <!--  <div class="container-fluid mt-4">
+            <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
+          </div> -->
 
-        <!-- Alert -->
-        <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
-        </div>
-
-        <!-- Table -->
-        <div class="container-fluid">
-          <div class="card modern-card mt-4">
-            <div class="card-body">
-              <div class="table-responsive">
-                <EasyDataTable
-                  :headers="headers"
-                  :items="filteredCadre"
-                  buttons-pagination
-                  :rows-per-page="5"
-                  table-class="table-modern"
-                  theme-color="var(--bs-primary)"
-                >
-                  <!-- Render kolom action sebagai HTML -->
-                  <template #item-action="item">
-                    <a
-                      v-if="item && item.no_tpk"
-                      :href="`?no_tpk=${item.no_tpk}`"
-                      class="btn btn-secondary"
-                    >
-                      <i class="fa fa-pencil"></i>
-                    </a>
-                    <span v-else>-</span>
-                  </template>
-                </EasyDataTable>
+          <!-- Table -->
+          <div class="container-fluid">
+            <div class="card modern-card mt-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <EasyDataTable
+                    :headers="headers"
+                    :items="filteredCadre"
+                    buttons-pagination
+                    :rows-per-page="5"
+                    table-class="table-modern"
+                    theme-color="var(--bs-primary)"
+                  >
+                    <!-- Render kolom action sebagai HTML -->
+                    <template #item-action="item">
+                      <a
+                        v-if="item && item.no_tpk"
+                        :href="`?no_tpk=${item.no_tpk}`"
+                        class="btn btn-secondary"
+                      >
+                        <i class="fa fa-pencil"></i>
+                      </a>
+                      <span v-else>-</span>
+                    </template>
+                  </EasyDataTable>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
         <CopyRight class="mt-auto" />
       </div>
     </div>

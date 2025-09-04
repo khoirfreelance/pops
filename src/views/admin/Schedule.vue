@@ -8,120 +8,136 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
 
       <!-- Main Content -->
-      <div
-        class="flex-grow-1 d-flex flex-column"
-        :style="{
-          backgroundImage: background ? `url(${background})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }"
-      >
-        <!-- Banner -->
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <div
-          class="schedule-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="flex-grow-1 p-4 bg-light container-fluid"
+          :style="{
+            backgroundImage: background ? `url(${background})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }"
         >
-          <div>
-            <h2 class="fw-bold mb-2">Jadwal Intervensi</h2>
-            <p class="mb-0">Lorem ipsum</p>
-          </div>
-          <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Beranda
-                </router-link>
-              </li>
-              <li class="breadcrumb-item active text-white" aria-current="page">Jadwal</li>
-            </ol>
-          </nav>
-        </div>
-
-        <!-- Kalender -->
-        <div class="container-fluid">
-          <div class="card modern-card my-4">
-            <div class="card-body">
-              <div class="moodle-calendar">
-                <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
-                  <div class="d-flex gap-2 align-items-center">
-                    <button class="btn btn-sm btn-outline-primary" @click="prevMonth()">‹</button>
-                    <h4 class="mb-0">{{ monthYearLabel }}</h4>
-                    <button class="btn btn-sm btn-outline-primary" @click="nextMonth()">›</button>
-                  </div>
-
-                  <div>
-                    <button class="btn btn-primary" @click="openAddModal(null)">
-                      <i class="bi bi-plus-square"></i> Tambah Intervensi
-                    </button>
-                  </div>
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
+            >
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <div class="my-3">
+                  <h2 class="fw-bold mt-3 mb-0 text-white">Jadwal Intervensi</h2>
+                  <small class="text-white"> Atur jadwal intervensi anda </small>
                 </div>
+                <nav aria-label="breadcrumb" class="mt-auto mb-2">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <router-link to="/admin" class="text-decoration-none text-white-50">
+                        Beranda
+                      </router-link>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">
+                      Jadwal Intervensi
+                    </li>
+                  </ol>
+                </nav>
+              </div>
 
-                <div class="row g-3">
-                  <div class="col-lg-8">
-                    <div class="calendar-grid">
-                      <div class="weekdays d-flex">
-                        <div v-for="wd in weekdays" :key="wd" class="weekday text-center">
-                          {{ wd }}
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Kalender -->
+          <div class="container-fluid">
+            <div class="card modern-card my-4">
+              <div class="card-body">
+                <div class="moodle-calendar">
+                  <div
+                    class="calendar-header d-flex justify-content-between align-items-center mb-3"
+                  >
+                    <div class="d-flex gap-2 align-items-center">
+                      <button class="btn btn-sm btn-outline-primary" @click="prevMonth()">‹</button>
+                      <h4 class="mb-0">{{ monthYearLabel }}</h4>
+                      <button class="btn btn-sm btn-outline-primary" @click="nextMonth()">›</button>
+                    </div>
+
+                    <div>
+                      <button class="btn btn-primary" @click="openAddModal(null)">
+                        <i class="bi bi-plus-square"></i> Tambah Intervensi
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="row g-3">
+                    <div class="col-lg-8">
+                      <div class="calendar-grid">
+                        <div class="weekdays d-flex">
+                          <div v-for="wd in weekdays" :key="wd" class="weekday text-center">
+                            {{ wd }}
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="days">
-                        <div
-                          v-for="cell in calendarCells"
-                          :key="cell.key"
-                          :class="[
-                            'day-cell',
-                            { muted: !cell.currentMonth, today: isToday(cell.date) },
-                          ]"
-                          :style="getCellStyle(cell.isoDate)"
-                          @click="openAddModal(cell.date)"
-                        >
-                          <div class="date-number">{{ cell.date.getDate() }}</div>
+                        <div class="days">
+                          <div
+                            v-for="cell in calendarCells"
+                            :key="cell.key"
+                            :class="[
+                              'day-cell',
+                              { muted: !cell.currentMonth, today: isToday(cell.date) },
+                            ]"
+                            :style="getCellStyle(cell.isoDate)"
+                            @click="openAddModal(cell.date)"
+                          >
+                            <div class="date-number">{{ cell.date.getDate() }}</div>
 
-                          <div class="events-preview">
-                            <div
-                              v-for="ev in eventsByDate[cell.isoDate] || []"
-                              :key="ev.id"
-                              class="event-dot"
-                              :style="{ backgroundColor: categoryColors[ev.category] || '#ccc' }"
-                            ></div>
+                            <div class="events-preview">
+                              <div
+                                v-for="ev in eventsByDate[cell.isoDate] || []"
+                                :key="ev.id"
+                                class="event-dot"
+                                :style="{ backgroundColor: categoryColors[ev.category] || '#ccc' }"
+                              ></div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="col-lg-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <h5>Event pada bulan ini</h5>
-                        <div v-if="sortedEvents.length === 0">Belum ada event.</div>
-                        <ul class="list-group list-group-flush mt-2">
-                          <li
-                            v-for="ev in sortedEvents"
-                            :key="ev.id"
-                            class="list-group-item d-flex justify-content-between align-items-start"
-                          >
-                            <div>
-                              <div class="fw-semibold">{{ ev.title }}</div>
-                              <small class="text-muted">{{ formatEventDate(ev) }}</small>
-                            </div>
-                            <div class="btn-group">
-                              <button
-                                class="btn btn-sm btn-outline-secondary"
-                                @click="editEvent(ev)"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                class="btn btn-sm btn-outline-danger"
-                                @click="deleteEvent(ev.id)"
-                              >
-                                Hapus
-                              </button>
-                            </div>
-                          </li>
-                        </ul>
+                    <div class="col-lg-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5>Event pada bulan ini</h5>
+                          <div v-if="sortedEvents.length === 0">Belum ada event.</div>
+                          <ul class="list-group list-group-flush mt-2">
+                            <li
+                              v-for="ev in sortedEvents"
+                              :key="ev.id"
+                              class="list-group-item d-flex justify-content-between align-items-start"
+                            >
+                              <div>
+                                <div class="fw-semibold">{{ ev.title }}</div>
+                                <small class="text-muted">{{ formatEventDate(ev) }}</small>
+                              </div>
+                              <div class="btn-group">
+                                <button
+                                  class="btn btn-sm btn-outline-secondary"
+                                  @click="editEvent(ev)"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  class="btn btn-sm btn-outline-danger"
+                                  @click="deleteEvent(ev.id)"
+                                >
+                                  Hapus
+                                </button>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -130,7 +146,6 @@
             </div>
           </div>
         </div>
-
         <CopyRight class="mt-auto" />
       </div>
     </div>
@@ -546,7 +561,7 @@ export default {
     focusDate(date) {
       // contoh: ubah currentDate jadi date event
       this.currentDate = new Date(date)
-    }
+    },
   },
 }
 </script>

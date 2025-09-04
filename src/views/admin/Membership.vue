@@ -8,84 +8,95 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
 
       <!-- Main Content -->
-      <div
-        class="flex-grow-1 d-flex flex-column"
-        :style="{
-          backgroundImage: background ? `url(${background})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }"
-      >
-        <!-- Banner -->
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <div
-          class="membership-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="flex-grow-1 p-4 bg-light container-fluid"
+          :style="{
+            backgroundImage: background ? `url(${background})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }"
         >
-          <div>
-            <h2 class="fw-bold mb-2">Nomor Registrasi TPK</h2>
-            <p class="mb-0">
-              Nomor registrasi anggota TPK terdaftar beserta jumlah anggota per No TPK
-            </p>
-          </div>
-          <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Beranda
-                </router-link>
-              </li>
-              <li class="breadcrumb-item active text-white" aria-current="page">No TPK</li>
-            </ol>
-          </nav>
-        </div>
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
+            >
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <div class="my-3">
+                  <h2 class="fw-bold mt-3 mb-0 text-white">Nomor Registrasi TPK</h2>
+                  <small class="text-white">
+                    Nomor registrasi anggota TPK terdaftar beserta jumlah anggota per No TPK
+                  </small>
+                </div>
+                <nav aria-label="breadcrumb" class="mt-auto mb-2">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <router-link to="/admin" class="text-decoration-none text-white-50">
+                        Beranda
+                      </router-link>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">TPK</li>
+                  </ol>
+                </nav>
+              </div>
 
-        <!-- Filter -->
-        <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
-          <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
-            <!-- No TPK -->
-            <div class="col-md-12">
-              <label for="no_tpk" class="form-label">No TPK</label>
-              <input
-                type="text"
-                v-model="filter.no_tpk"
-                id="no_tpk"
-                class="form-control"
-                placeholder="Cari berdasarkan No TPK"
-              />
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
 
-        <!-- Button Group -->
-        <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
-            <i class="bi bi-plus-square"></i> Tambah Data
-          </button>
-        </div>
-
-        <!-- Alert -->
-        <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
-        </div>
-
-        <!-- Table -->
-        <div class="container-fluid">
-          <div class="card modern-card mt-4">
-            <div class="card-body">
-              <div class="table-responsive">
-                <EasyDataTable
-                  :headers="headers"
-                  :items="filteredMember"
-                  buttons-pagination
-                  :rows-per-page="5"
-                  table-class="table-modern"
-                  theme-color="var(--bs-primary)"
+          <!-- Filter -->
+          <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+            <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
+              <!-- No TPK -->
+              <div class="col-md-12">
+                <label for="no_tpk" class="form-label">No TPK</label>
+                <input
+                  type="text"
+                  v-model="filter.no_tpk"
+                  id="no_tpk"
+                  class="form-control"
+                  placeholder="Cari berdasarkan No TPK"
                 />
+              </div>
+            </form>
+          </div>
+
+          <!-- Button Group -->
+          <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+              <i class="bi bi-plus-square"></i> Tambah Data
+            </button>
+          </div>
+
+          <!-- Alert -->
+          <!-- <div class="container-fluid mt-4">
+            <div class="alert alert-success shadow-sm">✅ Data berhasil disimpan!</div>
+          </div> -->
+
+          <!-- Table -->
+          <div class="container-fluid">
+            <div class="card modern-card mt-4">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <EasyDataTable
+                    :headers="headers"
+                    :items="filteredMember"
+                    buttons-pagination
+                    :rows-per-page="5"
+                    table-class="table-modern"
+                    theme-color="var(--bs-primary)"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-
         <CopyRight class="mt-auto" />
       </div>
     </div>
@@ -346,7 +357,7 @@ export default {
 
 <style scoped>
 .membership-wrapper {
-   /* tinggi navbar bootstrap default */
+  /* tinggi navbar bootstrap default */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f9f9fb;
   min-height: 100vh;

@@ -8,229 +8,339 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
 
       <!-- Main Content -->
-      <div
-        class="flex-grow-1 d-flex flex-column"
-        :style="{
-          backgroundImage: background ? `url(${background})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }"
-      >
-        <!-- Banner -->
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <div
-          class="nutrition-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="flex-grow-1 p-4 bg-light container-fluid"
+          :style="{
+            backgroundImage: background ? `url(${background})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }"
         >
-          <div>
-            <h2 class="fw-bold mb-2">Data Anak</h2>
-            <p class="mb-0">
-              List daftar anak yang terdaftar di dalam posyandu dengan usia maksimal 5 tahun (60
-              bulan)
-            </p>
-          </div>
-          <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Beranda
-                </router-link>
-              </li>
-              <li class="breadcrumb-item active text-white" aria-current="page">Data Anak</li>
-            </ol>
-          </nav>
-        </div>
-
-        <!-- Filter -->
-        <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
-          <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
-            <!-- NIK (selalu tampil, realtime filter) -->
-            <div class="col-md-12">
-              <label for="nik" class="form-label">NIK Orang Tua</label>
-              <input
-                type="text"
-                v-model="filter.nik"
-                id="nik"
-                class="form-control"
-                placeholder="Cari berdasarkan NIK"
-              />
-            </div>
-
-            <!-- Expandable section -->
-            <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
-              <!-- Usia -->
-              <div class="col-md-2">
-                <label for="usia" class="form-label">Usia</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="usia"
-                  v-model="advancedFilter.usia"
-                  placeholder="Tahun"
-                />
-              </div>
-
-              <!-- Status BB -->
-              <div class="col-md-2">
-                <label for="status_bb2" class="form-label">Status BB</label>
-                <select class="form-select" id="status_bb2" v-model="advancedFilter.status_bb">
-                  <option value="">-- semua --</option>
-                  <option value="Sangat Kurang">Sangat Kurang</option>
-                  <option value="Kurang">Kurang</option>
-                  <option value="Normal">Normal</option>
-                  <option value="Resiko Lebih">Resiko Lebih</option>
-                </select>
-              </div>
-
-              <!-- Status TB -->
-              <div class="col-md-2">
-                <label for="status_tb" class="form-label">Status TB</label>
-                <select class="form-select" id="status_tb" v-model="advancedFilter.status_tb">
-                  <option value="">-- semua --</option>
-                  <option value="Sangat Pendek">Sangat Pendek</option>
-                  <option value="Pendek">Pendek</option>
-                  <option value="Normal">Normal</option>
-                  <option value="Tinggi">Tinggi</option>
-                </select>
-              </div>
-
-              <!-- Status Gizi -->
-              <div class="col-md-2">
-                <label for="status_gizi" class="form-label">Status Gizi</label>
-                <select class="form-select" id="status_gizi" v-model="advancedFilter.status_bb_tb">
-                  <option value="">-- semua --</option>
-                  <option value="Gizi Buruk">Gizi Buruk</option>
-                  <option value="Gizi Kurang">Gizi Kurang</option>
-                  <option value="Gizi Baik">Gizi Baik</option>
-                  <option value="Berisiko Gizi Lebih">Berisiko Gizi Lebih</option>
-                  <option value="Gizi Lebih">Gizi Lebih</option>
-                  <option value="Obesitas">Obesitas</option>
-                </select>
-              </div>
-
-              <!-- Tanggal Kunjungan -->
-              <div class="col-md-4">
-                <label for="tgl_kunjungan" class="form-label">Tanggal Kunjungan</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  id="tgl_kunjungan"
-                  v-model="advancedFilter.kunjungan"
-                />
-              </div>
-
-              <!-- Tombol -->
-              <div class="col-md-12">
-                <button
-                  type="submit"
-                  class="btn btn-primary float-start"
-                  @click="applyAdvancedFilter"
-                >
-                  <i class="bi bi-search"></i> Cari
-                </button>
-                <button type="button" class="btn btn-secondary float-end" @click="resetFilter">
-                  <i class="bi bi-arrow-clockwise"></i> Reset
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <!-- Expand/Collapse Button -->
-          <div class="text-end mt-2">
-            <button type="button" class="btn btn-outline-secondary btn-sm" @click="toggleExpand">
-              <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-              {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Button Group -->
-        <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
-          <!-- Tambah Data -->
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
-            <i class="bi bi-plus-square"></i> Tambah Data
-          </button>
-
-          <!-- Import Group -->
-          <div class="btn-group">
-            <button
-              type="button"
-              class="btn btn-success dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
             >
-              <i class="bi bi-file-earmark-arrow-up"></i> Import
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="#" @click.prevent="openImport('Import Kunjungan')">
-                  <i class="bi bi-filetype-csv"></i> Kunjungan
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" @click.prevent="openImport('Import Intervensi')">
-                  <i class="bi bi-filetype-csv"></i> Intervensi
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  href="#"
-                  @click.prevent="openImport('Import Pendampingan')"
-                >
-                  <i class="bi bi-filetype-csv"></i> Pendampingan
-                </a>
-              </li>
-            </ul>
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <div class="my-3">
+                  <h2 class="fw-bold mt-3 mb-0 text-white">Data Anak</h2>
+                  <small class="text-white">
+                    List daftar anak yang terdaftar di dalam posyandu
+                  </small>
+                </div>
+                <nav aria-label="breadcrumb" class="mt-auto mb-2">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <router-link to="/admin" class="text-decoration-none text-white-50">
+                        Beranda
+                      </router-link>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Data Anak</li>
+                  </ol>
+                </nav>
+              </div>
+
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
+            </div>
           </div>
 
-          <!-- Grafik Gizi -->
-          <router-link to="/admin/grafik" class="btn btn-secondary">
-            <i class="bi bi-graph-up"></i> Grafik Gizi
-          </router-link>
-        </div>
+          <!-- Tab Sub Menu-->
+          <div class="mt-5">
+            <div class="d-flex justify-content-center">
+              <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="kelahiran-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#kelahiran-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="kelahiran-tab-pane"
+                    aria-selected="true"
+                  >
+                    Data Kelahiran
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="kunjungan-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#kunjungan-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="kunjungan-tab-pane"
+                    aria-selected="false"
+                  >
+                    Data Kunjungan Posyandu
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="intervensi-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#intervensi-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="intervensi-tab-pane"
+                    aria-selected="false"
+                  >
+                    Data Intervensi
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="tpk-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#tpk-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="tpk-tab-pane"
+                    aria-selected="false"
+                  >
+                    Data Pendampingan TPK
+                  </button>
+                </li>
+              </ul>
+            </div>
 
-        <!-- Alert -->
-        <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm mb-2">
-            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 1291 data secara keseluruhan (terdaftar & tidak di data keluarga)
-            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
-              Lihat Data . . .
-            </router-link>
-          </div>
-          <div class="alert alert-success shadow-sm mb-2">
-            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 789 data tidak tercatat di data keluarga
-            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
-              Lihat Data . . .
-            </router-link>
-          </div>
-          <div class="alert alert-success shadow-sm mb-2">
-            <i class="bi bi-info-circle-fill"></i>&nbsp; Sebanyak 110 data tercatat sebagai penerima bantuan
-            <router-link to="/admin/keluarga" class="text-decoration-none fw-semibold text-primary-50">
-              Lihat Data . . .
-            </router-link>
-          </div>
-        </div>
+            <!-- Tab Content -->
+            <div class="tab-content" id="myTabContent">
+              <!-- Tab Kelahiran-->
+              <div class="tab-pane fade" id="kelahiran-tab-pane" role="tabpanel" tabindex="0">
+                Kelahiran
+              </div>
 
-        <!-- Cards Section -->
-        <div class="container-fluid">
-          <!-- Data Table -->
-          <div class="card modern-card mt-4">
-            <div class="card-body">
-              <div class="table-responsive">
-                <EasyDataTable
-                  :headers="headers"
-                  :items="filteredAnak"
-                  :search-value="filter.nik"
-                  buttons-pagination
-                  :rows-per-page="5"
-                  table-class="table-modern"
-                  theme-color="var(--bs-primary)"
-                />
+              <!-- Tab Kunjungan Posyandu -->
+              <div
+                class="tab-pane fade show active"
+                id="kunjungan-tab-pane"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <!-- Filter -->
+                <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+                  <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
+                    <!-- NIK (selalu tampil, realtime filter) -->
+                    <div class="col-md-12">
+                      <label for="nik" class="form-label">NIK Orang Tua</label>
+                      <input
+                        type="text"
+                        v-model="filter.nik"
+                        id="nik"
+                        class="form-control"
+                        placeholder="Cari berdasarkan NIK"
+                      />
+                    </div>
+
+                    <!-- Expandable section -->
+                    <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                      <!-- Usia -->
+                      <div class="col-md-2">
+                        <label for="usia" class="form-label">Usia</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="usia"
+                          v-model="advancedFilter.usia"
+                          placeholder="Tahun"
+                        />
+                      </div>
+
+                      <!-- Status BB -->
+                      <div class="col-md-2">
+                        <label for="status_bb2" class="form-label">Status BB</label>
+                        <select
+                          class="form-select"
+                          id="status_bb2"
+                          v-model="advancedFilter.status_bb"
+                        >
+                          <option value="">-- semua --</option>
+                          <option value="Sangat Kurang">Sangat Kurang</option>
+                          <option value="Kurang">Kurang</option>
+                          <option value="Normal">Normal</option>
+                          <option value="Resiko Lebih">Resiko Lebih</option>
+                        </select>
+                      </div>
+
+                      <!-- Status TB -->
+                      <div class="col-md-2">
+                        <label for="status_tb" class="form-label">Status TB</label>
+                        <select
+                          class="form-select"
+                          id="status_tb"
+                          v-model="advancedFilter.status_tb"
+                        >
+                          <option value="">-- semua --</option>
+                          <option value="Sangat Pendek">Sangat Pendek</option>
+                          <option value="Pendek">Pendek</option>
+                          <option value="Normal">Normal</option>
+                          <option value="Tinggi">Tinggi</option>
+                        </select>
+                      </div>
+
+                      <!-- Status Gizi -->
+                      <div class="col-md-2">
+                        <label for="status_gizi" class="form-label">Status Gizi</label>
+                        <select
+                          class="form-select"
+                          id="status_gizi"
+                          v-model="advancedFilter.status_bb_tb"
+                        >
+                          <option value="">-- semua --</option>
+                          <option value="Gizi Buruk">Gizi Buruk</option>
+                          <option value="Gizi Kurang">Gizi Kurang</option>
+                          <option value="Gizi Baik">Gizi Baik</option>
+                          <option value="Berisiko Gizi Lebih">Berisiko Gizi Lebih</option>
+                          <option value="Gizi Lebih">Gizi Lebih</option>
+                          <option value="Obesitas">Obesitas</option>
+                        </select>
+                      </div>
+
+                      <!-- Tanggal Kunjungan -->
+                      <div class="col-md-4">
+                        <label for="tgl_kunjungan" class="form-label">Tanggal Kunjungan</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="tgl_kunjungan"
+                          v-model="advancedFilter.kunjungan"
+                        />
+                      </div>
+
+                      <!-- Tombol -->
+                      <div class="col-md-12">
+                        <button
+                          type="submit"
+                          class="btn btn-primary float-start"
+                          @click="applyAdvancedFilter"
+                        >
+                          <i class="bi bi-search"></i> Cari
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary float-end"
+                          @click="resetFilter"
+                        >
+                          <i class="bi bi-arrow-clockwise"></i> Reset
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- Expand/Collapse Button -->
+                  <div class="text-end mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                      @click="toggleExpand"
+                    >
+                      <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                      {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Button Group -->
+                <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+                  <!-- Tambah Data -->
+                  <button
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalTambah"
+                  >
+                    <i class="bi bi-plus-square"></i> Tambah Data
+                  </button>
+
+                  <!-- Import Group -->
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-success dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-file-earmark-arrow-up"></i> Import
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Kunjungan')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Kunjungan
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Intervensi')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Intervensi
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Pendampingan')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Pendampingan
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Grafik Gizi -->
+                  <router-link to="/admin/grafik" class="btn btn-secondary">
+                    <i class="bi bi-graph-up"></i> Grafik Gizi
+                  </router-link>
+                </div>
+
+                <!-- Cards Section -->
+                <div class="container-fluid">
+                  <!-- Data Table -->
+                  <div class="card modern-card mt-4">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <EasyDataTable
+                          :headers="headers"
+                          :items="filteredAnak"
+                          :search-value="filter.nik"
+                          buttons-pagination
+                          :rows-per-page="5"
+                          table-class="table-modern"
+                          theme-color="var(--bs-primary)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Intervensi -->
+              <div class="tab-pane fade" id="intervensi-tab-pane" role="tabpanel" tabindex="0">
+                Intervensi
+              </div>
+
+              <!-- Tab Pendampingan TPK -->
+              <div class="tab-pane fade" id="tpk-tab-pane" role="tabpanel" tabindex="0">
+                Pendampingan TPK
               </div>
             </div>
           </div>
         </div>
-
         <!-- Footer -->
         <CopyRight class="mt-auto" />
       </div>
@@ -500,13 +610,13 @@
   border-radius: 0 0 1rem 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-.filter-wrapper {
-  position: relative; /* biar ikut alur layout */
-  z-index: 0; /* pastikan di bawah sidebar */
+/* .filter-wrapper {
+  position: relative;
+  z-index: 0;
   margin-top: -30px !important;
   width: 97%;
   border-radius: 0.75rem;
-}
+} */
 /* Timeline Style */
 .timeline li {
   position: relative;
@@ -967,6 +1077,5 @@ export default {
       deep: true,
     },
   },
-
 }
 </script>

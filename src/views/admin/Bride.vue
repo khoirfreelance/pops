@@ -8,149 +8,174 @@
       <NavbarAdmin :is-collapsed="isCollapsed" />
 
       <!-- Main Content -->
-      <div
-        class="flex-grow-1 d-flex flex-column"
-        :style="{
-          backgroundImage: background ? `url(${background})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        }"
-      >
-        <!-- Banner -->
+      <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <div
-          class="bride-banner text-white p-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+          class="flex-grow-1 p-4 bg-light container-fluid"
+          :style="{
+            backgroundImage: background ? `url(${background})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }"
         >
-          <div>
-            <h2 class="fw-bold mb-2">Data Calon Pengantin</h2>
-            <p class="mb-0">Daftar kunjungan calon pengantin</p>
+          <!-- Welcome Card -->
+          <div class="card welcome-card shadow-sm mb-4 border-0">
+            <div
+              class="card-body d-flex flex-column flex-md-row align-items-start py-0 justify-content-between"
+            >
+              <!-- Kiri: Teks Welcome -->
+              <div class="text-start">
+                <div class="my-3">
+                  <h2 class="fw-bold mt-3 mb-0 text-white">Data Calon Pengantin</h2>
+                  <small class="text-white"> Daftar kunjungan calon pengantin </small>
+                </div>
+                <nav aria-label="breadcrumb" class="mt-auto mb-2">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                      <router-link to="/admin" class="text-decoration-none text-white-50">
+                        Beranda
+                      </router-link>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">
+                      Calon Pengantin
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+
+              <!-- Kanan: Gambar -->
+              <div class="mt-3 mt-md-0">
+                <img src="/src/assets/admin.png" alt="Welcome" class="img-fluid welcome-img" />
+              </div>
+            </div>
           </div>
-          <nav aria-label="breadcrumb" class="mt-3 mt-md-0">
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item">
-                <router-link to="/admin" class="text-decoration-none text-white-50">
-                  Beranda
-                </router-link>
-              </li>
-              <li class="breadcrumb-item active text-white" aria-current="page">Calon Pengantin</li>
-            </ol>
-          </nav>
-        </div>
 
-        <!-- Filter -->
-        <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
-          <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
-            <!-- NIK (selalu tampil, realtime filter) -->
-            <div class="col-md-12">
-              <label for="nik" class="form-label">NIK Perempuan</label>
-              <input
-                type="text"
-                v-model="filter.nikP"
-                id="nikP"
-                class="form-control"
-                placeholder="Cari berdasarkan NIK Pengantin Wanita"
-              />
-            </div>
-
-            <!-- Expandable section -->
-            <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
-              <!-- Nama -->
-              <div class="col-md-6">
-                <label for="nama" class="form-label">Nama Pengantin Wanita</label>
-                <input type="text" v-model="advancedFilter.namaP" id="namaP" class="form-control" />
-              </div>
-
-              <div class="col-md-6">
-                <label for="nama" class="form-label">Nama Pengantin Pria</label>
-                <input type="text" v-model="advancedFilter.namaL" id="namaL" class="form-control" />
-              </div>
-
-              <!-- RT -->
-              <div class="col-md-2">
-                <label for="rt" class="form-label">RT</label>
-                <input type="number" v-model="advancedFilter.rt" id="rt" class="form-control" />
-              </div>
-
-              <!-- RW -->
-              <div class="col-md-2">
-                <label for="rw" class="form-label">RW</label>
-                <input type="number" v-model="advancedFilter.rw" id="rw" class="form-control" />
-              </div>
-
-              <!-- Menikah -->
-              <div class="col-md-4">
-                <label for="menikah" class="form-label">Tanggal Menikah</label>
-                <input
-                  type="date"
-                  v-model="advancedFilter.menikah"
-                  id="menikah"
-                  class="form-control"
-                />
-              </div>
-
-              <!-- Kunjungan -->
-              <div class="col-md-4">
-                <label for="kunjungan" class="form-label">Kunjungan</label>
-                <input
-                  type="date"
-                  v-model="advancedFilter.kunjungan"
-                  id="kunjungan"
-                  class="form-control"
-                />
-              </div>
-
-              <!-- Tombol -->
+          <!-- Filter -->
+          <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+            <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
+              <!-- NIK (selalu tampil, realtime filter) -->
               <div class="col-md-12">
-                <button type="submit" class="btn btn-primary float-start" @click="applyFilter">
-                  <i class="bi bi-search"></i> Cari
-                </button>
-                <button type="button" class="btn btn-secondary float-end" @click="resetFilter">
-                  <i class="bi bi-arrow-clockwise"></i> Reset
-                </button>
+                <label for="nik" class="form-label">NIK Perempuan</label>
+                <input
+                  type="text"
+                  v-model="filter.nikP"
+                  id="nikP"
+                  class="form-control"
+                  placeholder="Cari berdasarkan NIK Pengantin Wanita"
+                />
               </div>
-            </div>
-          </form>
 
-          <!-- Expand/Collapse Button -->
-          <div class="text-end mt-2">
-            <button type="button" class="btn btn-outline-secondary btn-sm" @click="toggleExpand">
-              <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-              {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+              <!-- Expandable section -->
+              <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                <!-- Nama -->
+                <div class="col-md-6">
+                  <label for="nama" class="form-label">Nama Pengantin Wanita</label>
+                  <input
+                    type="text"
+                    v-model="advancedFilter.namaP"
+                    id="namaP"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="col-md-6">
+                  <label for="nama" class="form-label">Nama Pengantin Pria</label>
+                  <input
+                    type="text"
+                    v-model="advancedFilter.namaL"
+                    id="namaL"
+                    class="form-control"
+                  />
+                </div>
+
+                <!-- RT -->
+                <div class="col-md-2">
+                  <label for="rt" class="form-label">RT</label>
+                  <input type="number" v-model="advancedFilter.rt" id="rt" class="form-control" />
+                </div>
+
+                <!-- RW -->
+                <div class="col-md-2">
+                  <label for="rw" class="form-label">RW</label>
+                  <input type="number" v-model="advancedFilter.rw" id="rw" class="form-control" />
+                </div>
+
+                <!-- Menikah -->
+                <div class="col-md-4">
+                  <label for="menikah" class="form-label">Tanggal Menikah</label>
+                  <input
+                    type="date"
+                    v-model="advancedFilter.menikah"
+                    id="menikah"
+                    class="form-control"
+                  />
+                </div>
+
+                <!-- Kunjungan -->
+                <div class="col-md-4">
+                  <label for="kunjungan" class="form-label">Kunjungan</label>
+                  <input
+                    type="date"
+                    v-model="advancedFilter.kunjungan"
+                    id="kunjungan"
+                    class="form-control"
+                  />
+                </div>
+
+                <!-- Tombol -->
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-primary float-start" @click="applyFilter">
+                    <i class="bi bi-search"></i> Cari
+                  </button>
+                  <button type="button" class="btn btn-secondary float-end" @click="resetFilter">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Expand/Collapse Button -->
+            <div class="text-end mt-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" @click="toggleExpand">
+                <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Button Group -->
+          <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+              <i class="bi bi-plus-square"></i> Tambah Data
+            </button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImport">
+              <i class="bi bi-filetype-csv"></i> Import Pendampingan TPK (catin)
             </button>
           </div>
-        </div>
 
-        <!-- Button Group -->
-        <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
-            <i class="bi bi-plus-square"></i> Tambah Data
-          </button>
-          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImport">
-            <i class="bi bi-filetype-csv"></i> Import Pendampingan TPK (catin)
-          </button>
-        </div>
+          <!-- Alert -->
+          <!-- <div class="container-fluid mt-4">
+            <div class="alert alert-success shadow-sm">
+              <i class="bi bi-info-circle-fill"></i>&nbsp; Daftar Calon Pengantin
+            </div>
+          </div> -->
 
-        <!-- Alert -->
-        <div class="container-fluid mt-4">
-          <div class="alert alert-success shadow-sm"> <i class="bi bi-info-circle-fill"></i>&nbsp; Daftar Calon Pengantin</div>
-        </div>
-
-        <!-- Table -->
-        <div class="container-fluid">
-          <div class="card modern-card mt-4">
-            <div class="card-body">
-              <div class="datatable-responsive">
-                <EasyDataTable
-                  :headers="visibleHeaders"
-                  :items="filteredCatin"
-                  buttons-pagination
-                  :rows-per-page="5"
-                />
+          <!-- Table -->
+          <div class="container-fluid">
+            <div class="card modern-card mt-4">
+              <div class="card-body">
+                <div class="datatable-responsive">
+                  <EasyDataTable
+                    :headers="visibleHeaders"
+                    :items="filteredCatin"
+                    buttons-pagination
+                    :rows-per-page="5"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-
         <CopyRight class="mt-auto" />
       </div>
     </div>
@@ -421,7 +446,7 @@ export default {
       animatedProgress: 0,
       currentRow: 0,
       totalRows: 1, // default 1 agar tidak bagi 0
-      visibleColumns: ['catatan','kunjungan','menikah','namaP','nikP'], // default
+      visibleColumns: ['catatan', 'kunjungan', 'menikah', 'namaP', 'nikP'], // default
       form: {
         catatan: '',
         kunjungan: '',
@@ -528,8 +553,8 @@ export default {
       })
     },
     visibleHeaders() {
-      return this.headers.filter(h => this.visibleColumns.includes(h.value))
-    }
+      return this.headers.filter((h) => this.visibleColumns.includes(h.value))
+    },
   },
   methods: {
     closeModal(id) {
@@ -821,5 +846,4 @@ form h5 {
     min-width: auto;
   }
 }
-
 </style>
