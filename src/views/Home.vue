@@ -833,11 +833,25 @@ export default {
     transform: translateY(20);
   }
 }
+
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* default: 3 kolom di mobile */
   gap: 0.5rem;
 }
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr); /* tablet tetap 3 kolom */
+  }
+}
+
+@media (min-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(9, 1fr); /* desktop full 9 sejajar */
+  }
+}
+
 
 .stats-wrapper {
   bottom: 0; /* nempel bawah */

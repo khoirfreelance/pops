@@ -115,14 +115,197 @@
 
             <!-- Tab Content -->
             <div class="tab-content" id="myTabContent">
+
               <!-- Tab Kelahiran-->
-              <div class="tab-pane fade" id="kelahiran-tab-pane" role="tabpanel" tabindex="0">
-                Kelahiran
+              <div class="tab-pane fade show active" id="kelahiran-tab-pane" role="tabpanel" tabindex="0">
+                <!-- Filter -->
+                <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+                  <form class="row g-3 align-items-end" @submit.prevent="applyFilter_anak">
+                    <!-- NIK (selalu tampil, realtime filter) -->
+                    <div class="col-md-12">
+                      <label for="nik" class="form-label">NIK Orang Tua</label>
+                      <input
+                        type="text"
+                        v-model="filter_anak.nik"
+                        id="nik"
+                        class="form-control"
+                        placeholder="Cari berdasarkan NIK Orang Tua"
+                      />
+                    </div>
+
+                    <!-- Expandable section -->
+                    <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                      <!-- Nama -->
+                      <div class="col-md-2">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nama"
+                          v-model="advancedFilter_anak.nama"
+                          placeholder="Nama Anak"
+                        />
+                      </div>
+
+                      <!-- Gender -->
+                      <div class="col-md-2">
+                        <label for="gender" class="form-label">Jenis Kelamin</label>
+                        <select
+                          class="form-select"
+                          id="gender"
+                          v-model="advancedFilter_anak.gender"
+                        >
+                          <option value="">-- semua --</option>
+                          <option value="L">Laki-laki</option>
+                          <option value="P">Perempuan</option>
+                        </select>
+                      </div>
+
+                      <!-- KIA -->
+                      <div class="col-md-4">
+                        <label for="kia" class="form-label">No. KIA</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="no_kia"
+                          v-model="advancedFilter_anak.no_kia"
+                          placeholder="Nomor KIA"
+                        />
+                      </div>
+
+                      <!-- Tanggal Lahir -->
+                      <div class="col-md-4">
+                        <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="tgl_lahir"
+                          v-model="advancedFilter_anak.lahir"
+                        />
+                      </div>
+
+                      <!-- Tombol -->
+                      <div class="col-md-12">
+                        <button
+                          type="submit"
+                          class="btn btn-primary float-start"
+                          @click="applyAdvancedFilter_anak"
+                        >
+                          <i class="bi bi-search"></i> Cari
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary float-end"
+                          @click="resetFilter_anak"
+                        >
+                          <i class="bi bi-arrow-clockwise"></i> Reset
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- Expand/Collapse Button -->
+                  <div class="text-end mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                      @click="toggleExpand"
+                    >
+                      <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                      {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Button Group -->
+                <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+                  <!-- Tambah Data -->
+                  <button
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalTambah"
+                  >
+                    <i class="bi bi-plus-square"></i> Tambah Data
+                  </button>
+
+                  <!-- Import Group -->
+                   <a
+                      class="btn btn-success"
+                      href="#"
+                      @click.prevent="openImport('Import Data Anak')"
+                    >
+                      <i class="bi bi-filetype-csv"></i> Import Data Anak
+                    </a>
+                  <!-- <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-success dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-file-earmark-arrow-up"></i> Import
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Kunjungan')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Kunjungan
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Intervensi')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Intervensi
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Pendampingan')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Pendampingan
+                        </a>
+                      </li>
+                    </ul>
+                  </div> -->
+
+                  <!-- Grafik Gizi -->
+                  <!-- <router-link to="/admin/grafik" class="btn btn-secondary">
+                    <i class="bi bi-graph-up"></i> Grafik Gizi
+                  </router-link> -->
+                </div>
+
+                <!-- Cards Section -->
+                <div class="container-fluid">
+                  <!-- Data Table -->
+                  <div class="card modern-card mt-4">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <EasyDataTable
+                          :headers="headers_anak"
+                          :items="filteredAnak_anak"
+                          :search-value="filter_anak.nik"
+                          buttons-pagination
+                          :rows-per-page="5"
+                          table-class="table-modern"
+                          theme-color="var(--bs-primary)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Tab Kunjungan Posyandu -->
               <div
-                class="tab-pane fade show active"
+                class="tab-pane fade "
                 id="kunjungan-tab-pane"
                 role="tabpanel"
                 tabindex="0"
@@ -229,7 +412,7 @@
                         <button
                           type="button"
                           class="btn btn-secondary float-end"
-                          @click="resetFilter"
+                          @click="resetFilter_anak"
                         >
                           <i class="bi bi-arrow-clockwise"></i> Reset
                         </button>
@@ -262,7 +445,14 @@
                   </button>
 
                   <!-- Import Group -->
-                  <div class="btn-group">
+                   <a
+                      class="btn btn-success"
+                      href="#"
+                      @click.prevent="openImport('Import Kunjungan')"
+                    >
+                      <i class="bi bi-filetype-csv"></i> Import Kunjungan
+                    </a>
+                  <!-- <div class="btn-group">
                     <button
                       type="button"
                       class="btn btn-success dropdown-toggle"
@@ -300,12 +490,12 @@
                         </a>
                       </li>
                     </ul>
-                  </div>
+                  </div> -->
 
                   <!-- Grafik Gizi -->
-                  <router-link to="/admin/grafik" class="btn btn-secondary">
+                  <!-- <router-link to="/admin/grafik" class="btn btn-secondary">
                     <i class="bi bi-graph-up"></i> Grafik Gizi
-                  </router-link>
+                  </router-link> -->
                 </div>
 
                 <!-- Cards Section -->
@@ -338,6 +528,7 @@
               <div class="tab-pane fade" id="tpk-tab-pane" role="tabpanel" tabindex="0">
                 Pendampingan TPK
               </div>
+
             </div>
           </div>
         </div>
@@ -595,7 +786,6 @@
 #chartBBTB {
   width: 100% !important;
   max-width: 300px;
-  /* height: 250px !important; */
   margin: auto;
 }
 
@@ -781,8 +971,8 @@ export default {
         kunjungan: '',
       },
 
-      // data dummy anak
-      anak: [
+      // data dummy kunjungan
+      kunjungan_posyandu: [
         {
           nik: '3276012309870001',
           nama: 'Ahmad Fauzi',
@@ -813,7 +1003,50 @@ export default {
         },
       ],
 
-      // header table
+      kelahiran_anak:[
+        {
+          nama: 'Dummy Name',
+          tgl_lahir: '2022-03-14',
+          gender: 'L',
+          no_kia: '3127893049567312',
+          nik_ayah: '1678923680934782',
+          nik_ibu: '3120987649567313',
+          ayah: 'Hamdan',
+          ibu: 'Hamidah',
+          phone: '081798453887',
+          alamat: 'Jl. Damai 3, No. 56',
+          provinsi: 'DKI Jakarta',
+          kota: 'Jakarta Timur',
+          kecamatan: 'Bojong Gede',
+          desa: 'Cimanggis',
+          rw: '06',
+          rt: '03',
+          tb: '8',
+          bb: '3',
+          lk: '20',
+        },
+        {
+          nama: 'Dummy Example',
+          tgl_lahir: '2023-03-14',
+          gender: 'P',
+          no_kia: '3127893049560987',
+          nik_ayah: '1678923680931234',
+          nik_ibu: '31209876495687653',
+          ayah: 'Dimdan',
+          ibu: 'Lilidah',
+          phone: '081798453887',
+          alamat: 'Jl. Damai 3, No. 56',
+          kecamatan: 'Bojong Gede',
+          desa: 'Cimanggis',
+          rw: '06',
+          rt: '03',
+          tb: '8',
+          bb: '3',
+          lk: '20',
+        },
+      ],
+
+      // header kunjungan table
       headers: [
         { text: 'NIK', value: 'nik' },
         { text: 'Nama', value: 'nama' },
@@ -829,6 +1062,37 @@ export default {
         { text: 'Kunjungan Terakhir', value: 'kunjungan' },
       ],
 
+      headers_anak: [
+        //nama: 'Dummy Name',
+        { text: 'Nama', value: 'nama' },
+        { text: 'NIK Ayah', value: 'nik_ayah'},
+        { text: 'NIK Ibu', value: 'nik_ibu'},
+        { text: 'No. KIA', value: 'no_kia' },
+        { text: 'Nama Ayah', value: 'ayah' },
+        { text: 'Nama Ibu', value: 'ibu' },
+        { text: 'L/P', value: 'gender' },
+        { text: 'Tanggal Lahir', value: 'tgl_lahir' },
+        { text: 'TB', value: 'tb' },
+        { text: 'BB', value: 'bb' },
+        { text: 'LK', value: 'lk' },
+      ],
+      // filter
+      filter_anak: {
+        nik_ayah: '',
+        nik_ibu: '',
+      },
+      advancedFilter_anak: {
+        no_kia: '',
+        tgl_lahir: '',
+        gender: '',
+        nama: '',
+      },
+      appliedAdvancedFilter_anak: {
+        no_kia: '',
+        tgl_lahir: '',
+        gender: '',
+        nama: '',
+      },
       // filter
       filter: {
         nik: '',
@@ -855,7 +1119,7 @@ export default {
       return config && config.background ? config.background : null
     },
     filteredAnak() {
-      return this.anak.filter((item) => {
+      return this.kunjungan_posyandu.filter((item) => {
         const af = this.appliedAdvancedFilter
 
         const usiaFilter = af.usia ? Number(item.usia) === Number(af.usia) : true
@@ -867,6 +1131,20 @@ export default {
           (af.status_tb === '' || item.status_tb === af.status_tb) &&
           (af.status_bb_tb === '' || item.status_bb_tb === af.status_bb_tb) &&
           (af.kunjungan === '' || item.kunjungan === af.kunjungan)
+        )
+      })
+    },
+    filteredAnak_anak() {
+      return this.kelahiran_anak.filter((item) => {
+        const af = this.appliedAdvancedFilter_anak
+
+        return (
+          (this.filter_anak.nik_ibu === '' || item.nik_ibu.includes(this.filter_anak.nik_ibu)) &&
+          (this.filter_anak.nik_ayah === '' || item.nik_ayah.includes(this.filter_anak.nik_ayah)) &&
+          (af.nama === '' || item.nama === af.nama) &&
+          (af.tgl_lahir === '' || item.tgl_lahir === af.tgl_lahir) &&
+          (af.gender === '' || item.gender === af.gender) &&
+          (af.no_kia === '' || item.no_kia === af.no_kia)
         )
       })
     },
@@ -930,7 +1208,7 @@ export default {
 
           // lanjut simpan data
 
-          this.anak.push({ ...this.form })
+          this.kunjungan_posyandu.push({ ...this.form })
           this.showAlert = true
           setTimeout(() => (this.showAlert = false), 3000)
 
@@ -1025,7 +1303,7 @@ export default {
             obj[h] = values[i] || ''
           })
 
-          this.anak.push({
+          this.kunjungan_posyandu.push({
             nik: obj.nik || '',
             nama: obj.nama || '',
             gender: obj.gender || '',
@@ -1058,6 +1336,10 @@ export default {
       // Salin isi input advancedFilter ke appliedAdvancedFilter
       this.appliedAdvancedFilter = { ...this.advancedFilter }
     },
+    applyAdvancedFilter_anak() {
+      // Salin isi input advancedFilter ke appliedAdvancedFilter
+      this.appliedAdvancedFilter_anak = { ...this.advancedFilter_anak }
+    },
     resetFilter() {
       this.advancedFilter = {
         usia: '',
@@ -1067,6 +1349,15 @@ export default {
         kunjungan: '',
       }
       this.appliedAdvancedFilter = { ...this.advancedFilter }
+    },
+    resetFilter_anak() {
+      this.advancedFilter_anak = {
+        nama: '',
+        no_kia: '',
+        gender: '',
+        tgl_lahir: '',
+        kunjungan: '',
+      }
     },
   },
   watch: {
