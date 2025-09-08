@@ -115,9 +115,13 @@
 
             <!-- Tab Content -->
             <div class="tab-content" id="myTabContent">
-
               <!-- Tab Kelahiran-->
-              <div class="tab-pane fade show active" id="kelahiran-tab-pane" role="tabpanel" tabindex="0">
+              <div
+                class="tab-pane fade show active"
+                id="kelahiran-tab-pane"
+                role="tabpanel"
+                tabindex="0"
+              >
                 <!-- Filter -->
                 <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
                   <form class="row g-3 align-items-end" @submit.prevent="applyFilter_anak">
@@ -229,13 +233,13 @@
                   </button>
 
                   <!-- Import Group -->
-                   <a
-                      class="btn btn-success"
-                      href="#"
-                      @click.prevent="openImport('Import Data Anak')"
-                    >
-                      <i class="bi bi-filetype-csv"></i> Import Data Anak
-                    </a>
+                  <a
+                    class="btn btn-success"
+                    href="#"
+                    @click.prevent="openImport('Import Data Anak')"
+                  >
+                    <i class="bi bi-filetype-csv"></i> Import Data Anak
+                  </a>
                   <!-- <div class="btn-group">
                     <button
                       type="button"
@@ -304,12 +308,7 @@
               </div>
 
               <!-- Tab Kunjungan Posyandu -->
-              <div
-                class="tab-pane fade "
-                id="kunjungan-tab-pane"
-                role="tabpanel"
-                tabindex="0"
-              >
+              <div class="tab-pane fade" id="kunjungan-tab-pane" role="tabpanel" tabindex="0">
                 <!-- Filter -->
                 <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
                   <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
@@ -445,13 +444,13 @@
                   </button>
 
                   <!-- Import Group -->
-                   <a
-                      class="btn btn-success"
-                      href="#"
-                      @click.prevent="openImport('Import Kunjungan')"
-                    >
-                      <i class="bi bi-filetype-csv"></i> Import Kunjungan
-                    </a>
+                  <a
+                    class="btn btn-success"
+                    href="#"
+                    @click.prevent="openImport('Import Kunjungan')"
+                  >
+                    <i class="bi bi-filetype-csv"></i> Import Kunjungan
+                  </a>
                   <!-- <div class="btn-group">
                     <button
                       type="button"
@@ -521,14 +520,169 @@
 
               <!-- Tab Intervensi -->
               <div class="tab-pane fade" id="intervensi-tab-pane" role="tabpanel" tabindex="0">
-                Intervensi
+                <!-- Filter -->
+                <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+                  <form class="row g-3 align-items-end" @submit.prevent="applyFilter_intervensi">
+                    <!-- NIK (selalu tampil, realtime filter) -->
+                    <div class="col-md-12">
+                      <label for="nik" class="form-label">NIK Orang Tua</label>
+                      <input
+                        type="text"
+                        v-model="filter_intervensi.nik"
+                        id="nik"
+                        class="form-control"
+                        placeholder="Cari berdasarkan NIK Orang Tua"
+                      />
+                    </div>
+
+                    <!-- Expandable section -->
+                    <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                      <!-- Nama -->
+                      <div class="col-md-6">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nama"
+                          v-model="advancedFilter_intervensi.nama"
+                          placeholder="Nama Anak"
+                        />
+                      </div>
+
+                      <!-- Tanggal Lahir -->
+                      <div class="col-md-6">
+                        <label for="tgl_kunjungan" class="form-label">Tanggal Kunjungan</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="tgl_kunjungan"
+                          v-model="advancedFilter_intervensi.tgl_kunjungan"
+                        />
+                      </div>
+
+                      <!-- Tombol -->
+                      <div class="col-md-12">
+                        <button
+                          type="submit"
+                          class="btn btn-primary float-start"
+                          @click="applyAdvancedFilter_intervensi"
+                        >
+                          <i class="bi bi-search"></i> Cari
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary float-end"
+                          @click="resetFilter_intervensi"
+                        >
+                          <i class="bi bi-arrow-clockwise"></i> Reset
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- Expand/Collapse Button -->
+                  <div class="text-end mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                      @click="toggleExpand"
+                    >
+                      <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                      {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Button Group -->
+                <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+                  <!-- Tambah Data -->
+                  <button
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalTambah"
+                  >
+                    <i class="bi bi-plus-square"></i> Tambah Data
+                  </button>
+
+                  <!-- Import Group -->
+                  <a
+                    class="btn btn-success"
+                    href="#"
+                    @click.prevent="openImport('Import Data Intervensi')"
+                  >
+                    <i class="bi bi-filetype-csv"></i> Import Data Intervensi
+                  </a>
+                  <!-- <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-success dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-file-earmark-arrow-up"></i> Import
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Kunjungan')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Kunjungan
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Intervensi')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Intervensi
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click.prevent="openImport('Import Pendampingan')"
+                        >
+                          <i class="bi bi-filetype-csv"></i> Pendampingan
+                        </a>
+                      </li>
+                    </ul>
+                  </div> -->
+
+                  <!-- Grafik Gizi -->
+                  <!-- <router-link to="/admin/grafik" class="btn btn-secondary">
+                    <i class="bi bi-graph-up"></i> Grafik Gizi
+                  </router-link> -->
+                </div>
+
+                <!-- Cards Section -->
+                <div class="container-fluid">
+                  <!-- Data Table -->
+                  <div class="card modern-card mt-4">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <EasyDataTable
+                          :headers="headers_intervensi"
+                          :items="filteredAnak_intervensi"
+                          :search-value="filter_intervensi.nik"
+                          buttons-pagination
+                          :rows-per-page="5"
+                          table-class="table-modern"
+                          theme-color="var(--bs-primary)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Tab Pendampingan TPK -->
               <div class="tab-pane fade" id="tpk-tab-pane" role="tabpanel" tabindex="0">
                 Pendampingan TPK
               </div>
-
             </div>
           </div>
         </div>
@@ -971,84 +1125,151 @@ export default {
         kunjungan: '',
       },
 
-      // data dummy kunjungan
-      kunjungan_posyandu: [
+      // data intervensi
+      intervensi: [
         {
-          nik: '3276012309870001',
-          nama: 'Ahmad Fauzi',
-          status_bb: 'Normal',
-          status_tb: 'Pendek',
-          status_bb_tb: 'Gizi Baik',
-          alamat: 'Jl. Damai 3 No. 36,',
-          rt: '05',
-          rw: '02',
-          gender: 'L',
-          tgl_lahir: '2022-03-14',
-          usia: '41',
-          kunjungan: '2025-08-10',
+          nama: 'Zainudin',
+          nik_ayah: '1789026384957681',
+          nama_ayah: 'Zainal Arifin',
+          nik_ibu: '3124026384957681',
+          nama_ibu: 'Dinda Fitari',
+          tgl_kunjungan: '2025-09-12',
+          ket: 'Semua Baik',
         },
         {
-          nik: '3276012309870002',
-          nama: 'Siti Aminah',
-          status_bb: 'Kurang',
-          status_tb: 'Normal',
-          status_bb_tb: 'Resiko',
-          alamat: 'Jl. Damai 3 No. 6,',
-          rt: '03',
-          rw: '01',
-          gender: 'P',
-          tgl_lahir: '2021-07-22',
-          usia: '49',
-          kunjungan: '2025-08-14',
+          nama: 'Didin',
+          nik_ayah: '1543226384957681',
+          nama_ayah: 'Ayah',
+          nik_ibu: '3124020987657681',
+          nama_ibu: 'Bunda',
+          tgl_kunjungan: '2025-09-12',
+          ket: 'Semua Baik',
         },
       ],
 
-      kelahiran_anak:[
+      // data dummy kunjungan
+      kunjungan_posyandu: [
         {
-          nama: 'Dummy Name',
+          kia: '8196839208745623',
+          nama: 'Ahmad Fauzi',
+          nik: '3276012309870001',
+          nama_ibu: 'Siti Aminah',
           tgl_lahir: '2022-03-14',
           gender: 'L',
-          no_kia: '3127893049567312',
+          alamat: 'Jl. Damai 3 No. 36,',
+          phone: '0819978654432',
+          provinsi: 'DKI Jakarta',
+          kota: 'Jakarta Timur',
+          kecamatan: 'Cipayung',
+          desa: 'Cilangkap',
+          rw: '02',
+          rt: '05',
+          usia: '41',
+          kunjungan: '2025-08-10',
+          status_bb: 'Normal',
+          status_tb: 'Pendek',
+          status_bb_tb: 'Gizi Baik',
+        },
+        {
+          kia: '-',
+          nama: 'Ahmad Dino',
+          nik: '3270875389405382',
+          nama_ibu: 'Diniyah',
+          tgl_lahir: '2021-03-20',
+          gender: 'L',
+          alamat: 'Jl. Damai 3 No. 39A,',
+          phone: '0819970984432',
+          provinsi: 'DKI Jakarta',
+          kota: 'Jakarta Timur',
+          kecamatan: 'Cipayung',
+          desa: 'Cilangkap',
+          rw: '02',
+          rt: '05',
+          usia: '41',
+          kunjungan: '2025-08-10',
+          status_bb: 'Normal',
+          status_tb: 'Normal',
+          status_bb_tb: 'Gizi Baik',
+        },
+        {
+          kia: '819098087654312',
+          nama: 'Fauzi Bukan',
+          nik: '3271234567890123',
+          nama_ibu: 'Siyah',
+          tgl_lahir: '2024-03-14',
+          gender: 'L',
+          alamat: 'Jl. Damai 3 No. 44A,',
+          phone: '0851978654432',
+          provinsi: 'DKI Jakarta',
+          kota: 'Jakarta Timur',
+          kecamatan: 'Cipayung',
+          desa: 'Cilangkap',
+          rw: '02',
+          rt: '05',
+          usia: '1',
+          kunjungan: '2025-08-10',
+          status_bb: 'Normal',
+          status_tb: 'Normal',
+          status_bb_tb: 'Gizi Baik',
+        },
+      ],
+
+      kelahiran_anak: [
+        {
+          no_kia: '-',
+          nama: 'Dummy Name',
+          tmpt_lahir: 'Depok',
+          tgl_lahir: '2022-03-14',
           nik_ayah: '1678923680934782',
-          nik_ibu: '3120987649567313',
           ayah: 'Hamdan',
+          nik_ibu: '3120987649567313',
           ibu: 'Hamidah',
+          gender: 'L',
+          anak_ke: '1',
           phone: '081798453887',
           alamat: 'Jl. Damai 3, No. 56',
           provinsi: 'DKI Jakarta',
           kota: 'Jakarta Timur',
-          kecamatan: 'Bojong Gede',
-          desa: 'Cimanggis',
+          kecamatan: 'Cibubur',
+          desa: 'Ciracas',
           rw: '06',
           rt: '03',
           tb: '8',
           bb: '3',
           lk: '20',
+          jarak: '-',
+          cara: 'normal',
         },
         {
-          nama: 'Dummy Example',
-          tgl_lahir: '2023-03-14',
+          no_kia: '9823456789023456',
+          nama: 'Erna',
+          tmpt_lahir: 'Cipayung',
+          tgl_lahir: '2022-03-14',
+          nik_ayah: '1678923680909876',
+          ayah: 'Erica',
+          nik_ibu: '312098764956234',
+          ibu: 'Nanang',
           gender: 'P',
-          no_kia: '3127893049560987',
-          nik_ayah: '1678923680931234',
-          nik_ibu: '31209876495687653',
-          ayah: 'Dimdan',
-          ibu: 'Lilidah',
-          phone: '081798453887',
-          alamat: 'Jl. Damai 3, No. 56',
-          kecamatan: 'Bojong Gede',
-          desa: 'Cimanggis',
+          anak_ke: '2',
+          phone: '081298453887',
+          alamat: 'Jl. Damai 3, No. 100',
+          provinsi: 'DKI Jakarta',
+          kota: 'Jakarta Timur',
+          kecamatan: 'Cibubur',
+          desa: 'Ciracas',
           rw: '06',
           rt: '03',
           tb: '8',
           bb: '3',
           lk: '20',
+          jarak: '2',
+          cara: 'sesar',
         },
       ],
 
       // header kunjungan table
       headers: [
-        { text: 'NIK', value: 'nik' },
+        { text: 'NIK Orang Tua', value: 'nik' },
         { text: 'Nama', value: 'nama' },
         { text: 'L/P', value: 'gender' },
         { text: 'Tanggal Lahir', value: 'tgl_lahir' },
@@ -1062,11 +1283,22 @@ export default {
         { text: 'Kunjungan Terakhir', value: 'kunjungan' },
       ],
 
+      // header intervensi
+      headers_intervensi: [
+        { text: 'nama', value: 'nama' },
+        { text: 'NIK Ayah', value: 'nik_ayah' },
+        { text: 'Nama Ayah', value: 'nama_ayah' },
+        { text: 'NIK Ibu', value: 'nik_ibu' },
+        { text: 'Nama Ibu', value: 'nama_ibu' },
+        { text: 'Tanggal Kunjungan', value: 'tgl_kunjungan' },
+        { text: 'Keterangan', value: 'ket' },
+      ],
+
+      //header kelahiran
       headers_anak: [
-        //nama: 'Dummy Name',
         { text: 'Nama', value: 'nama' },
-        { text: 'NIK Ayah', value: 'nik_ayah'},
-        { text: 'NIK Ibu', value: 'nik_ibu'},
+        { text: 'NIK Ayah', value: 'nik_ayah' },
+        { text: 'NIK Ibu', value: 'nik_ibu' },
         { text: 'No. KIA', value: 'no_kia' },
         { text: 'Nama Ayah', value: 'ayah' },
         { text: 'Nama Ibu', value: 'ibu' },
@@ -1078,8 +1310,7 @@ export default {
       ],
       // filter
       filter_anak: {
-        nik_ayah: '',
-        nik_ibu: '',
+        nik: '',
       },
       advancedFilter_anak: {
         no_kia: '',
@@ -1093,6 +1324,7 @@ export default {
         gender: '',
         nama: '',
       },
+
       // filter
       filter: {
         nik: '',
@@ -1110,6 +1342,19 @@ export default {
         status_tb: '',
         status_bb_tb: '',
         kunjungan: '',
+      },
+
+      // filter intervensi
+      filter_intervensi: {
+        nik: '',
+      },
+      advancedFilter_intervensi: {
+        nama: '',
+        tgl_kunjungan: '',
+      },
+      appliedAdvancedFilter_intervensi: {
+        nama: '',
+        tgl_kunjungan: '',
       },
     }
   },
@@ -1137,10 +1382,14 @@ export default {
     filteredAnak_anak() {
       return this.kelahiran_anak.filter((item) => {
         const af = this.appliedAdvancedFilter_anak
+        const nikFilter = this.filter_anak.nik
 
         return (
-          (this.filter_anak.nik_ibu === '' || item.nik_ibu.includes(this.filter_anak.nik_ibu)) &&
-          (this.filter_anak.nik_ayah === '' || item.nik_ayah.includes(this.filter_anak.nik_ayah)) &&
+          // filter NIK gabungan (ayah OR ibu)
+          (nikFilter === '' ||
+            item.nik_ayah.includes(nikFilter) ||
+            item.nik_ibu.includes(nikFilter)) &&
+          // filter lanjutan
           (af.nama === '' || item.nama === af.nama) &&
           (af.tgl_lahir === '' || item.tgl_lahir === af.tgl_lahir) &&
           (af.gender === '' || item.gender === af.gender) &&
@@ -1148,6 +1397,23 @@ export default {
         )
       })
     },
+    filteredAnak_intervensi() {
+      return this.intervensi.filter((item) => {
+        const af = this.appliedAdvancedFilter_intervensi
+        const nikFilter = this.filter_intervensi.nik
+
+        return (
+          // filter NIK gabungan (ayah OR ibu)
+          (nikFilter === '' ||
+            item.nik_ayah.includes(nikFilter) ||
+            item.nik_ibu.includes(nikFilter)) &&
+          // filter lanjutan
+          (af.nama === '' || item.nama === af.nama) &&
+          (af.tgl_kunjungan === '' || item.tgl_kunjungan === af.tgl_kunjungan)
+        )
+      })
+    },
+
     progressLevel() {
       if (this.importProgress < 40) return 'low'
       if (this.importProgress < 80) return 'mid'
@@ -1340,6 +1606,10 @@ export default {
       // Salin isi input advancedFilter ke appliedAdvancedFilter
       this.appliedAdvancedFilter_anak = { ...this.advancedFilter_anak }
     },
+    applyAdvancedFilter_intervensi() {
+      // Salin isi input advancedFilter ke appliedAdvancedFilter
+      this.appliedAdvancedFilter_intervensi = { ...this.advancedFilter_intervensi }
+    },
     resetFilter() {
       this.advancedFilter = {
         usia: '',
@@ -1358,6 +1628,14 @@ export default {
         tgl_lahir: '',
         kunjungan: '',
       }
+      this.appliedAdvancedFilter_anak = { ...this.advancedFilter_anak }
+    },
+    resetFilter_intervensi() {
+      this.advancedFilter_intervensi = {
+        nama: '',
+        tgl_kunjungan: '',
+      }
+      this.appliedAdvancedFilter_intervensi = { ...this.advancedFilter_intervensi }
     },
   },
   watch: {
