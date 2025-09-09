@@ -311,16 +311,16 @@
               <div class="tab-pane fade" id="kunjungan-tab-pane" role="tabpanel" tabindex="0">
                 <!-- Filter -->
                 <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
-                  <form class="row g-3 align-items-end" @submit.prevent="applyFilter">
+                  <form class="row g-3 align-items-end" @submit.prevent="applyFilter_kunjungan">
                     <!-- NIK (selalu tampil, realtime filter) -->
                     <div class="col-md-12">
                       <label for="nik" class="form-label">NIK Orang Tua</label>
                       <input
                         type="text"
-                        v-model="filter.nik"
+                        v-model="filter_kunjungan.nik"
                         id="nik"
                         class="form-control"
-                        placeholder="Cari berdasarkan NIK"
+                        placeholder="Cari berdasarkan NIK Orang Tua"
                       />
                     </div>
 
@@ -333,7 +333,7 @@
                           type="number"
                           class="form-control"
                           id="usia"
-                          v-model="advancedFilter.usia"
+                          v-model="advancedFilter_kunjungan.usia"
                           placeholder="Tahun"
                         />
                       </div>
@@ -344,7 +344,7 @@
                         <select
                           class="form-select"
                           id="status_bb2"
-                          v-model="advancedFilter.status_bb"
+                          v-model="advancedFilter_kunjungan.status_bb"
                         >
                           <option value="">-- semua --</option>
                           <option value="Sangat Kurang">Sangat Kurang</option>
@@ -360,7 +360,7 @@
                         <select
                           class="form-select"
                           id="status_tb"
-                          v-model="advancedFilter.status_tb"
+                          v-model="advancedFilter_kunjungan.status_tb"
                         >
                           <option value="">-- semua --</option>
                           <option value="Sangat Pendek">Sangat Pendek</option>
@@ -376,7 +376,7 @@
                         <select
                           class="form-select"
                           id="status_gizi"
-                          v-model="advancedFilter.status_bb_tb"
+                          v-model="advancedFilter_kunjungan.status_bb_tb"
                         >
                           <option value="">-- semua --</option>
                           <option value="Gizi Buruk">Gizi Buruk</option>
@@ -395,7 +395,7 @@
                           type="date"
                           class="form-control"
                           id="tgl_kunjungan"
-                          v-model="advancedFilter.kunjungan"
+                          v-model="advancedFilter_kunjungan.kunjungan"
                         />
                       </div>
 
@@ -404,14 +404,14 @@
                         <button
                           type="submit"
                           class="btn btn-primary float-start"
-                          @click="applyAdvancedFilter"
+                          @click="applyAdvancedFilter_kunjungan"
                         >
                           <i class="bi bi-search"></i> Cari
                         </button>
                         <button
                           type="button"
                           class="btn btn-secondary float-end"
-                          @click="resetFilter_anak"
+                          @click="resetFilter_kunjungan"
                         >
                           <i class="bi bi-arrow-clockwise"></i> Reset
                         </button>
@@ -451,50 +451,7 @@
                   >
                     <i class="bi bi-filetype-csv"></i> Import Kunjungan
                   </a>
-                  <!-- <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn btn-success dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-file-earmark-arrow-up"></i> Import
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Kunjungan')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Kunjungan
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Intervensi')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Intervensi
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Pendampingan')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Pendampingan
-                        </a>
-                      </li>
-                    </ul>
-                  </div> -->
 
-                  <!-- Grafik Gizi -->
-                  <!-- <router-link to="/admin/grafik" class="btn btn-secondary">
-                    <i class="bi bi-graph-up"></i> Grafik Gizi
-                  </router-link> -->
                 </div>
 
                 <!-- Cards Section -->
@@ -504,9 +461,9 @@
                     <div class="card-body">
                       <div class="table-responsive">
                         <EasyDataTable
-                          :headers="headers"
-                          :items="filteredAnak"
-                          :search-value="filter.nik"
+                          :headers="headers_kunjungan"
+                          :items="filteredAnak_kunjungan"
+                          :search-value="filter_kunjungan.nik"
                           buttons-pagination
                           :rows-per-page="5"
                           table-class="table-modern"
@@ -719,8 +676,8 @@
               <input
                 type="text"
                 class="form-control shadow-sm"
-                v-model="form.nik"
-                @input="form.nik = form.nik.replace(/\D/g, '')"
+                v-model="form_kunjungan.nik"
+                @input="form_kunjungan.nik = form_kunjungan.nik.replace(/\D/g, '')"
                 maxlength="16"
               />
             </div>
@@ -728,13 +685,13 @@
             <!-- Nama Anak -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Nama Anak</label>
-              <input type="text" class="form-control shadow-sm" v-model="form.nama" />
+              <input type="text" class="form-control shadow-sm" v-model="form_kunjungan.nama" />
             </div>
 
             <!-- Jenis Kelamin -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
-              <select class="form-select shadow-sm" v-model="form.gender">
+              <select class="form-select shadow-sm" v-model="form_kunjungan.gender">
                 <option value="">L/P</option>
                 <option value="L">Laki-laki</option>
                 <option value="P">Perempuan</option>
@@ -744,7 +701,7 @@
             <!-- Alamat -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Alamat</label>
-              <textarea class="form-control shadow-sm" rows="2" v-model="form.alamat"></textarea>
+              <textarea class="form-control shadow-sm" rows="2" v-model="form_kunjungan.alamat"></textarea>
             </div>
 
             <!-- Tanggal lahir & Usia -->
@@ -753,7 +710,7 @@
               <input
                 type="date"
                 class="form-control shadow-sm"
-                v-model="form.tgl_lahir"
+                v-model="form_kunjungan.tgl_lahir"
                 @change="hitungUsia"
               />
             </div>
@@ -762,7 +719,7 @@
               <input
                 type="text"
                 class="form-control shadow-sm bg-light"
-                v-model="form.usia"
+                v-model="form_kunjungan.usia"
                 readonly
               />
             </div>
@@ -770,7 +727,7 @@
             <!-- Status BB, TB, BB/TB -->
             <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Status BB</label>
-              <select class="form-select shadow-sm" v-model="form.status_bb">
+              <select class="form-select shadow-sm" v-model="form_kunjungan.status_bb">
                 <option value="">Pilih status</option>
                 <option value="Sangat Kurang">Sangat Kurang</option>
                 <option value="Kurang">Kurang</option>
@@ -781,7 +738,7 @@
 
             <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Status TB</label>
-              <select class="form-select shadow-sm" v-model="form.status_tb">
+              <select class="form-select shadow-sm" v-model="form_kunjungan.status_tb">
                 <option value="">Pilih status</option>
                 <option value="Sangat Pendek">Sangat Pendek</option>
                 <option value="Pendek">Pendek</option>
@@ -792,7 +749,7 @@
 
             <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Status BB/TB</label>
-              <select class="form-select shadow-sm" v-model="form.status_bb_tb">
+              <select class="form-select shadow-sm" v-model="form_kunjungan.status_bb_tb">
                 <option value="">Pilih status</option>
                 <option value="Gizi Buruk">Gizi Buruk</option>
                 <option value="Gizi Kurang">Gizi Kurang</option>
@@ -806,17 +763,17 @@
             <!-- RT, RW -->
             <div class="col-md-3">
               <label class="form-label small fw-semibold text-secondary">RT</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rt" />
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kunjungan.rt" />
             </div>
             <div class="col-md-3">
               <label class="form-label small fw-semibold text-secondary">RW</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form.rw" />
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kunjungan.rw" />
             </div>
 
             <!-- Kunjungan Terakhir -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Kunjungan Terakhir</label>
-              <input type="date" class="form-control shadow-sm" v-model="form.kunjungan" />
+              <input type="date" class="form-control shadow-sm" v-model="form_kunjungan.kunjungan" />
             </div>
           </form>
         </div>
@@ -954,13 +911,6 @@
   border-radius: 0 0 1rem 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-/* .filter-wrapper {
-  position: relative;
-  z-index: 0;
-  margin-top: -30px !important;
-  width: 97%;
-  border-radius: 0.75rem;
-} */
 /* Timeline Style */
 .timeline li {
   position: relative;
@@ -1091,7 +1041,6 @@ import NavbarAdmin from '@/components/NavbarAdmin.vue'
 import HeaderAdmin from '@/components/HeaderAdmin.vue'
 import EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
-//import { Chart } from 'chart.js/auto' // ini ganti <script src=...>
 import { Modal } from 'bootstrap' // <-- butuh ini untuk kontrol modal
 
 export default {
@@ -1110,7 +1059,7 @@ export default {
       animatedProgress: 0,
       currentRow: 0,
       totalRows: 0,
-      form: {
+      form_kunjungan: {
         nik: '',
         nama: '',
         gender: '',
@@ -1123,6 +1072,27 @@ export default {
         rt: '',
         rw: '',
         kunjungan: '',
+      },
+
+      // form kelahiran
+      form_kelahiran: {
+        nik_ayah:'',
+        nama_ayah:'',
+        nik_ibu:'',
+        nama_ibu:'',
+        no_kia:'',
+        no_akta:'',
+        nama:'',
+        gender:'',
+        tmpt_lahir:'',
+        tgl_lahir:'',
+        jenis:'',
+        penolong:'',
+        bb:'',
+        pb:'',
+        tmpt_dilahirkan:'',
+        anak_ke:'',
+        jarak:'',
       },
 
       // data intervensi
@@ -1216,59 +1186,48 @@ export default {
 
       kelahiran_anak: [
         {
-          no_kia: '-',
-          nama: 'Dummy Name',
-          tmpt_lahir: 'Depok',
-          tgl_lahir: '2022-03-14',
-          nik_ayah: '1678923680934782',
-          ayah: 'Hamdan',
-          nik_ibu: '3120987649567313',
-          ibu: 'Hamidah',
-          gender: 'L',
-          anak_ke: '1',
-          phone: '081798453887',
-          alamat: 'Jl. Damai 3, No. 56',
-          provinsi: 'DKI Jakarta',
-          kota: 'Jakarta Timur',
-          kecamatan: 'Cibubur',
-          desa: 'Ciracas',
-          rw: '06',
-          rt: '03',
-          tb: '8',
-          bb: '3',
-          lk: '20',
-          jarak: '-',
-          cara: 'normal',
+          no_kia: '1893456723456123',
+          nama:'John Foe',
+          nik_ayah:'1870965231876523',
+          nama_ayah:'David John',
+          nik_ibu:'3127093421874560',
+          nama_ibu:'Foe Watson',
+          gender:'L',
+          tgl_lahir:'2024-03-22',
+          jenis:'normal',
+          bb:'3 kg',
+          pb:'50 cm',
         },
         {
-          no_kia: '9823456789023456',
-          nama: 'Erna',
-          tmpt_lahir: 'Cipayung',
-          tgl_lahir: '2022-03-14',
-          nik_ayah: '1678923680909876',
-          ayah: 'Erica',
-          nik_ibu: '312098764956234',
-          ibu: 'Nanang',
-          gender: 'P',
-          anak_ke: '2',
-          phone: '081298453887',
-          alamat: 'Jl. Damai 3, No. 100',
-          provinsi: 'DKI Jakarta',
-          kota: 'Jakarta Timur',
-          kecamatan: 'Cibubur',
-          desa: 'Ciracas',
-          rw: '06',
-          rt: '03',
-          tb: '8',
-          bb: '3',
-          lk: '20',
-          jarak: '2',
-          cara: 'sesar',
+          no_kia: '312783457302948',
+          nama:'Danny Ang',
+          nik_ayah:'1870965231871234',
+          nama_ayah:'Danny Wong',
+          nik_ibu:'3127093421809764',
+          nama_ibu:'Angelina Ang',
+          gender:'L',
+          tgl_lahir:'2024-09-22',
+          jenis:'normal',
+          bb:'4 kg',
+          pb:'57 cm',
+        },
+        {
+          no_kia: '1871022703960004',
+          nama:'Gin Azza',
+          nik_ayah:'1870966543971232',
+          nama_ayah:'Gin Tama',
+          nik_ibu:'3127654381806564',
+          nama_ibu:'Azza Iyyah',
+          gender:'P',
+          tgl_lahir:'2024-10-09',
+          jenis:'sesar',
+          bb:'3 kg',
+          pb:'47 cm',
         },
       ],
 
       // header kunjungan table
-      headers: [
+      headers_kunjungan: [
         { text: 'NIK Orang Tua', value: 'nik' },
         { text: 'Nama', value: 'nama' },
         { text: 'L/P', value: 'gender' },
@@ -1298,17 +1257,17 @@ export default {
       headers_anak: [
         { text: 'Nama', value: 'nama' },
         { text: 'NIK Ayah', value: 'nik_ayah' },
+        { text: 'Nama Ayah', value: 'nama_ayah' },
         { text: 'NIK Ibu', value: 'nik_ibu' },
-        { text: 'No. KIA', value: 'no_kia' },
-        { text: 'Nama Ayah', value: 'ayah' },
-        { text: 'Nama Ibu', value: 'ibu' },
+        { text: 'Nama Ibu', value: 'nama_ibu' },
         { text: 'L/P', value: 'gender' },
         { text: 'Tanggal Lahir', value: 'tgl_lahir' },
-        { text: 'TB', value: 'tb' },
+        { text: 'Jenis Kelahiran', value: 'jenis' },
         { text: 'BB', value: 'bb' },
-        { text: 'LK', value: 'lk' },
+        { text: 'PB', value: 'pb' },
       ],
-      // filter
+
+      // filter kelahiran
       filter_anak: {
         nik: '',
       },
@@ -1326,17 +1285,17 @@ export default {
       },
 
       // filter
-      filter: {
+      filter_kunjungan: {
         nik: '',
       },
-      advancedFilter: {
+      advancedFilter_kunjungan: {
         usia: '',
         status_bb: '',
         status_tb: '',
         status_bb_tb: '',
         kunjungan: '',
       },
-      appliedAdvancedFilter: {
+      appliedAdvancedFilter_kunjungan: {
         usia: '',
         status_bb: '',
         status_tb: '',
@@ -1363,14 +1322,17 @@ export default {
       const config = JSON.parse(localStorage.getItem('siteConfig'))
       return config && config.background ? config.background : null
     },
-    filteredAnak() {
+    filteredAnak_kunjungan() {
       return this.kunjungan_posyandu.filter((item) => {
-        const af = this.appliedAdvancedFilter
+        const af = this.appliedAdvancedFilter_kunjungan || {}
+        const nikFilter = this.filter_kunjungan?.nik || ''
 
-        const usiaFilter = af.usia ? Number(item.usia) === Number(af.usia) : true
+        const usiaFilter = af.usia
+          ? Number(item.usia) === Number(af.usia)
+          : true
 
         return (
-          (this.filter.nik === '' || item.nik.includes(this.filter.nik)) &&
+          (nikFilter === '' || String(item.nik || '').includes(nikFilter)) &&
           usiaFilter &&
           (af.status_bb === '' || item.status_bb === af.status_bb) &&
           (af.status_tb === '' || item.status_tb === af.status_tb) &&
@@ -1474,12 +1436,12 @@ export default {
 
           // lanjut simpan data
 
-          this.kunjungan_posyandu.push({ ...this.form })
+          this.kunjungan_posyandu.push({ ...this.form_kunjungan })
           this.showAlert = true
           setTimeout(() => (this.showAlert = false), 3000)
 
           // reset form
-          this.form = {
+          this.form_kunjungan = {
             nik: '',
             nama: '',
             gender: 'L',
@@ -1523,11 +1485,11 @@ export default {
       this.isFilterOpen = !this.isFilterOpen
     },
     hitungUsia() {
-      if (!this.form.tgl_lahir) {
-        this.form.usia = 0
+      if (!this.form_kunjungan.tgl_lahir) {
+        this.form_kunjungan.usia = 0
         return
       }
-      const lahir = new Date(this.form.tgl_lahir)
+      const lahir = new Date(this.form_kunjungan.tgl_lahir)
       const today = new Date()
 
       let usia = (today.getFullYear() - lahir.getFullYear()) * 12
@@ -1537,7 +1499,7 @@ export default {
       if (today.getDate() < lahir.getDate()) {
         usia -= 1
       }
-      this.form.usia = usia >= 0 ? usia : 0
+      this.form_kunjungan.usia = usia >= 0 ? usia : 0
     },
     handleImport() {
       this.closeModal('modalImport')
@@ -1598,9 +1560,8 @@ export default {
 
       reader.readAsText(file)
     },
-    applyAdvancedFilter() {
-      // Salin isi input advancedFilter ke appliedAdvancedFilter
-      this.appliedAdvancedFilter = { ...this.advancedFilter }
+    applyAdvancedFilter_kunjungan() {
+      this.appliedAdvancedFilter_kunjungan = { ...this.advancedFilter_kunjungan }
     },
     applyAdvancedFilter_anak() {
       // Salin isi input advancedFilter ke appliedAdvancedFilter
@@ -1610,16 +1571,16 @@ export default {
       // Salin isi input advancedFilter ke appliedAdvancedFilter
       this.appliedAdvancedFilter_intervensi = { ...this.advancedFilter_intervensi }
     },
-    resetFilter() {
-      this.advancedFilter = {
-        usia: '',
-        status_bb: '',
-        status_tb: '',
-        status_bb_tb: '',
-        kunjungan: '',
-      }
-      this.appliedAdvancedFilter = { ...this.advancedFilter }
-    },
+    resetFilter_kunjungan() {
+    this.advancedFilter_kunjungan = {
+      usia: '',
+      status_bb: '',
+      status_tb: '',
+      status_bb_tb: '',
+      kunjungan: '',
+    }
+    this.appliedAdvancedFilter_kunjungan = { ...this.advancedFilter_kunjungan }
+  },
     resetFilter_anak() {
       this.advancedFilter_anak = {
         nama: '',
