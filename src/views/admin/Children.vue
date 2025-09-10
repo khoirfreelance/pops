@@ -326,6 +326,17 @@
 
                     <!-- Expandable section -->
                     <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                      <div class="col-md-4">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nama"
+                          v-model="advancedFilter_kunjungan.nama"
+                          placeholder="Nama Anak"
+                        />
+                      </div>
+
                       <!-- Usia -->
                       <div class="col-md-2">
                         <label for="usia" class="form-label">Usia</label>
@@ -334,57 +345,21 @@
                           class="form-control"
                           id="usia"
                           v-model="advancedFilter_kunjungan.usia"
-                          placeholder="Tahun"
+                          placeholder="Bulan"
                         />
                       </div>
 
-                      <!-- Status BB -->
+                      <!-- Gender -->
                       <div class="col-md-2">
-                        <label for="status_bb2" class="form-label">Status BB</label>
+                        <label for="gender" class="form-label">Jenis Kelamin</label>
                         <select
                           class="form-select"
-                          id="status_bb2"
-                          v-model="advancedFilter_kunjungan.status_bb"
+                          id="gender"
+                          v-model="advancedFilter_kunjungan.gender"
                         >
                           <option value="">-- semua --</option>
-                          <option value="Sangat Kurang">Sangat Kurang</option>
-                          <option value="Kurang">Kurang</option>
-                          <option value="Normal">Normal</option>
-                          <option value="Resiko Lebih">Resiko Lebih</option>
-                        </select>
-                      </div>
-
-                      <!-- Status TB -->
-                      <div class="col-md-2">
-                        <label for="status_tb" class="form-label">Status TB</label>
-                        <select
-                          class="form-select"
-                          id="status_tb"
-                          v-model="advancedFilter_kunjungan.status_tb"
-                        >
-                          <option value="">-- semua --</option>
-                          <option value="Sangat Pendek">Sangat Pendek</option>
-                          <option value="Pendek">Pendek</option>
-                          <option value="Normal">Normal</option>
-                          <option value="Tinggi">Tinggi</option>
-                        </select>
-                      </div>
-
-                      <!-- Status Gizi -->
-                      <div class="col-md-2">
-                        <label for="status_gizi" class="form-label">Status Gizi</label>
-                        <select
-                          class="form-select"
-                          id="status_gizi"
-                          v-model="advancedFilter_kunjungan.status_bb_tb"
-                        >
-                          <option value="">-- semua --</option>
-                          <option value="Gizi Buruk">Gizi Buruk</option>
-                          <option value="Gizi Kurang">Gizi Kurang</option>
-                          <option value="Gizi Baik">Gizi Baik</option>
-                          <option value="Berisiko Gizi Lebih">Berisiko Gizi Lebih</option>
-                          <option value="Gizi Lebih">Gizi Lebih</option>
-                          <option value="Obesitas">Obesitas</option>
+                          <option value="L">Laki-laki</option>
+                          <option value="P">Perempuan</option>
                         </select>
                       </div>
 
@@ -1122,12 +1097,14 @@ export default {
         {
           kia: '8196839208745623',
           nama: 'Ahmad Fauzi',
-          nik: '3276012309870001',
+          nik_ibu: '3276012309870001',
           nama_ibu: 'Siti Aminah',
+          nik_ayah: '1871012309870001',
+          nama_ayah: 'Steven Ann',
           tgl_lahir: '2022-03-14',
           gender: 'L',
-          alamat: 'Jl. Damai 3 No. 36,',
           phone: '0819978654432',
+          alamat: 'Jl. Damai 3 No. 36,',
           provinsi: 'DKI Jakarta',
           kota: 'Jakarta Timur',
           kecamatan: 'Cipayung',
@@ -1135,20 +1112,45 @@ export default {
           rw: '02',
           rt: '05',
           usia: '41',
+          tb:'55',
+          bb:'10',
+          lika:'12',
           kunjungan: '2025-08-10',
-          status_bb: 'Normal',
-          status_tb: 'Pendek',
-          status_bb_tb: 'Gizi Baik',
+        },
+        {
+          kia: '543739208749806',
+          nama: 'Syifa Ann',
+          nik_ibu: '3276012309887601',
+          nama_ibu: 'Hamidah Dwi I',
+          nik_ayah: '3123012309870087',
+          nama_ayah: 'Hamid D',
+          tgl_lahir: '2022-03-15',
+          gender: 'P',
+          phone: '0821234652245',
+          alamat: 'Jl. Damai 3 No. 6,',
+          provinsi: 'DKI Jakarta',
+          kota: 'Jakarta Timur',
+          kecamatan: 'Cipayung',
+          desa: 'Cilangkap',
+          rw: '02',
+          rt: '05',
+          usia: '41',
+          tb:'55',
+          bb:'10',
+          lika:'12',
+          kunjungan: '2025-08-10',
         },
         {
           kia: '-',
-          nama: 'Ahmad Dino',
-          nik: '3270875389405382',
-          nama_ibu: 'Diniyah',
-          tgl_lahir: '2021-03-20',
+          nama: 'Azzaky El Nino',
+          nik_ibu: '327609876870022',
+          nama_ibu: 'Ien Syani',
+          nik_ayah: '1871009879870001',
+          nama_ayah: 'Donny Aja',
+          tgl_lahir: '2022-03-15',
           gender: 'L',
-          alamat: 'Jl. Damai 3 No. 39A,',
-          phone: '0819970984432',
+          phone: '0819909855632',
+          alamat: 'Jl. Damai 3 No. 44,',
           provinsi: 'DKI Jakarta',
           kota: 'Jakarta Timur',
           kecamatan: 'Cipayung',
@@ -1156,31 +1158,10 @@ export default {
           rw: '02',
           rt: '05',
           usia: '41',
+          tb:'55',
+          bb:'10',
+          lika:'12',
           kunjungan: '2025-08-10',
-          status_bb: 'Normal',
-          status_tb: 'Normal',
-          status_bb_tb: 'Gizi Baik',
-        },
-        {
-          kia: '819098087654312',
-          nama: 'Fauzi Bukan',
-          nik: '3271234567890123',
-          nama_ibu: 'Siyah',
-          tgl_lahir: '2024-03-14',
-          gender: 'L',
-          alamat: 'Jl. Damai 3 No. 44A,',
-          phone: '0851978654432',
-          provinsi: 'DKI Jakarta',
-          kota: 'Jakarta Timur',
-          kecamatan: 'Cipayung',
-          desa: 'Cilangkap',
-          rw: '02',
-          rt: '05',
-          usia: '1',
-          kunjungan: '2025-08-10',
-          status_bb: 'Normal',
-          status_tb: 'Normal',
-          status_bb_tb: 'Gizi Baik',
         },
       ],
 
@@ -1193,10 +1174,14 @@ export default {
           nik_ibu:'3127093421874560',
           nama_ibu:'Foe Watson',
           gender:'L',
+          tmpt_dilahirkan:'Jakarta',
           tgl_lahir:'2024-03-22',
+          bb:'3',
+          pb:'50',
+          anak_ke:'1',
+          usia_ibu:'23',
+          jarak:'-',
           jenis:'normal',
-          bb:'3 kg',
-          pb:'50 cm',
         },
         {
           no_kia: '312783457302948',
@@ -1206,10 +1191,14 @@ export default {
           nik_ibu:'3127093421809764',
           nama_ibu:'Angelina Ang',
           gender:'L',
+          tmpt_dilahirkan:'Jakarta',
           tgl_lahir:'2024-09-22',
           jenis:'normal',
-          bb:'4 kg',
-          pb:'57 cm',
+          bb:'4',
+          pb:'57',
+          anak_ke:'1',
+          usia_ibu:'33',
+          jarak:'-',
         },
         {
           no_kia: '1871022703960004',
@@ -1219,23 +1208,28 @@ export default {
           nik_ibu:'3127654381806564',
           nama_ibu:'Azza Iyyah',
           gender:'P',
+          tmpt_dilahirkan:'Jakarta',
           tgl_lahir:'2024-10-09',
           jenis:'sesar',
-          bb:'3 kg',
-          pb:'47 cm',
+          bb:'3',
+          pb:'47',
+          anak_ke:'1',
+          usia_ibu:'27',
+          jarak:'-',
         },
       ],
 
       // header kunjungan table
       headers_kunjungan: [
-        { text: 'NIK Orang Tua', value: 'nik' },
+        { text: 'KIA', value: 'kia' },
         { text: 'Nama', value: 'nama' },
+        { text: 'NIK Ayah', value: 'nik_ayah' },
+        { text: 'Nama Ayah', value: 'nama_ayah' },
+        { text: 'NIK Ibu', value: 'nik_ibu' },
+        { text: 'Nama Ibu', value: 'nama_ibu' },
         { text: 'L/P', value: 'gender' },
         { text: 'Tanggal Lahir', value: 'tgl_lahir' },
         { text: 'Usia (Bulan)', value: 'usia' },
-        { text: 'Status BB', value: 'status_bb' },
-        { text: 'Status TB', value: 'status_tb' },
-        { text: 'Status Gizi', value: 'status_bb_tb' },
         { text: 'Alamat', value: 'alamat' },
         { text: 'RT', value: 'rt' },
         { text: 'RW', value: 'rw' },
@@ -1255,16 +1249,21 @@ export default {
 
       //header kelahiran
       headers_anak: [
+        { text: 'No KIA', value: 'no_kia' },
         { text: 'Nama', value: 'nama' },
         { text: 'NIK Ayah', value: 'nik_ayah' },
         { text: 'Nama Ayah', value: 'nama_ayah' },
         { text: 'NIK Ibu', value: 'nik_ibu' },
         { text: 'Nama Ibu', value: 'nama_ibu' },
         { text: 'L/P', value: 'gender' },
+        { text: 'Tempat dilahirkan', value: 'tmpt_dilahirkan' },
         { text: 'Tanggal Lahir', value: 'tgl_lahir' },
         { text: 'Jenis Kelahiran', value: 'jenis' },
         { text: 'BB', value: 'bb' },
         { text: 'PB', value: 'pb' },
+        { text: 'Anak ke', value: 'anak_ke' },
+        { text: 'Usia Ibu', value: 'usia_ibu' },
+        { text: 'Jarak Kelahiran', value: 'jarak' },
       ],
 
       // filter kelahiran
@@ -1289,17 +1288,15 @@ export default {
         nik: '',
       },
       advancedFilter_kunjungan: {
+        nama:'',
+        gender:'',
         usia: '',
-        status_bb: '',
-        status_tb: '',
-        status_bb_tb: '',
         kunjungan: '',
       },
       appliedAdvancedFilter_kunjungan: {
+        nama:'',
+        gender:'',
         usia: '',
-        status_bb: '',
-        status_tb: '',
-        status_bb_tb: '',
         kunjungan: '',
       },
 
@@ -1324,19 +1321,18 @@ export default {
     },
     filteredAnak_kunjungan() {
       return this.kunjungan_posyandu.filter((item) => {
-        const af = this.appliedAdvancedFilter_kunjungan || {}
-        const nikFilter = this.filter_kunjungan?.nik || ''
-
-        const usiaFilter = af.usia
-          ? Number(item.usia) === Number(af.usia)
-          : true
+        const af = this.appliedAdvancedFilter_kunjungan
+        const nikFilter = this.filter_kunjungan.nik
 
         return (
-          (nikFilter === '' || String(item.nik || '').includes(nikFilter)) &&
-          usiaFilter &&
-          (af.status_bb === '' || item.status_bb === af.status_bb) &&
-          (af.status_tb === '' || item.status_tb === af.status_tb) &&
-          (af.status_bb_tb === '' || item.status_bb_tb === af.status_bb_tb) &&
+          // filter NIK gabungan (ayah OR ibu)
+          (nikFilter === '' ||
+            item.nik_ayah.includes(nikFilter) ||
+            item.nik_ibu.includes(nikFilter)) &&
+          // filter lanjutan
+          (af.nama === '' || item.nama === af.nama) &&
+          (af.usia === '' || item.usia === af.usia) &&
+          (af.gender === '' || item.gender === af.gender) &&
           (af.kunjungan === '' || item.kunjungan === af.kunjungan)
         )
       })
@@ -1573,10 +1569,9 @@ export default {
     },
     resetFilter_kunjungan() {
     this.advancedFilter_kunjungan = {
+      nama: '',
+      gender: '',
       usia: '',
-      status_bb: '',
-      status_tb: '',
-      status_bb_tb: '',
       kunjungan: '',
     }
     this.appliedAdvancedFilter_kunjungan = { ...this.advancedFilter_kunjungan }
