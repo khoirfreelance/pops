@@ -227,66 +227,32 @@
                   <button
                     class="btn btn-primary"
                     data-bs-toggle="modal"
-                    data-bs-target="#modalTambah"
+                    data-bs-target="#modalTambah_kelahiran"
                   >
                     <i class="bi bi-plus-square"></i> Tambah Data
                   </button>
+                  <!-- <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#add_kelahiran">
+                    <i class="bi bi-plus-square"></i> Tambah Data
+                  </button> -->
 
                   <!-- Import Group -->
-                  <a
+                  <button
+                    class="btn btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalImport_kelahiran"
+                  >
+                    <i class="bi bi-filetype-csv"></i> Import Data Anak
+                  </button>
+                  <!-- <a
                     class="btn btn-success"
                     href="#"
                     @click.prevent="openImport('Import Data Anak')"
                   >
                     <i class="bi bi-filetype-csv"></i> Import Data Anak
-                  </a>
-                  <!-- <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn btn-success dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-file-earmark-arrow-up"></i> Import
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Kunjungan')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Kunjungan
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Intervensi')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Intervensi
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Pendampingan')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Pendampingan
-                        </a>
-                      </li>
-                    </ul>
-                  </div> -->
-
-                  <!-- Grafik Gizi -->
-                  <!-- <router-link to="/admin/grafik" class="btn btn-secondary">
-                    <i class="bi bi-graph-up"></i> Grafik Gizi
-                  </router-link> -->
+                  </a> -->
                 </div>
 
-                <!-- Cards Section -->
+                <!-- Table Section -->
                 <div class="container-fluid">
                   <!-- Data Table -->
                   <div class="card modern-card mt-4">
@@ -544,50 +510,6 @@
                   >
                     <i class="bi bi-filetype-csv"></i> Import Data Intervensi
                   </a>
-                  <!-- <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn btn-success dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-file-earmark-arrow-up"></i> Import
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Kunjungan')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Kunjungan
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Intervensi')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Intervensi
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          @click.prevent="openImport('Import Pendampingan')"
-                        >
-                          <i class="bi bi-filetype-csv"></i> Pendampingan
-                        </a>
-                      </li>
-                    </ul>
-                  </div> -->
-
-                  <!-- Grafik Gizi -->
-                  <!-- <router-link to="/admin/grafik" class="btn btn-secondary">
-                    <i class="bi bi-graph-up"></i> Grafik Gizi
-                  </router-link> -->
                 </div>
 
                 <!-- Cards Section -->
@@ -613,7 +535,145 @@
 
               <!-- Tab Pendampingan TPK -->
               <div class="tab-pane fade" id="tpk-tab-pane" role="tabpanel" tabindex="0">
-                Pendampingan TPK
+                <!-- Filter -->
+                <div class="filter-wrapper bg-light rounded shadow-sm p-3 mt-3 container-fluid">
+                  <form class="row g-3 align-items-end" @submit.prevent="applyFilter_kunjungan">
+                    <!-- NIK (selalu tampil, realtime filter) -->
+                    <div class="col-md-12">
+                      <label for="nik" class="form-label">NIK Orang Tua</label>
+                      <input
+                        type="text"
+                        v-model="filter_kunjungan.nik"
+                        id="nik"
+                        class="form-control"
+                        placeholder="Cari berdasarkan NIK Orang Tua"
+                      />
+                    </div>
+
+                    <!-- Expandable section -->
+                    <div v-if="isFilterOpen" class="row g-3 align-items-end mt-2">
+                      <div class="col-md-4">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nama"
+                          v-model="advancedFilter_kunjungan.nama"
+                          placeholder="Nama Anak"
+                        />
+                      </div>
+
+                      <!-- Usia -->
+                      <div class="col-md-2">
+                        <label for="usia" class="form-label">Usia</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="usia"
+                          v-model="advancedFilter_kunjungan.usia"
+                          placeholder="Bulan"
+                        />
+                      </div>
+
+                      <!-- Gender -->
+                      <div class="col-md-2">
+                        <label for="gender" class="form-label">Jenis Kelamin</label>
+                        <select
+                          class="form-select"
+                          id="gender"
+                          v-model="advancedFilter_kunjungan.gender"
+                        >
+                          <option value="">-- semua --</option>
+                          <option value="L">Laki-laki</option>
+                          <option value="P">Perempuan</option>
+                        </select>
+                      </div>
+
+                      <!-- Tanggal Kunjungan -->
+                      <div class="col-md-4">
+                        <label for="tgl_kunjungan" class="form-label">Tanggal Kunjungan</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="tgl_kunjungan"
+                          v-model="advancedFilter_kunjungan.kunjungan"
+                        />
+                      </div>
+
+                      <!-- Tombol -->
+                      <div class="col-md-12">
+                        <button
+                          type="submit"
+                          class="btn btn-primary float-start"
+                          @click="applyAdvancedFilter_kunjungan"
+                        >
+                          <i class="bi bi-search"></i> Cari
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary float-end"
+                          @click="resetFilter_kunjungan"
+                        >
+                          <i class="bi bi-arrow-clockwise"></i> Reset
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- Expand/Collapse Button -->
+                  <div class="text-end mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm"
+                      @click="toggleExpand"
+                    >
+                      <i :class="isFilterOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                      {{ isFilterOpen ? 'Tutup Filter Lain' : 'Filter Lain' }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Button Group -->
+                <div class="container-fluid mt-4 d-flex flex-wrap gap-2 justify-content-end">
+                  <!-- Tambah Data -->
+                  <button
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalTambah"
+                  >
+                    <i class="bi bi-plus-square"></i> Tambah Data
+                  </button>
+
+                  <!-- Import Group -->
+                  <a
+                    class="btn btn-success"
+                    href="#"
+                    @click.prevent="openImport('Import Kunjungan')"
+                  >
+                    <i class="bi bi-filetype-csv"></i> Import Kunjungan
+                  </a>
+
+                </div>
+
+                <!-- Cards Section -->
+                <div class="container-fluid">
+                  <!-- Data Table -->
+                  <div class="card modern-card mt-4">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <EasyDataTable
+                          :headers="headers_kunjungan"
+                          :items="filteredAnak_kunjungan"
+                          :search-value="filter_kunjungan.nik"
+                          buttons-pagination
+                          :rows-per-page="5"
+                          table-class="table-modern"
+                          theme-color="var(--bs-primary)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -624,8 +684,8 @@
     </div>
   </div>
 
-  <!-- Modal Tambah -->
-  <div class="modal fade" id="modalTambah" tabindex="-1">
+  <!-- Modal Tambah kelahiran -->
+  <div class="modal fade" id="modalTambah_kelahiran" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div
         class="modal-content shadow-lg border-0 rounded-4"
@@ -645,14 +705,14 @@
         <!-- Body -->
         <div class="modal-body">
           <form class="row g-4">
-            <!-- NIK Ortu -->
+            <!-- No KIA -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">NIK Ortu</label>
+              <label class="form-label small fw-semibold text-secondary">No. KIA</label>
               <input
                 type="text"
                 class="form-control shadow-sm"
-                v-model="form_kunjungan.nik"
-                @input="form_kunjungan.nik = form_kunjungan.nik.replace(/\D/g, '')"
+                v-model="form_kelahiran.no_kia"
+                @input="form_kelahiran.no_kia = form_kelahiran.no_kia.replace(/\D/g, '')"
                 maxlength="16"
               />
             </div>
@@ -660,93 +720,103 @@
             <!-- Nama Anak -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Nama Anak</label>
-              <input type="text" class="form-control shadow-sm" v-model="form_kunjungan.nama" />
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama" />
+            </div>
+
+            <!-- NIK Ayah -->
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-secondary">NIK Ayah</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.nik_ayah">
+                <option value="">NIK Ayah</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+
+            <!-- Nama Ayah -->
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-secondary">Nama Ayah</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama_ayah" readonly />
+            </div>
+
+            <!-- NIK Ibu -->
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-secondary">NIK Ibu</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nik_ibu" readonly />
+            </div>
+
+            <!-- Nama Ibu -->
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-secondary">Nama Ibu</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama_ibu" readonly />
             </div>
 
             <!-- Jenis Kelamin -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
-              <select class="form-select shadow-sm" v-model="form_kunjungan.gender">
+              <select class="form-select shadow-sm" v-model="form_kelahiran.gender">
                 <option value="">L/P</option>
                 <option value="L">Laki-laki</option>
                 <option value="P">Perempuan</option>
               </select>
             </div>
 
-            <!-- Alamat -->
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Alamat</label>
-              <textarea class="form-control shadow-sm" rows="2" v-model="form_kunjungan.alamat"></textarea>
+            <!-- Tempat Tanggal lahir -->
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Tempat Lahir</label>
+              <input
+                type="text"
+                class="form-control shadow-sm bg-light"
+                v-model="form_kelahiran.tmpt_lahir"
+              />
             </div>
-
-            <!-- Tanggal lahir & Usia -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Tanggal Lahir</label>
               <input
                 type="date"
                 class="form-control shadow-sm"
-                v-model="form_kunjungan.tgl_lahir"
-                @change="hitungUsia"
-              />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Usia (bulan)</label>
-              <input
-                type="text"
-                class="form-control shadow-sm bg-light"
-                v-model="form_kunjungan.usia"
-                readonly
+                v-model="form_kelahiran.tgl_lahir"
               />
             </div>
 
-            <!-- Status BB, TB, BB/TB -->
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-secondary">Status BB</label>
-              <select class="form-select shadow-sm" v-model="form_kunjungan.status_bb">
-                <option value="">Pilih status</option>
-                <option value="Sangat Kurang">Sangat Kurang</option>
-                <option value="Kurang">Kurang</option>
-                <option value="Normal">Normal</option>
-                <option value="Resiko Lebih">Resiko Lebih</option>
-              </select>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-secondary">Status TB</label>
-              <select class="form-select shadow-sm" v-model="form_kunjungan.status_tb">
-                <option value="">Pilih status</option>
-                <option value="Sangat Pendek">Sangat Pendek</option>
-                <option value="Pendek">Pendek</option>
-                <option value="Normal">Normal</option>
-                <option value="Tinggi">Tinggi</option>
-              </select>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-secondary">Status BB/TB</label>
-              <select class="form-select shadow-sm" v-model="form_kunjungan.status_bb_tb">
-                <option value="">Pilih status</option>
-                <option value="Gizi Buruk">Gizi Buruk</option>
-                <option value="Gizi Kurang">Gizi Kurang</option>
-                <option value="Gizi Baik">Gizi Baik</option>
-                <option value="Berisiko Gizi Lebih">Berisiko Gizi Lebih</option>
-                <option value="Gizi Lebih">Gizi Lebih</option>
-                <option value="Obesitas">Obesitas</option>
-              </select>
-            </div>
-
-            <!-- RT, RW -->
+            <!-- Jenis Kelahiran, anak ke, usia ibu, jarak -->
             <div class="col-md-3">
-              <label class="form-label small fw-semibold text-secondary">RT</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kunjungan.rt" />
+              <label class="form-label small fw-semibold text-secondary">Jenis Kelahiran</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.jenis">
+                <option value="">Pilih jenis</option>
+                <option value="Normal">Normal</option>
+                <option value="Sesar">Sesar</option>
+              </select>
             </div>
+
             <div class="col-md-3">
-              <label class="form-label small fw-semibold text-secondary">RW</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kunjungan.rw" />
+              <label class="form-label small fw-semibold text-secondary">Anak Ke</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-secondary">Usia Ibu</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-secondary">Jarak Kelahiran</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.jarak" />
+            </div>
+
+            <!-- BB dan PB Anak-->
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Berat Badan</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.bb" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-secondary">Panjang Badan</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.pb" />
             </div>
 
             <!-- Kunjungan Terakhir -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label small fw-semibold text-secondary">Kunjungan Terakhir</label>
               <input type="date" class="form-control shadow-sm" v-model="form_kunjungan.kunjungan" />
             </div>
@@ -767,7 +837,7 @@
   </div>
 
   <!-- Modal Import -->
-  <div class="modal fade" id="modalImport" ref="modalImport" tabindex="-1">
+  <div class="modal fade" id="modalImport_kelahiran" ref="modalImport_kelahiran" tabindex="-1">
     <div class="modal-dialog">
       <div
         class="modal-content"
@@ -1078,8 +1148,11 @@ export default {
           nama_ayah: 'Zainal Arifin',
           nik_ibu: '3124026384957681',
           nama_ibu: 'Dinda Fitari',
-          tgl_kunjungan: '2025-09-12',
-          ket: 'Semua Baik',
+          sasaran:'anak',
+          jenis:'imunisasi',
+          hasil:'anak sudah terimunisasi campak',
+          rencana_tindakan:'Imunisasi BCG',
+          petugas:'Nirwana',
         },
         {
           nama: 'Didin',
@@ -1087,8 +1160,11 @@ export default {
           nama_ayah: 'Ayah',
           nik_ibu: '3124020987657681',
           nama_ibu: 'Bunda',
-          tgl_kunjungan: '2025-09-12',
-          ket: 'Semua Baik',
+          sasaran:'anak',
+          jenis:'imunisasi',
+          hasil:'anak sudah terimunisasi campak',
+          rencana_tindakan:'Imunisasi BCG',
+          petugas:'Nirwana',
         },
       ],
 
@@ -1243,8 +1319,12 @@ export default {
         { text: 'Nama Ayah', value: 'nama_ayah' },
         { text: 'NIK Ibu', value: 'nik_ibu' },
         { text: 'Nama Ibu', value: 'nama_ibu' },
-        { text: 'Tanggal Kunjungan', value: 'tgl_kunjungan' },
-        { text: 'Keterangan', value: 'ket' },
+        { text: 'Sasaran', value: 'sasaran' },
+        { text: 'Jenis', value: 'jenis' },
+        { text: 'Hasil', value: 'hasil' },
+        { text: 'Rencana Tindakan', value: 'rencana tindakan' },
+        { text: 'Petugas', value: 'petugas' },
+        { text: 'Buat Jadwal', value: 'action' },
       ],
 
       //header kelahiran
@@ -1283,7 +1363,7 @@ export default {
         nama: '',
       },
 
-      // filter
+      // filter kunjungan
       filter_kunjungan: {
         nik: '',
       },
@@ -1320,9 +1400,9 @@ export default {
       return config && config.background ? config.background : null
     },
     filteredAnak_kunjungan() {
-      return this.kunjungan_posyandu.filter((item) => {
-        const af = this.appliedAdvancedFilter_kunjungan
-        const nikFilter = this.filter_kunjungan.nik
+      return this.intervensi.filter((item) => {
+        const af = this.appliedAdvancedFilter_intervensi
+        const nikFilter = this.filter_intervensi.nik
 
         return (
           // filter NIK gabungan (ayah OR ibu)
