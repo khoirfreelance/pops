@@ -543,7 +543,7 @@
                       <label for="nik" class="form-label">NIK Orang Tua</label>
                       <input
                         type="text"
-                        v-model="filter_kunjungan.nik"
+                        v-model="filter_pendamping.nik"
                         id="nik"
                         class="form-control"
                         placeholder="Cari berdasarkan NIK Orang Tua"
@@ -558,45 +558,19 @@
                           type="text"
                           class="form-control"
                           id="nama"
-                          v-model="advancedFilter_kunjungan.nama"
+                          v-model="advancedFilter_pendamping.nama"
                           placeholder="Nama Anak"
                         />
                       </div>
 
-                      <!-- Usia -->
-                      <div class="col-md-2">
-                        <label for="usia" class="form-label">Usia</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="usia"
-                          v-model="advancedFilter_kunjungan.usia"
-                          placeholder="Bulan"
-                        />
-                      </div>
-
-                      <!-- Gender -->
-                      <div class="col-md-2">
-                        <label for="gender" class="form-label">Jenis Kelamin</label>
-                        <select
-                          class="form-select"
-                          id="gender"
-                          v-model="advancedFilter_kunjungan.gender"
-                        >
-                          <option value="">-- semua --</option>
-                          <option value="L">Laki-laki</option>
-                          <option value="P">Perempuan</option>
-                        </select>
-                      </div>
-
-                      <!-- Tanggal Kunjungan -->
+                      <!-- Tanggal Pendampingan -->
                       <div class="col-md-4">
-                        <label for="tgl_kunjungan" class="form-label">Tanggal Kunjungan</label>
+                        <label for="tgl_pendampingan" class="form-label">Tanggal Pendampingan</label>
                         <input
                           type="date"
                           class="form-control"
-                          id="tgl_kunjungan"
-                          v-model="advancedFilter_kunjungan.kunjungan"
+                          id="tgl_pendampingan"
+                          v-model="advancedFilter_pendamping.tgl_pendampingan"
                         />
                       </div>
 
@@ -605,14 +579,14 @@
                         <button
                           type="submit"
                           class="btn btn-primary float-start"
-                          @click="applyAdvancedFilter_kunjungan"
+                          @click="applyAdvancedFilter_pendampingan"
                         >
                           <i class="bi bi-search"></i> Cari
                         </button>
                         <button
                           type="button"
                           class="btn btn-secondary float-end"
-                          @click="resetFilter_kunjungan"
+                          @click="resetFilter_pendampingan"
                         >
                           <i class="bi bi-arrow-clockwise"></i> Reset
                         </button>
@@ -639,7 +613,7 @@
                   <button
                     class="btn btn-primary"
                     data-bs-toggle="modal"
-                    data-bs-target="#modalTambah"
+                    data-bs-target="#modalTambah_pendampingan"
                   >
                     <i class="bi bi-plus-square"></i> Tambah Data
                   </button>
@@ -648,9 +622,9 @@
                   <a
                     class="btn btn-success"
                     href="#"
-                    @click.prevent="openImport('Import Kunjungan')"
+                    @click.prevent="openImport('Import Pendampingan')"
                   >
-                    <i class="bi bi-filetype-csv"></i> Import Kunjungan
+                    <i class="bi bi-filetype-csv"></i> Import Pendampingan
                   </a>
 
                 </div>
@@ -662,9 +636,9 @@
                     <div class="card-body">
                       <div class="table-responsive">
                         <EasyDataTable
-                          :headers="headers_kunjungan"
-                          :items="filteredAnak_kunjungan"
-                          :search-value="filter_kunjungan.nik"
+                          :headers="header_pendampingan"
+                          :items="filteredAnak_pendampingan"
+                          :search-value="filter_pendamping.nik"
                           buttons-pagination
                           :rows-per-page="5"
                           table-class="table-modern"
@@ -705,6 +679,12 @@
         <!-- Body -->
         <div class="modal-body">
           <form class="row g-4">
+            <!-- Nama Anak -->
+            <div class="col-md-12">
+              <label class="form-label small fw-semibold text-secondary">Nama Anak</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama" />
+            </div>
+
             <!-- No KIA -->
             <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">No. KIA</label>
@@ -717,60 +697,54 @@
               />
             </div>
 
-            <!-- Nama Anak -->
+            <!-- No Akta -->
             <div class="col-md-6">
-              <label class="form-label small fw-semibold text-secondary">Nama Anak</label>
-              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama" />
+              <label class="form-label small fw-semibold text-secondary">No. Akta</label>
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form_kelahiran.no_akta"
+                @input="form_kelahiran.no_akta = form_kelahiran.no_akta.replace(/\D/g, '')"
+                maxlength="16"
+              />
             </div>
 
             <!-- NIK Ayah -->
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">NIK Ayah</label>
               <select class="form-select shadow-sm" v-model="form_kelahiran.nik_ayah">
                 <option value="">NIK Ayah</option>
-                <option value="L">Laki-laki</option>
-                <option value="P">Perempuan</option>
               </select>
             </div>
 
             <!-- Nama Ayah -->
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Nama Ayah</label>
-              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama_ayah" readonly />
+              <input type="text" class="form-control shadow-sm bg-light" v-model="form_kelahiran.nama_ayah" readonly />
             </div>
 
             <!-- NIK Ibu -->
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">NIK Ibu</label>
-              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nik_ibu" readonly />
+              <input type="text" class="form-control shadow-sm bg-light" v-model="form_kelahiran.nik_ibu" readonly />
             </div>
 
             <!-- Nama Ibu -->
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Nama Ibu</label>
-              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama_ibu" readonly />
-            </div>
-
-            <!-- Jenis Kelamin -->
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
-              <select class="form-select shadow-sm" v-model="form_kelahiran.gender">
-                <option value="">L/P</option>
-                <option value="L">Laki-laki</option>
-                <option value="P">Perempuan</option>
-              </select>
+              <input type="text" class="form-control shadow-sm bg-light" v-model="form_kelahiran.nama_ibu" readonly />
             </div>
 
             <!-- Tempat Tanggal lahir -->
-            <div class="col-md-4">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Tempat Lahir</label>
               <input
                 type="text"
-                class="form-control shadow-sm bg-light"
+                class="form-control shadow-sm"
                 v-model="form_kelahiran.tmpt_lahir"
               />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Tanggal Lahir</label>
               <input
                 type="date"
@@ -779,8 +753,18 @@
               />
             </div>
 
-            <!-- Jenis Kelahiran, anak ke, usia ibu, jarak -->
-            <div class="col-md-3">
+            <!-- Jenis Kelamin -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.gender">
+                <option value="">L/P</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+
+            <!-- Jenis Kelahiran -->
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Jenis Kelahiran</label>
               <select class="form-select shadow-sm" v-model="form_kelahiran.jenis">
                 <option value="">Pilih jenis</option>
@@ -789,34 +773,62 @@
               </select>
             </div>
 
-            <div class="col-md-3">
-              <label class="form-label small fw-semibold text-secondary">Anak Ke</label>
-              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
+            <!-- Penolong Kelahiran -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Penolong Kelahiran</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.penolong">
+                <option value="">Pilih Penolong</option>
+                <option value="Dokter">Dokter</option>
+                <option value="Bidan">Bidan</option>
+                <option value="Dukun">Dukun</option>
+                <option value="Mandiri">Mandiri</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
             </div>
 
-            <div class="col-md-3">
+            <!-- Tempat Dilahirkan -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Tempat Dilahirkan</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.tmpt_dilahirkan">
+                <option value="">Pilih Tempat</option>
+                <option value="RS">RS</option>
+                <option value="Puskesmas">Puskesmas</option>
+                <option value="Rumah">Rumah</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+
+            <!-- Anak ke -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Anak Ke</label>
+              <input type="number" min="1" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
+            </div>
+
+            <!-- usia ibu -->
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Usia Ibu</label>
               <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
             </div>
 
-            <div class="col-md-3">
-              <label class="form-label small fw-semibold text-secondary">Jarak Kelahiran</label>
+            <!-- Jarak Kelahiran -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Jarak Kelahiran (Bulan)</label>
               <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.jarak" />
             </div>
 
             <!-- BB dan PB Anak-->
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-secondary">Berat Badan</label>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Berat Badan (kg)</label>
               <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.bb" />
             </div>
 
-            <div class="col-md-4">
-              <label class="form-label small fw-semibold text-secondary">Panjang Badan</label>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Panjang Badan (cm)</label>
               <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.pb" />
             </div>
 
             <!-- Kunjungan Terakhir -->
-            <div class="col-md-4">
+            <div class="col-md-6">
               <label class="form-label small fw-semibold text-secondary">Kunjungan Terakhir</label>
               <input type="date" class="form-control shadow-sm" v-model="form_kunjungan.kunjungan" />
             </div>
@@ -836,8 +848,205 @@
     </div>
   </div>
 
-  <!-- Modal Import -->
+  <!-- Modal Import kelahiran -->
   <div class="modal fade" id="modalImport_kelahiran" ref="modalImport_kelahiran" tabindex="-1">
+    <div class="modal-dialog">
+      <div
+        class="modal-content"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
+        <!-- Header -->
+        <div class="modal-header text-primary bg-light border-0 rounded-top-4">
+          <h5 class="modal-title">{{ importTitle }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <div class="alert alert-warning p-2">
+            <ul>
+              <li>Fungsi import hanya untuk data kunjungan posyandu</li>
+              <li>Pastikan data yang diimport, berformat CSV</li>
+              <li>Pastikan data sudah lengkap sebelum di import</li>
+            </ul>
+          </div>
+          <form @submit.prevent="handleImport">
+            <input type="file" class="form-control" ref="csvFile" accept=".csv" />
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0 d-flex justify-content-between">
+          <button class="btn btn-light border rounded-pill px-4" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-2"></i> Batal
+          </button>
+          <button class="btn btn-success rounded-pill px-4" @click="handleImport">
+            <i class="bi bi-upload me-2"></i> Unggah
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah kunjungan -->
+  <div class="modal fade" id="modalTambah_kunjungan" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div
+        class="modal-content shadow-lg border-0 rounded-4"
+        :style="{
+          backgroundImage: background ? `url(${background})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }"
+      >
+        <!-- Header -->
+        <div class="modal-header text-primary bg-light border-0 rounded-top-4">
+          <h5 class="modal-title fw-bold text-primary">Tambah Data Anak</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <form class="row g-4">
+            <!-- No KIA -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">No. KIA</label>
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form_kelahiran.no_kia"
+                @input="form_kelahiran.no_kia = form_kelahiran.no_kia.replace(/\D/g, '')"
+                maxlength="16"
+              />
+            </div>
+
+            <!-- Nama Anak -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Nama Anak</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama" />
+            </div>
+
+            <!-- NIK Ayah -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">NIK Ayah</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.nik_ayah">
+                <option value="">NIK Ayah</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+
+            <!-- Nama Ayah -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Nama Ayah</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama_ayah" readonly />
+            </div>
+
+            <!-- NIK Ibu -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">NIK Ibu</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nik_ibu" readonly />
+            </div>
+
+            <!-- Nama Ibu -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Nama Ibu</label>
+              <input type="text" class="form-control shadow-sm" v-model="form_kelahiran.nama_ibu" readonly />
+            </div>
+
+            <!-- Tempat Tanggal lahir -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Tempat Lahir</label>
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                v-model="form_kelahiran.tmpt_lahir"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Tanggal Lahir</label>
+              <input
+                type="date"
+                class="form-control shadow-sm"
+                v-model="form_kelahiran.tgl_lahir"
+              />
+            </div>
+
+            <!-- Jenis Kelamin -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Jenis Kelamin</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.gender">
+                <option value="">L/P</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+
+            <!-- Jenis Kelahiran, anak ke, usia ibu, jarak -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Jenis Kelahiran</label>
+              <select class="form-select shadow-sm" v-model="form_kelahiran.jenis">
+                <option value="">Pilih jenis</option>
+                <option value="Normal">Normal</option>
+                <option value="Sesar">Sesar</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Anak Ke</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Usia Ibu</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.anak_ke" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Jarak Kelahiran</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.jarak" />
+            </div>
+
+            <!-- BB dan PB Anak-->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Berat Badan (kg)</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.bb" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Panjang Badan (cm)</label>
+              <input type="number" min="0" class="form-control shadow-sm" v-model="form_kelahiran.pb" />
+            </div>
+
+            <!-- Kunjungan Terakhir -->
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Kunjungan Terakhir</label>
+              <input type="date" class="form-control shadow-sm" v-model="form_kunjungan.kunjungan" />
+            </div>
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0 d-flex justify-content-between">
+          <button class="btn btn-light border rounded-pill px-4" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-2"></i> Batal
+          </button>
+          <button class="btn btn-success rounded-pill px-4" @click="saveData">
+            <i class="bi bi-save me-2"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Import kunjungan -->
+  <div class="modal fade" id="modalImport_kunjungan" ref="modalImport_kelahiran" tabindex="-1">
     <div class="modal-dialog">
       <div
         class="modal-content"
@@ -1104,16 +1313,24 @@ export default {
       animatedProgress: 0,
       currentRow: 0,
       totalRows: 0,
+
+      // form kunjungan posyandu
       form_kunjungan: {
-        nik: '',
+        nik_wali: '',
+        nama_wali: '',
+        hubungan: '',
         nama: '',
         gender: '',
+        bb:'',
+        tb:'',
+        lika:'',
         alamat: '',
         tgl_lahir: '',
         usia: 0,
-        status_bb: '',
-        status_tb: '',
-        status_bb_tb: '',
+        status_bb:'',
+        status_tb:'',
+        status_gizi:'',
+        posyandu: '',
         rt: '',
         rw: '',
         kunjungan: '',
@@ -1138,6 +1355,43 @@ export default {
         tmpt_dilahirkan:'',
         anak_ke:'',
         jarak:'',
+      },
+
+      //form intervensi
+      form_intervensi:{
+        nama: '',
+        nik_wali: '',
+        nama_wali: '',
+        hubungan: '',
+        sasaran:'anak',
+        jenis:'',
+        hasil:'',
+        rencana_tindakan:'',
+        petugas:'',
+      },
+
+      //form intervensi
+      form_pendampingan:{
+        jenis:'anak',
+        nik_wali:'',
+        nama:'',
+        petugas:'',
+        tgl_pendampingan:'',
+        lokasi:'',
+        catatan:'',
+        bb:'',
+        tb:'',
+        lika:'',
+        lila:'',
+        tgl_lahir: '',
+        usia: 0,
+        status_bb:'',
+        status_tb:'',
+        status_gizi:'',
+        asi:'',
+        imunisasi_dasar:'',
+        diasuh_oleh:'',
+        vit_a:'',
       },
 
       // data intervensi
@@ -1295,6 +1549,30 @@ export default {
         },
       ],
 
+      pendampingan:[
+        {
+          nik_wali:'1871031205950003',
+          nama:'Agustian Pratama',
+          petugas:'Dio',
+          tgl_pendampingan:'2025-09-12',
+          lokasi:'Rumah',
+          catatan:'Catatan tambahan',
+          bb:'13',
+          tb:'94',
+          lika:'30',
+          lila:'12',
+          tgl_lahir: '2022-09-12',
+          usia: 55,
+          status_bb:'Normal',
+          status_tb:'Normal',
+          status_gizi:'Gizi Baik',
+          asi:true,
+          imunisasi_dasar:true,
+          diasuh_oleh:'Orang Tua',
+          vit_a:true,
+        },
+      ],
+
       // header kunjungan table
       headers_kunjungan: [
         { text: 'KIA', value: 'kia' },
@@ -1346,6 +1624,22 @@ export default {
         { text: 'Jarak Kelahiran', value: 'jarak' },
       ],
 
+      //header pendampingan
+      header_pendampingan:[
+        { text: 'NIK Orang Tua', value: 'nik_wali' },
+        { text: 'Nama', value: 'nama' },
+        { text: 'Tanggal Pendampingan', value: 'tgl_pendampingan' },
+        { text: 'Lokasi Pendampingan', value: 'lokasi' },
+        { text: 'BB', value: 'bb' },
+        { text: 'TB', value: 'tb' },
+        { text: 'Usia', value: 'usia' },
+        { text: 'Asi Esklusif', value: 'asi' },
+        { text: 'Imunisasi Dasar', value: 'imunisasi_dasar' },
+        { text: 'Diasuh oleh', value: 'diasuh_oleh' },
+        { text: 'Pemberian Vitamin A', value: 'vit_a' },
+        { text: 'Petugas TPK', value: 'petugas' },
+      ],
+
       // filter kelahiran
       filter_anak: {
         nik: '',
@@ -1391,6 +1685,19 @@ export default {
       appliedAdvancedFilter_intervensi: {
         nama: '',
         tgl_kunjungan: '',
+      },
+
+      // filter pendampingan
+      filter_pendamping: {
+        nik: '',
+      },
+      advancedFilter_pendamping: {
+        nama: '',
+        tgl_pendampingan: '',
+      },
+      appliedAdvancedFilter_pendamping: {
+        nama: '',
+        tgl_pendampingan: '',
       },
     }
   },
@@ -1451,7 +1758,21 @@ export default {
         )
       })
     },
+    filteredAnak_pendampingan() {
+      return this.pendampingan.filter((item) => {
+        const af = this.appliedAdvancedFilter_pendamping
+        const nikFilter = this.filter_pendamping.nik
 
+        return (
+          // filter NIK gabungan (ayah OR ibu)
+          (nikFilter === '' ||
+            item.nik_wali.includes(nikFilter)) &&
+          // filter lanjutan
+          (af.nama === '' || item.nama === af.nama) &&
+          (af.tgl_pendampingan === '' || item.tgl_pendampingan === af.tgl_pendampingan)
+        )
+      })
+    },
     progressLevel() {
       if (this.importProgress < 40) return 'low'
       if (this.importProgress < 80) return 'mid'
@@ -1647,6 +1968,10 @@ export default {
       // Salin isi input advancedFilter ke appliedAdvancedFilter
       this.appliedAdvancedFilter_intervensi = { ...this.advancedFilter_intervensi }
     },
+    applyAdvancedFilter_pendampingan() {
+      // Salin isi input advancedFilter ke appliedAdvancedFilter
+      this.appliedAdvancedFilter_pendamping = { ...this.advancedFilter_pendamping }
+    },
     resetFilter_kunjungan() {
     this.advancedFilter_kunjungan = {
       nama: '',
@@ -1672,6 +1997,13 @@ export default {
         tgl_kunjungan: '',
       }
       this.appliedAdvancedFilter_intervensi = { ...this.advancedFilter_intervensi }
+    },
+    resetFilter_pendampingan() {
+      this.advancedFilter_pendamping = {
+        nama: '',
+        tgl_pendampingan: '',
+      }
+      this.appliedAdvancedFilter_pendamping = { ...this.advancedFilter_pendamping }
     },
   },
   watch: {
